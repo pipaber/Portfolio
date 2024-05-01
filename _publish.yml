@@ -1,0 +1,6 @@
+- source: project
+  quarto-pub:
+    - id: 42422e9d-7a6f-4f46-8fe8-351a81bba0cd
+      url: 'https://pipaber.quarto.pub/portfolio'
+    - id: 449be5b5-3eeb-4be0-a9db-13aa8bbce741
+      url: 'https://pipaber.quarto.pub/portfolio'

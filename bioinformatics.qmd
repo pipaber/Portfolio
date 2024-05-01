@@ -1,0 +1,73 @@
+---
+title: "Bioinformatics Projects"
+title-block-banner: true
+---
+
+:::: columns 
+
+:::{.column width="55%"}
+The analysis of RNA-Seq data involves two distinct parts. The first one needs the use of servers or HPC (high performance computers) and has to do with quality control. pre-processing, alignment-mapping (usually with the STAR software) and counting (can be done using RSEM software). The second one is called downstream analysis and this part involves differential gene expression, gene sets analysis, etc. To see how to do the downstream analysis click [here](https://pipaber.github.io/RNA-Seq/){target=_blank} 
+:::
+
+:::{.column width="5%"}
+:::
+
+:::{.column width="40%"}
+![Network analysis of genes and ontologies](https://pipaber.github.io/RNA-Seq/index_files/figure-html/unnamed-chunk-22-5.png)
+:::
+
+::::
+
+---
+
+:::: columns
+
+:::{.column width="40%"}
+![Methylated DNA between Cancer and Normal](https://pipaber.github.io/Epigenomics/index_files/figure-html/notebooks-Methylation_analysis-fig-meth-output-1.png)
+:::
+
+:::{.column width="5%"}
+:::
+
+:::{.column width="55%"}
+Epigenetics is the study of how your behaviors and environment can cause changes that affect the way your genes work. Unlike genetic changes, epigenetic changes are reversible and do not change your DNA sequence, but they can change how your body reads a DNA sequence (CDC,2024). To learn how to analyze 450k Illumina Arrays and Whole Genome Bisulfite Sequencing data click [here](https://pipaber.github.io/Epigenomics/){target=_blank}
+:::
+
+::::
+
+---
+
+:::: columns 
+
+:::{.column width="55%"}
+In recent years the integration of *Omics* data has become important to understand the biological procesess more broadly.
+To learn how to use the GWAS Catalog with ChIP-Seq data or how to retrieve and analyze data from The Cancer Genome Atlas (TCGA) click [here](https://pipaber.github.io/Multi-omics/){target=_blank}
+:::
+
+:::{.column width="5%"}
+:::
+
+:::{.column width="40%"}
+![Number of predited mutation effect per gene](https://pipaber.github.io/Multi-omics/notebooks/images/samples_with_mut.jpeg)
+:::
+
+::::
+
+---
+
+:::: columns
+
+:::{.column width="40%"}
+![KEGG](https://www.genome.jp/Fig/kegg128.gif)
+:::
+
+:::{.column width="5%"}
+:::
+
+:::{.column width="55%"}
+An example of a proper use of interactive plots on a RNA-Seq data report can be founded [here](https://github.com/pipaber/Omics-Potfolio){target=_blank}. 
+
+> This repository doesn't have any code, is only to showcase what is possible using Quarto and Bioconductor
+:::
+
+::::

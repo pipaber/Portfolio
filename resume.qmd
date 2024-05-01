@@ -1,0 +1,4 @@
+```{=html}
+<embed src="images/Piero PalaciosCV.pdf" width="800" height="800"></embed>
+```
+

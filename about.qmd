@@ -1,0 +1,16 @@
+---
+title: "About"
+image: piero.jpg
+about:
+  template: jolla
+  links:
+    - icon: linkedin
+      text: LinkedIn
+      href: https://www.linkedin.com/in/pieropalaciosbernuy/
+    - icon: github
+      text: Github
+      href: https://github.com/pipaber
+
+---
+
+About this blog

@@ -1,0 +1,39 @@
+project:
+  type: website
+
+website:
+  title: "Portfolio"
+  favicon: "piero.jpg"
+  navbar:
+    left: 
+      - text: Home
+        href: index.qmd
+      - text: Data Science Projects
+        href: projects.qmd
+      - text: Bioinformatics Projects
+        href: bioinformatics.qmd
+      - text: Resume
+        href: resume.qmd
+    right:
+      - about.qmd
+      - icon: github
+        href: https://github.com/pipaber
+      - icon: linkedin
+        href: https://www.linkedin.com/in/pieropalaciosbernuy/
+  page-footer:
+    center: |
+      [Contact Piero Palacios](mailto:p.palacios.bernuy@gmail.com)
+    left: |
+      Made with [Quarto](https://quarto.org/)
+    right: |
+      [Github Code Repo](https://github.com/pipaber)
+  
+format:
+  html:
+    theme: cosmo
+    css: styles.css
+    code-fold: show
+    highlight-style: breeze
+lightbox: true
+editor: visual
+
