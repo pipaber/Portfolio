@@ -1,0 +1,37 @@
+[
+  {
+    "objectID": "posts/python test/test.html",
+    "href": "posts/python test/test.html",
+    "title": "test",
+    "section": "",
+    "text": "Code\nprint(5)\n\n\n5"
+  },
+  {
+    "objectID": "bioinformatics.html",
+    "href": "bioinformatics.html",
+    "title": "Bioinformatics Projects",
+    "section": "",
+    "text": "The analysis of RNA-Seq data involves two distinct parts. The first one needs the use of servers or HPC (high performance computers) and has to do with quality control. pre-processing, alignment-mapping (usually with the STAR software) and counting (can be done using RSEM software). The second one is called downstream analysis and this part involves differential gene expression, gene sets analysis, etc. To see how to do the downstream analysis click here\n\n\n\n\n\n\nNetwork analysis of genes and ontologies\n\n\n\n\n\n\n\n\n\n\nMethylated DNA between Cancer and Normal\n\n\n\n\n\nEpigenetics is the study of how your behaviors and environment can cause changes that affect the way your genes work. Unlike genetic changes, epigenetic changes are reversible and do not change your DNA sequence, but they can change how your body reads a DNA sequence (CDC,2024). To learn how to analyze 450k Illumina Arrays and Whole Genome Bisulfite Sequencing data click here\n\n\n\n\n\nIn recent years the integration of Omics data has become important to understand the biological procesess more broadly. To learn how to use the GWAS Catalog with ChIP-Seq data or how to retrieve and analyze data from The Cancer Genome Atlas (TCGA) click here\n\n\n\n\n\n\nNumber of predited mutation effect per gene\n\n\n\n\n\n\n\n\n\n\nKEGG\n\n\n\n\n\nAn example of a proper use of interactive plots on a RNA-Seq data report can be founded here.\n\nThis repository doesn’t have any code, is only to showcase what is possible using Quarto and Bioconductor\n\n\n\n\n\n\nNetwork analysis of genes and ontologies\nMethylated DNA between Cancer and Normal\nNumber of predited mutation effect per gene\nKEGG"
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "About this blog"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Piero Palacios",
+    "section": "",
+    "text": "Hi! My name is Piero, and I’m a Biologist (with main formation in biotechnology) from Peru. I have specializations in data analysis and bioinformatics from Harvard University and MIT. Also, I love writing reproducible interactive reports using Quarto as a hobby.\nWithin my bioinformatic experience you can find RNA-Seq, Methyl-Seq, WGBS-Seq, Illumina Methylation Array and Multi-omics analyses. Also, I have experience on machine learning (OLS, ridge and lasso regression, SVM, Kernels, collaborative filtering, network analysis, high-dimensional reduction, etc) and deep learning models (Feed forward NN, Recurrent NN, Convolutional NN, Graph NN, Transformers, etc)."
+  },
+  {
+    "objectID": "projects.html",
+    "href": "projects.html",
+    "title": "Data Science Projects",
+    "section": "",
+    "text": "test\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNo matching items"
+  }
+]
