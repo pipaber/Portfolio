@@ -2,7 +2,8 @@
   {
     "listing": "/projects.html",
     "items": [
-      "/posts/python test/test.html"
+      "/posts/Regression_and_Gradient_Descent/regression_and_gradient_descent.html",
+      "/posts/test/aa.html"
     ]
   }
 ]

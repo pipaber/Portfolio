@@ -6,10 +6,8 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="Harlow Malloc">
-<meta name="dcterms.date" content="2024-04-30">
 
-<title>Portfolio - Post With Code</title>
+<title>Portfolio - Likelihood Ratio Test, Regression and Gradient Descent</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -76,6 +74,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="../../site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
+<link href="../../site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
+<link href="../../site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -104,11 +105,40 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   }
 }</script>
 
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="../../styles.css">
 </head>
 
-<body class="nav-fixed fullcontent">
+<body class="nav-fixed">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top quarto-banner">
@@ -131,7 +161,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </li>  
   <li class="nav-item">
     <a class="nav-link" href="../../projects.html"> 
-<span class="menu-text">Projects</span></a>
+<span class="menu-text">Data Science Projects</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../bioinformatics.html"> 
+<span class="menu-text">Bioinformatics Projects</span></a>
   </li>  
   <li class="nav-item">
     <a class="nav-link" href="../../resume.html"> 
@@ -164,31 +198,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <header id="title-block-header" class="quarto-title-block default page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
-      <h1 class="title">Post With Code</h1>
-                                <div class="quarto-categories">
-                <div class="quarto-category">news</div>
-                <div class="quarto-category">code</div>
-                <div class="quarto-category">analysis</div>
-              </div>
-                  </div>
+      <h1 class="title">Likelihood Ratio Test, Regression and Gradient Descent</h1>
+                      </div>
   </div>
     
   
   <div class="quarto-title-meta">
 
-      <div>
-      <div class="quarto-title-meta-heading">Author</div>
-      <div class="quarto-title-meta-contents">
-               <p>Harlow Malloc </p>
-            </div>
-    </div>
       
-      <div>
-      <div class="quarto-title-meta-heading">Published</div>
-      <div class="quarto-title-meta-contents">
-        <p class="date">April 30, 2024</p>
-      </div>
-    </div>
     
       
     </div>
@@ -197,7 +214,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#likelihood-ratio-test" id="toc-likelihood-ratio-test" class="nav-link active" data-scroll-target="#likelihood-ratio-test">Likelihood Ratio Test</a></li>
+  </ul>
+</nav>
+    </div>
 <!-- main -->
 <main class="content quarto-banner-title-block" id="quarto-document-content">
 
@@ -205,18 +230,148 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 
-<p>This is a post with executable code.</p>
-<div class="cell">
+<section id="likelihood-ratio-test" class="level2">
+<h2 class="anchored" data-anchor-id="likelihood-ratio-test">Likelihood Ratio Test</h2>
+<div id="cell-2" class="cell" data-execution_count="3">
 <details open="" class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> <span class="sc">+</span> <span class="dv">1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> scipy <span class="im">as</span> sc</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>The file gamma-ray.csv contains a small quantity of data collected from the Compton Gamma Ray Observatory, a satellite launched by NASA in 1991 (http://cossc.gsfc.nasa.gov/). For each of 100 sequential time intervals of variable lengths (given in seconds), the number of gamma rays originating in a particular area of the sky was recorded.</p>
+<p>For this analysis, we would like to check the assumption that the emission rate is constant.</p>
+<p>First, let’s check the distribution of the number of gamma rays</p>
+<div id="cell-5" class="cell" data-execution_count="6">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">"gamma-ray.csv"</span>, sep<span class="op">=</span><span class="st">","</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>sns.set_theme(style<span class="op">=</span><span class="st">"darkgrid"</span>)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>sns.displot(df,x<span class="op">=</span><span class="st">"count"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><a href="regression_and_gradient_descent_files/figure-html/cell-3-output-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1"><img src="regression_and_gradient_descent_files/figure-html/cell-3-output-1.png" class="img-fluid figure-img"></a></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The number of these gamma rays is discrete and non-negative. We can assume that the gamma rays emerge independently of one another, and at constant rate in each time interval. Based on this assumption, a Poisson model is a good model assumption. Each observation <span class="math inline">\(G_i\)</span> follows a poisson distribution with rate <span class="math inline">\(\lambda_i\)</span> times the time interval <span class="math inline">\(t_i\)</span>.</p>
+<p><span class="math display">\[G_i \thicksim Poisson(\lambda_i * t_i)\]</span></p>
+<p>THe hypothesis that we wanna test is that the emission rate is constat so:</p>
+<p><span class="math inline">\(H_0: \lambda_0 = \lambda_1 = ... = \lambda_{99}\)</span></p>
+<p>And the alternative hypothesis is that the emisison rates are different:</p>
+<p><span class="math inline">\(H_A: \lambda_i \neq \lambda_j\)</span> for some i and j</p>
+<p>The most plausible parameter for <span class="math inline">\(\lambda\)</span> under the null hypothesis is the maximun likelihood estimator (MLE).</p>
+<p>Given the poisson distribution, the derivation goes as follows:</p>
+<p><span class="math display">\[f(G_0,G_1,...,G_{99} | \lambda) = \prod_{i=0}^{99} \frac{e^{-\lambda*t_i}*(\lambda*t_i)^{G_i}}{G_i!}\]</span></p>
+<p><span class="math display">\[ln(f) = -\lambda \sum_{i=0}^{99} t_i + ln(\lambda) \sum_{i=0}^{99} G_i + ln(\prod_{i=0}^{99} t_i^{G_i})) - ln(\prod_{i=0}^{99} G_i!)\]</span></p>
+<p>Then, we derivate w.r.t parameter <span class="math inline">\(\lambda\)</span> and set the derivative to 0 to find the optimal <span class="math inline">\(\lambda\)</span>.</p>
+<p><span class="math display">\[0 = -\sum_{i=0}^{99}t_i + \sum_{i=0}^{99} \frac{G_i}{\lambda}\]</span></p>
+<p><span class="math display">\[\hat{\lambda} = \frac{\sum_{i=0}^{99} G_i}{\sum_{i=0}^{99} t_i}\]</span></p>
+<div id="cell-9" class="cell" data-execution_count="10">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>lambda_null <span class="op">=</span> df[<span class="st">"count"</span>].<span class="bu">sum</span>() <span class="op">/</span> df[<span class="st">"seconds"</span>].<span class="bu">sum</span>()</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>lambda_null</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display" data-execution_count="10">
+<pre><code>0.0038808514969907496</code></pre>
+</div>
+</div>
+<p>Similarly, we can calculate a plausible value for the alternative hypothesis with MLE.</p>
+<p><span class="math display">\[ln(f) = -\sum_{i=0}^{99} \lambda_i*t_i + \sum_{i=0}^{99} G_i*ln(\lambda_i) + ln(\prod_{i=0}^{99} G_i*ln(t_i)) - ln(\prod_{i=0}^{99} G_i!)\]</span></p>
+<p>WE take the partial derivative w.r.t each parameter <span class="math inline">\(\lambda_i\)</span> to find the optimal <span class="math inline">\(\lambda_i\)</span></p>
+<p><span class="math display">\[0 = -t_i + \frac{G_i}{\lambda_i}\]</span></p>
+<p><span class="math display">\[\hat{\lambda_i} = \frac{G_i}{t_i}\]</span></p>
+<div id="cell-11" class="cell" data-execution_count="11">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>lambdas_alt <span class="op">=</span> df[<span class="st">"count"</span>]<span class="op">/</span>df[<span class="st">"seconds"</span>]</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>lambdas_alt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display" data-execution_count="11">
+<pre><code>0     0.000000
+1     0.000000
+2     0.000000
+3     0.000000
+4     0.009804
+        ...   
+95    0.025840
+96    0.000000
+97    0.000000
+98    0.000000
+99    0.000000
+Length: 100, dtype: float64</code></pre>
+</div>
+</div>
+<p>Now to test these hypotheses, we are gonna use the likelihood ratio test:</p>
+<p><span class="math display">\[\Lambda(x) = -2ln(\frac{argmax f(G_0,G_1,...,G_{99}| \lambda)}{argmax f(G_0,G_1,...,G_{99}| \lambda_0,...,\lambda_{99})})\]</span></p>
+<p>which asymptotic distribution <span class="math inline">\(X_{100-1 = 99}^{2}\)</span></p>
+<div id="cell-13" class="cell" data-execution_count="17">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>lh_null <span class="op">=</span> sc.stats.poisson.pmf(k<span class="op">=</span>df[<span class="st">"count"</span>], mu<span class="op">=</span>lambda_null)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>lh_alt <span class="op">=</span> sc.stats.poisson.pmf(k<span class="op">=</span>df[<span class="st">"count"</span>], mu<span class="op">=</span>lambdas_alt)</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>llh_test <span class="op">=</span> <span class="op">-</span><span class="dv">2</span><span class="op">*</span>np.log(lh_null.prod() <span class="op">/</span> lh_alt.prod())</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>llh_test</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display" data-execution_count="17">
+<pre><code>104.33272117042188</code></pre>
+</div>
+</div>
+<p>We can see the distribution of the chi-squared pdf at 99 degrees of freedom</p>
+<div id="cell-15" class="cell" data-execution_count="20">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>plot_Xs <span class="op">=</span> np.arange(<span class="dv">50</span>,<span class="dv">150</span>,<span class="fl">0.1</span>)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>plt.plot(plot_Xs, sc.stats.chi2.pdf(plot_Xs, <span class="dv">99</span>))</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><a href="regression_and_gradient_descent_files/figure-html/cell-7-output-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2"><img src="regression_and_gradient_descent_files/figure-html/cell-7-output-1.png" class="img-fluid figure-img"></a></p>
+</figure>
+</div>
+</div>
+</div>
+<p>And see the value that give a p-value of 0.05</p>
+<div id="cell-17" class="cell" data-execution_count="21">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># We can calculate the Lambda that would give a p-value of 0.05 by using the inverse survival function</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>sc.stats.chi2.isf(<span class="fl">0.05</span>, <span class="dv">99</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display" data-execution_count="21">
+<pre><code>123.22522145336181</code></pre>
+</div>
+</div>
+<p>Calculating our p-value:</p>
+<div id="cell-19" class="cell" data-execution_count="22">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>pvalue <span class="op">=</span> sc.stats.chi2.sf(llh_test, <span class="dv">99</span>)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(pvalue)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 2</code></pre>
+<pre><code>0.337398546433923</code></pre>
 </div>
 </div>
+<p>We can conclude that we cannot reject our null hypothesis, emission rate of gamma rays appear to be constant.</p>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -620,6 +775,31 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </div>
   </div>
 </footer>
+<script>var lightboxQuarto = GLightbox({"selector":".lightbox","descPosition":"bottom","closeEffect":"zoom","loop":false,"openEffect":"zoom"});
+window.onload = () => {
+  lightboxQuarto.on('slide_before_load', (data) => {
+    const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+    const href = trigger.getAttribute('href');
+    if (href !== null) {
+      const imgEl = window.document.querySelector(`a[href="${href}"] img`);
+      if (imgEl !== null) {
+        const srcAttr = imgEl.getAttribute("src");
+        if (srcAttr && srcAttr.startsWith("data:")) {
+          slideConfig.href = srcAttr;
+        }
+      }
+    } 
+  });
+
+  lightboxQuarto.on('slide_after_load', (data) => {
+    const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+    if (window.Quarto?.typesetMath) {
+      window.Quarto.typesetMath(slideNode);
+    }
+  });
+
+};
+          </script>
 
 
 
