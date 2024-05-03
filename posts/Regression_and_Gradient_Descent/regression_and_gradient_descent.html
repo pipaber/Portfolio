@@ -57,7 +57,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </style>
 
 
-<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script><script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="../../site_libs/quarto-nav/headroom.min.js"></script>
 <script src="../../site_libs/clipboard/clipboard.min.js"></script>
 <script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
@@ -104,6 +104,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
 
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
@@ -220,6 +223,11 @@ window.Quarto = {
    
   <ul>
   <li><a href="#likelihood-ratio-test" id="toc-likelihood-ratio-test" class="nav-link active" data-scroll-target="#likelihood-ratio-test">Likelihood Ratio Test</a></li>
+  <li><a href="#regression-and-gradient-descent" id="toc-regression-and-gradient-descent" class="nav-link" data-scroll-target="#regression-and-gradient-descent">Regression and Gradient Descent</a>
+  <ul class="collapse">
+  <li><a href="#regression" id="toc-regression" class="nav-link" data-scroll-target="#regression">Regression</a></li>
+  <li><a href="#gradient-descent" id="toc-gradient-descent" class="nav-link" data-scroll-target="#gradient-descent">Gradient Descent</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -232,7 +240,7 @@ window.Quarto = {
 
 <section id="likelihood-ratio-test" class="level2">
 <h2 class="anchored" data-anchor-id="likelihood-ratio-test">Likelihood Ratio Test</h2>
-<div id="cell-2" class="cell" data-execution_count="3">
+<div id="cell-2" class="cell" data-execution_count="2">
 <details open="" class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -369,8 +377,295 @@ Length: 100, dtype: float64</code></pre>
 </div>
 </div>
 <p>We can conclude that we cannot reject our null hypothesis, emission rate of gamma rays appear to be constant.</p>
+</section>
+<section id="regression-and-gradient-descent" class="level2">
+<h2 class="anchored" data-anchor-id="regression-and-gradient-descent">Regression and Gradient Descent</h2>
+<section id="regression" class="level3">
+<h3 class="anchored" data-anchor-id="regression">Regression</h3>
+<p>We are gonna use a dataset from General Motors about mortality. This data is from 59 US cities where it was studied the contribution of air pollution to mortality.</p>
+<p>The dependen variable is the age adjusted mortality (Mortality). Also, the data includes variables measuring climate characteristics (JanTemp, JulyTemp, RelHum, Rain), demographic characteristics of the cities (Educ, Dens, NonWhite, WhiteCollar, Pop, House, Income), and variables recording the pollution potential of three diferent air pollutants (HC, NOx, SO2).</p>
+<p>Let’s load the data:</p>
+<div id="cell-23" class="cell" data-execution_count="73">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">"mortality.csv"</span>, sep<span class="op">=</span><span class="st">","</span>)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>df.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display" data-execution_count="73">
+<div>
+<div>
 
 
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">City</th>
+<th data-quarto-table-cell-role="th">Mortality</th>
+<th data-quarto-table-cell-role="th">JanTemp</th>
+<th data-quarto-table-cell-role="th">JulyTemp</th>
+<th data-quarto-table-cell-role="th">RelHum</th>
+<th data-quarto-table-cell-role="th">Rain</th>
+<th data-quarto-table-cell-role="th">Educ</th>
+<th data-quarto-table-cell-role="th">Dens</th>
+<th data-quarto-table-cell-role="th">NonWhite</th>
+<th data-quarto-table-cell-role="th">WhiteCollar</th>
+<th data-quarto-table-cell-role="th">Pop</th>
+<th data-quarto-table-cell-role="th">House</th>
+<th data-quarto-table-cell-role="th">Income</th>
+<th data-quarto-table-cell-role="th">HC</th>
+<th data-quarto-table-cell-role="th">NOx</th>
+<th data-quarto-table-cell-role="th">SO2</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>Akron, OH</td>
+<td>921.87</td>
+<td>27</td>
+<td>71</td>
+<td>59</td>
+<td>36</td>
+<td>11.4</td>
+<td>3243</td>
+<td>8.8</td>
+<td>42.6</td>
+<td>660328</td>
+<td>3.34</td>
+<td>29560</td>
+<td>21</td>
+<td>15</td>
+<td>59</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>Albany-Schenectady-Troy, NY</td>
+<td>997.87</td>
+<td>23</td>
+<td>72</td>
+<td>57</td>
+<td>35</td>
+<td>11.0</td>
+<td>4281</td>
+<td>3.5</td>
+<td>50.7</td>
+<td>835880</td>
+<td>3.14</td>
+<td>31458</td>
+<td>8</td>
+<td>10</td>
+<td>39</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>Allentown, Bethlehem,PA-NJ</td>
+<td>962.35</td>
+<td>29</td>
+<td>74</td>
+<td>54</td>
+<td>44</td>
+<td>9.8</td>
+<td>4260</td>
+<td>0.8</td>
+<td>39.4</td>
+<td>635481</td>
+<td>3.21</td>
+<td>31856</td>
+<td>6</td>
+<td>6</td>
+<td>33</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>Atlanta, GA</td>
+<td>982.29</td>
+<td>45</td>
+<td>79</td>
+<td>56</td>
+<td>47</td>
+<td>11.1</td>
+<td>3125</td>
+<td>27.1</td>
+<td>50.2</td>
+<td>2138231</td>
+<td>3.41</td>
+<td>32452</td>
+<td>18</td>
+<td>8</td>
+<td>24</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>Baltimore, MD</td>
+<td>1071.29</td>
+<td>35</td>
+<td>77</td>
+<td>55</td>
+<td>43</td>
+<td>9.6</td>
+<td>6441</td>
+<td>24.4</td>
+<td>43.7</td>
+<td>2199531</td>
+<td>3.44</td>
+<td>32368</td>
+<td>43</td>
+<td>38</td>
+<td>206</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</div>
+<p>Let’s write two helper function that adds the intercept to the data and perform the ordinary least squares estimation based on the formula:</p>
+<p><span class="math display">\[\hat{\beta}=(X^{T}X)^{-1}X^{T}y\]</span></p>
+<div id="cell-25" class="cell" data-execution_count="74">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> add_intercept(X: np.array):</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> np.concatenate((np.ones_like(X[:,:<span class="dv">1</span>]), X), axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> OLS(X: np.array, y: np.array):</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> np.linalg.inv(X.T.dot(X)).dot(X.T.dot(y))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>Also we need to declare the matrix X and the dependent variable y and convert them to numpy objects.</p>
+<div id="cell-27" class="cell" data-execution_count="75">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> df[<span class="st">"Mortality"</span>]</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> df.loc[:,<span class="st">"JanTemp"</span>:<span class="st">"SO2"</span>]</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Now lets add the intercept to X</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> X.to_numpy()</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> y.to_numpy()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>Now, can calculate the betas:</p>
+<div id="cell-29" class="cell" data-execution_count="76">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>betas <span class="op">=</span> OLS(add_intercept(X), y)</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>betas</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display" data-execution_count="76">
+<pre><code>array([ 1.40003471e+03, -1.44112034e+00, -2.95025005e+00,  1.36009551e-01,
+        9.69507928e-01, -1.10466624e+01,  4.71706516e-03,  5.30271368e+00,
+       -1.49231882e+00,  3.40228581e-06, -3.80416445e+01, -4.25186359e-04,
+       -6.71247478e-01,  1.17850768e+00,  8.45829777e-02])</code></pre>
+</div>
+</div>
+<p>Great! This was an easy way to compute the OLS regression. We also can do the same with sklearn:</p>
+<div id="cell-31" class="cell" data-execution_count="77">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.linear_model <span class="im">import</span> LinearRegression</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>reg <span class="op">=</span> LinearRegression()</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>reg.fit(add_intercept(X),y)</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(reg.intercept_, reg.coef_)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>1400.0347123466809 [ 0.00000000e+00 -1.44112034e+00 -2.95025005e+00  1.36009551e-01
+  9.69507928e-01 -1.10466624e+01  4.71706516e-03  5.30271368e+00
+ -1.49231882e+00  3.40228581e-06 -3.80416445e+01 -4.25186359e-04
+ -6.71247478e-01  1.17850768e+00  8.45829777e-02]</code></pre>
+</div>
+</div>
+</section>
+<section id="gradient-descent" class="level3">
+<h3 class="anchored" data-anchor-id="gradient-descent">Gradient Descent</h3>
+<p>We also can do the regression task via optimization with the gradient descent algorithm. Let’s write some helper functions that will helps us to do the gradient descent algorithm.</p>
+<div id="cell-33" class="cell" data-execution_count="104">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> loss_fn(beta, X, y):</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># (y - X beta)^T (y - X beta)</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> np.<span class="bu">sum</span>(np.square(y <span class="op">-</span> X.dot(beta)))</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> loss_grad(beta, X, y):</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>  <span class="co"># -2*(y - X beta)^T X</span></span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="op">-</span><span class="dv">2</span><span class="op">*</span>(y <span class="op">-</span> X.dot(beta)).T.dot(X)</span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> gradient_step(beta, step_size, X, y):</span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>  loss, grads <span class="op">=</span> loss_fn(beta, X, y), loss_grad(beta, X, y)</span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>  beta <span class="op">=</span> beta <span class="op">-</span> step_size <span class="op">*</span> grads.T</span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> loss, beta</span>
+<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> gradient_descent(X, y, step_size, precision, max_iter<span class="op">=</span><span class="dv">10000</span>, warn_max_iter<span class="op">=</span><span class="va">True</span>):</span>
+<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a>  beta <span class="op">=</span> np.zeros_like(X[<span class="dv">0</span>])</span>
+<span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb21-18"><a href="#cb21-18" aria-hidden="true" tabindex="-1"></a>  losses <span class="op">=</span> [] <span class="co"># Array for recording the value of the loss over the iterations.</span></span>
+<span id="cb21-19"><a href="#cb21-19" aria-hidden="true" tabindex="-1"></a>  graceful <span class="op">=</span> <span class="va">False</span></span>
+<span id="cb21-20"><a href="#cb21-20" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(max_iter):</span>
+<span id="cb21-21"><a href="#cb21-21" aria-hidden="true" tabindex="-1"></a>    beta_last <span class="op">=</span> beta <span class="co"># Save last values of beta for later stopping criterion</span></span>
+<span id="cb21-22"><a href="#cb21-22" aria-hidden="true" tabindex="-1"></a>    loss, beta <span class="op">=</span> gradient_step(beta, step_size, X, y)</span>
+<span id="cb21-23"><a href="#cb21-23" aria-hidden="true" tabindex="-1"></a>    losses.append(loss)</span>
+<span id="cb21-24"><a href="#cb21-24" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Use the euclidean norm of the difference between the new beta and the old beta as a stopping criteria</span></span>
+<span id="cb21-25"><a href="#cb21-25" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> np.sqrt(np.<span class="bu">sum</span>(np.square((beta <span class="op">-</span> beta_last)))) <span class="op">&lt;</span> precision:</span>
+<span id="cb21-26"><a href="#cb21-26" aria-hidden="true" tabindex="-1"></a>      graceful <span class="op">=</span> <span class="va">True</span></span>
+<span id="cb21-27"><a href="#cb21-27" aria-hidden="true" tabindex="-1"></a>      <span class="cf">break</span></span>
+<span id="cb21-28"><a href="#cb21-28" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="kw">not</span> graceful <span class="kw">and</span> warn_max_iter:</span>
+<span id="cb21-29"><a href="#cb21-29" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"Reached max iterations."</span>)</span>
+<span id="cb21-30"><a href="#cb21-30" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> beta, np.array(losses)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>Before applying the gradient descent, we need to standardize the data because the loss explote due to some outliers. &gt; You can try it without the standardization</p>
+<div id="cell-35" class="cell" data-execution_count="110">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Standardize the data</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>X_scaled <span class="op">=</span> (X <span class="op">-</span> X.mean(axis<span class="op">=</span><span class="dv">0</span>))<span class="op">/</span>X.std(axis<span class="op">=</span><span class="dv">0</span>, ddof<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>Y_scaled <span class="op">=</span> (y <span class="op">-</span> y.mean())<span class="op">/</span>y.std(ddof<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>X_inter <span class="op">=</span> add_intercept(X_scaled)</span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Apply the gradient descent</span></span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>beta_gd, losses <span class="op">=</span> gradient_descent(X_inter, Y_scaled, <span class="fl">0.001</span>, <span class="fl">1e-8</span>, max_iter<span class="op">=</span><span class="dv">10000</span>)</span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"BetaHat = </span><span class="sc">{}</span><span class="st">"</span>.<span class="bu">format</span>(beta_gd))</span>
+<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Final loss value = </span><span class="sc">{}</span><span class="st">"</span>.<span class="bu">format</span>(losses[<span class="op">-</span><span class="dv">1</span>]))</span>
+<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a>plt.plot(<span class="bu">range</span>(<span class="bu">len</span>(losses)), losses)</span>
+<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Iteration vs Loss"</span>)</span>
+<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-16"><a href="#cb22-16" aria-hidden="true" tabindex="-1"></a><span class="co"># As a sanity check, we can also do the matrix inversion with OLS</span></span>
+<span id="cb22-17"><a href="#cb22-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Matrix inverse BetaHat = </span><span class="sc">{}</span><span class="st">"</span>.<span class="bu">format</span>(OLS(X_inter, Y_scaled)))</span>
+<span id="cb22-18"><a href="#cb22-18" aria-hidden="true" tabindex="-1"></a></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Reached max iterations.
+BetaHat = [ 9.99200722e-19 -2.34387032e-01 -2.17491727e-01  1.17191047e-02
+  1.79800652e-01 -1.50530629e-01  1.08943031e-01  7.64357603e-01
+ -1.21223518e-01  8.40179286e-02 -1.11464155e-01 -3.04603568e-02
+ -9.95161696e-01  8.80002697e-01  8.62630571e-02]
+Final loss value = 13.809259921735789
+Matrix inverse BetaHat = [ 3.21984155e-17 -2.34377091e-01 -2.17496828e-01  1.17238925e-02
+  1.79754504e-01 -1.50544513e-01  1.08945825e-01  7.64348559e-01
+ -1.21202349e-01  8.40325965e-02 -1.11479218e-01 -3.04687337e-02
+ -9.96190618e-01  8.81043305e-01  8.61146149e-02]</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><a href="regression_and_gradient_descent_files/figure-html/cell-16-output-2.png" class="lightbox" data-gallery="quarto-lightbox-gallery-3"><img src="regression_and_gradient_descent_files/figure-html/cell-16-output-2.png" class="img-fluid figure-img"></a></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Note that the betas changed because we standardized the data, thats why at the end we are checking with the <code>OLS</code> function.</p>
+
+
+</section>
 </section>
 
 </main> <!-- /main -->
@@ -797,7 +1092,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </div>
   </div>
 </footer>
-<script>var lightboxQuarto = GLightbox({"selector":".lightbox","closeEffect":"zoom","openEffect":"zoom","loop":false,"descPosition":"bottom"});
+<script>var lightboxQuarto = GLightbox({"loop":false,"descPosition":"bottom","openEffect":"zoom","selector":".lightbox","closeEffect":"zoom"});
 window.onload = () => {
   lightboxQuarto.on('slide_before_load', (data) => {
     const { slideIndex, slideNode, slideConfig, player, trigger } = data;
