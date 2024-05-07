@@ -198,7 +198,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 
-<div id="cell-1" class="cell" data-execution_count="4">
+<div id="cell-1" class="cell" data-execution_count="67">
 <details open="" class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -222,7 +222,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="getting-the-data">Getting the Data</h2>
 <p>We will analyze three types of hyper-parameters: Perplexity on t-SNE, number of clusters chosen from an unsupervised method and how these affect the quality of the selected features and the type of regularization.</p>
 <p>To performs these three tasks we are gonna work with real data. Specifically, we’re gonna use scRNA-Seq data from a brain sample (GSM6900730). The data is available on https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSM6900730.</p>
-<div id="cell-4" class="cell" data-execution_count="64">
+<div id="cell-4" class="cell" data-execution_count="68">
 <details open="" class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># download the data and load it for the posterior analysis</span></span>
@@ -277,7 +277,7 @@ Downloaded GSM6900730_JLE16_B1_features.tsv.gz
 Downloaded GSM6900730_JLE16_B1_matrix.mtx.gz</code></pre>
 </div>
 </div>
-<div id="cell-5" class="cell" data-execution_count="66">
+<div id="cell-5" class="cell" data-execution_count="69">
 <details open="" class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>scdata <span class="op">=</span> sc.read_10x_mtx(<span class="st">'D:/Data Analysis Statistical Modeling and Computation in Applications/data/scrnaseq data/'</span>,</span>
@@ -286,15 +286,6 @@ Downloaded GSM6900730_JLE16_B1_matrix.mtx.gz</code></pre>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>X_sc <span class="op">=</span> scdata.X.toarray()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="66">
-<pre><code>array([[0., 0., 0., ..., 0., 0., 0.],
-       [0., 0., 0., ..., 0., 0., 0.],
-       [0., 0., 0., ..., 0., 0., 0.],
-       ...,
-       [0., 0., 0., ..., 0., 0., 0.],
-       [0., 0., 0., ..., 0., 0., 0.],
-       [0., 0., 0., ..., 0., 0., 0.]], dtype=float32)</code></pre>
-</div>
 </div>
 
 
