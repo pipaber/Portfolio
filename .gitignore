@@ -3,4 +3,5 @@
 .RData
 .Ruserdata
 *.gz
+*.h5ad
 /.quarto/
