@@ -225,7 +225,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> scanpy <span class="im">as</span> sc</span>
 <span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
 <span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> plotly.graph_objects <span class="im">as</span> go</span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> plotly.figure_factory <span class="im">as</span> ff</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> plotly.figure_factory <span class="im">as</span> ff</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <section id="getting-the-data" class="level2">
@@ -402,19 +403,19 @@ Downloaded GSM6900730_JLE16_B1_matrix.mtx.gz</code></pre>
 <section id="number-of-clusters-chosen-from-an-unsupervised-method" class="level2">
 <h2 class="anchored" data-anchor-id="number-of-clusters-chosen-from-an-unsupervised-method">Number of Clusters Chosen from an Unsupervised Method</h2>
 <p>For this part of the analysis on the scRNA-Seq data, we are gonna use the Gaussian Mixture algorithm to get predictec clusters on the data. Then, using these clusters as “labels” we can perform a logistic regression and see how the test score changes when we change the number of clusters.</p>
-<p>For this part, we are gonna use the first 50 principal components with the objective of a fast analysis.</p>
-<div id="cell-21" class="cell" data-execution_count="8">
+<p>For this part, we are gonna use the first 2256 principal components with the objective of a precise analysis.</p>
+<div id="cell-21" class="cell" data-execution_count="22">
 <details open="" class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="bu">round</span>(csum[:<span class="dv">50</span>][<span class="op">-</span><span class="dv">1</span>]<span class="op">*</span><span class="dv">100</span>,<span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>np.where(csum <span class="op">&gt;=</span> <span class="fl">0.9</span>)[<span class="dv">0</span>][<span class="dv">0</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="8">
-<pre><code>48.38</code></pre>
+<div class="cell-output cell-output-display" data-execution_count="22">
+<pre><code>2256</code></pre>
 </div>
 </div>
-<p>With 50 PC’s we achieve ~48% of explained variability.</p>
+<p>With 2256 PC’s we achieve 90% of explained variability.</p>
 <p>Now, let’s perform the clustering with the GMM model from 2 to 20 clusters. Also, let’s plot the BIC (Bayesian Information Criterion) and the Silhouette plot to see how many clusters we can select.</p>
-<div id="cell-24" class="cell" data-execution_count="9">
+<div id="cell-24" class="cell" data-execution_count="23">
 <details open="" class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co">## Clustering elbow plot GMM</span></span>
@@ -424,9 +425,9 @@ Downloaded GSM6900730_JLE16_B1_matrix.mtx.gz</code></pre>
 <span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> n_components <span class="kw">in</span> n_components_range:</span>
 <span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>    gmm <span class="op">=</span> GaussianMixture(n_components<span class="op">=</span>n_components, random_state<span class="op">=</span><span class="dv">0</span>, init_params<span class="op">=</span><span class="st">'kmeans'</span>)</span>
-<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>    gmm.fit(pca_axes[:,<span class="dv">0</span>:<span class="dv">50</span>])</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>    gmm.fit(pca_axes[:,<span class="dv">0</span>:<span class="dv">2256</span>])</span>
 <span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># print(f'# comp: {n_components}')</span></span>
-<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>    bic_scores.append(gmm.bic(pca_axes[:,<span class="dv">0</span>:<span class="dv">50</span>]))</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>    bic_scores.append(gmm.bic(pca_axes[:,<span class="dv">0</span>:<span class="dv">2256</span>]))</span>
 <span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>plt.plot(n_components_range, bic_scores, marker<span class="op">=</span><span class="st">'o'</span>, linestyle<span class="op">=</span><span class="st">'-'</span>)</span>
 <span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Number of Components'</span>)</span>
@@ -445,8 +446,8 @@ Downloaded GSM6900730_JLE16_B1_matrix.mtx.gz</code></pre>
 </div>
 </div>
 </div>
-<p>The BIC score tells us that between 5, 6 and 7 clusters can be a good choice.</p>
-<div id="cell-26" class="cell" data-execution_count="10">
+<p>The BIC score tells us that between 4 and 5 clusters can be a good choice.</p>
+<div id="cell-26" class="cell" data-execution_count="24">
 <details open="" class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co">## Silhouette plot</span></span>
@@ -456,10 +457,10 @@ Downloaded GSM6900730_JLE16_B1_matrix.mtx.gz</code></pre>
 <span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> n_components <span class="kw">in</span> n_components_range:</span>
 <span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>    gmm <span class="op">=</span> GaussianMixture(n_components<span class="op">=</span>n_components, random_state<span class="op">=</span><span class="dv">0</span>, init_params<span class="op">=</span><span class="st">'kmeans'</span>)</span>
-<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>    gmm.fit(pca_axes[:, <span class="dv">0</span>:<span class="dv">50</span>])</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>    gmm.fit(pca_axes[:, <span class="dv">0</span>:<span class="dv">2256</span>])</span>
 <span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># print(f'# comp: {n_components}')</span></span>
-<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>    labels <span class="op">=</span> gmm.predict(pca_axes[:, <span class="dv">0</span>:<span class="dv">50</span>])</span>
-<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>    silhouette_avg <span class="op">=</span> silhouette_score(pca_axes[:, <span class="dv">0</span>:<span class="dv">50</span>], labels)</span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>    labels <span class="op">=</span> gmm.predict(pca_axes[:, <span class="dv">0</span>:<span class="dv">2256</span>])</span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>    silhouette_avg <span class="op">=</span> silhouette_score(pca_axes[:, <span class="dv">0</span>:<span class="dv">2256</span>], labels)</span>
 <span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>    silhouette_scores.append(silhouette_avg)</span>
 <span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>plt.plot(n_components_range, silhouette_scores, marker<span class="op">=</span><span class="st">'o'</span>, linestyle<span class="op">=</span><span class="st">'-'</span>)</span>
@@ -478,219 +479,104 @@ Downloaded GSM6900730_JLE16_B1_matrix.mtx.gz</code></pre>
 </div>
 </div>
 </div>
-<p>The silhouette plot shows that 5, 7, 8 and 9 can be good choices for number of clusters.</p>
-<p>Let’s work with 5, 7, 8 and 9 clusters andd see how these perform.</p>
+<p>The silhouette plot shows that 4, 8 and 9 can be good choices for number of clusters.</p>
+<p>Let’s work with 4, 5, 8 and 9 clusters andd see how these perform.</p>
 <section id="clusters-analysis" class="level3">
 <h3 class="anchored" data-anchor-id="clusters-analysis">Clusters Analysis</h3>
-<div class="tabset-margin-container"></div><div class="panel-tabset">
-<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true">Number of clusters: 5</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">Number of clusters: 7</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-3" role="tab" aria-controls="tabset-1-3" aria-selected="false">Number of clusters: 8</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-4-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-4" role="tab" aria-controls="tabset-1-4" aria-selected="false">Number of clusters: 9</a></li></ul>
-<div class="tab-content">
-<div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
-<div id="cell-30" class="cell" data-execution_count="11">
+<div id="cell-29" class="cell">
 <details open="" class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>np.random.seed(<span class="dv">123</span>)</span>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> tsne_plotter_pca(n_clusters:<span class="bu">int</span>, pca_dim:<span class="bu">int</span>, perplexity:<span class="bu">int</span> <span class="op">=</span> <span class="dv">50</span>):</span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>gmm <span class="op">=</span> GaussianMixture(n_components<span class="op">=</span><span class="dv">5</span>, random_state<span class="op">=</span><span class="dv">0</span>, init_params<span class="op">=</span><span class="st">'kmeans'</span>)</span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>clusters_gmm <span class="op">=</span> gmm.fit_predict(pca_axes[:,<span class="dv">0</span>:<span class="dv">50</span>])</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>    gmm <span class="op">=</span> GaussianMixture(n_components<span class="op">=</span>n_clusters, random_state<span class="op">=</span><span class="dv">0</span>, init_params<span class="op">=</span><span class="st">"kmeans"</span>)</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>    clusters_gmm <span class="op">=</span> gmm.fit_predict(pca_axes[:,<span class="dv">0</span>:pca_dim])</span>
 <span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>tsne <span class="op">=</span> TSNE(n_components<span class="op">=</span><span class="dv">2</span>, perplexity<span class="op">=</span><span class="dv">50</span>)</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>    tsne <span class="op">=</span> TSNE(n_components<span class="op">=</span><span class="dv">2</span>, perplexity<span class="op">=</span>perplexity)</span>
 <span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>x_tsne <span class="op">=</span> tsne.fit_transform(pca_axes[:,<span class="dv">0</span>:<span class="dv">50</span>])</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>    x_tsne <span class="op">=</span> tsne.fit_transform(pca_axes[:,<span class="dv">0</span>:pca_dim])</span>
 <span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>plt.scatter(x_tsne[:,<span class="dv">0</span>], x_tsne[:,<span class="dv">1</span>], c<span class="op">=</span>clusters_gmm)</span>
-<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'tSNE 1'</span>)</span>
-<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'tSNE 2'</span>)</span>
-<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'t-SNE Plot for log2 Transformed Data with GMM'</span>)</span>
-<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>plt.axis(<span class="st">'equal'</span>)</span>
-<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>    plt.scatter(x_tsne[:,<span class="dv">0</span>], x_tsne[:,<span class="dv">1</span>], c<span class="op">=</span>clusters_gmm)</span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>    plt.xlabel(<span class="st">'tSNE 1'</span>)</span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>    plt.ylabel(<span class="st">'tSNE 2'</span>)</span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>    plt.title(<span class="ss">f"t-SNE Plot for log2 Transformed Data with GMM</span><span class="ch">\n</span><span class="ss">with </span><span class="sc">{</span>pca_dim<span class="sc">}</span><span class="ss"> PC's, </span><span class="sc">{</span>n_clusters<span class="sc">}</span><span class="ss"> clusters and perplexity: </span><span class="sc">{</span>perplexity<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>    plt.axis(<span class="st">'equal'</span>)</span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a>    plt.show()</span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> clusters_gmm</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-display">
-<div>
-<figure class="figure">
-<p><a href="naive_scrnaseq_analysis_files/figure-html/cell-13-output-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-5"><img src="naive_scrnaseq_analysis_files/figure-html/cell-13-output-1.png" class="img-fluid figure-img"></a></p>
-</figure>
+</div>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"></ul>
+<div class="tab-content">
+
 </div>
 </div>
-</div>
-<div id="cell-31" class="cell" data-execution_count="12">
+<p>We can see that the best train and test score achieved was using 5 clusters. In practice, the analysis of scRNA-Seq data involves additional steps before and after the dimention reduction. For example, filtering and normalizing, validate the clusters with especific genes (this is because cell types have a specific expression of certain genes and we can identify these cell types with the gene expression related to the cluster) and do downstream analysis like differential gene expression per cell type, gene-set analysis per cell type and more advanced analysis like cell-cell communiation analysis.</p>
+<p>Now, working only with five clusters we can see the effect on the clustering choosing different number of PC’s to build the t-SNE plot.</p>
+<section id="effect-of-pcs-on-t-sne" class="level4">
+<h4 class="anchored" data-anchor-id="effect-of-pcs-on-t-sne">Effect of PC’s on t-SNE</h4>
+<p>We cann choose the number of PC’s based on percentage of variance explained. LEt’s work with three values: 50, 70 and 90.</p>
+<div id="cell-37" class="cell" data-execution_count="18">
 <details open="" class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>percentages_to_test <span class="op">=</span> [<span class="fl">0.5</span>, <span class="fl">0.7</span>, <span class="fl">0.9</span>]</span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>X_train, X_test, y_train, y_test <span class="op">=</span> train_test_split(X_sc_transformed, clusters_gmm, test_size<span class="op">=</span><span class="fl">0.2</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>pcs_to_test <span class="op">=</span> [np.where(csum <span class="op">&gt;=</span> i)[<span class="dv">0</span>][<span class="dv">0</span>] <span class="cf">for</span> i <span class="kw">in</span> percentages_to_test]</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>pcs_to_test</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
+<div class="cell-output cell-output-display" data-execution_count="18">
+<pre><code>[90, 811, 2256]</code></pre>
 </div>
-<div id="cell-32" class="cell" data-execution_count="13">
+</div>
+<div id="cell-38" class="cell" data-execution_count="20">
 <details open="" class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>log_reg <span class="op">=</span> LogisticRegressionCV(cv<span class="op">=</span><span class="dv">10</span>,Cs<span class="op">=</span>[<span class="fl">0.01</span>,<span class="fl">0.1</span>,<span class="dv">1</span>,<span class="dv">10</span>],penalty<span class="op">=</span><span class="st">"l1"</span>,solver<span class="op">=</span><span class="st">"liblinear"</span>,multi_class<span class="op">=</span><span class="st">"ovr"</span>)</span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>log_reg.fit(X_train,y_train)</span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Train score: </span><span class="sc">{</span>log_reg<span class="sc">.</span>score(X_train,y_train)<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Test score: </span><span class="sc">{</span>log_reg<span class="sc">.</span>score(X_test,y_test)<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output cell-output-stdout">
-<pre><code>Train score: 1.0
-Test score: 0.988360814742968</code></pre>
-</div>
-</div>
-</div>
-<div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
-<div id="cell-34" class="cell" data-execution_count="101">
-<details open="" class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>np.random.seed(<span class="dv">123</span>)</span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>gmm <span class="op">=</span> GaussianMixture(n_components<span class="op">=</span><span class="dv">7</span>, random_state<span class="op">=</span><span class="dv">0</span>, init_params<span class="op">=</span><span class="st">'kmeans'</span>)</span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>clusters_gmm <span class="op">=</span> gmm.fit_predict(pca_axes[:,<span class="dv">0</span>:<span class="dv">50</span>])</span>
-<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>tsne <span class="op">=</span> TSNE(n_components<span class="op">=</span><span class="dv">2</span>, perplexity<span class="op">=</span><span class="dv">50</span>)</span>
-<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>x_tsne <span class="op">=</span> tsne.fit_transform(pca_axes[:,<span class="dv">0</span>:<span class="dv">50</span>])</span>
-<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>plt.scatter(x_tsne[:,<span class="dv">0</span>], x_tsne[:,<span class="dv">1</span>], c<span class="op">=</span>clusters_gmm)</span>
-<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'tSNE 1'</span>)</span>
-<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'tSNE 2'</span>)</span>
-<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'t-SNE Plot for log2 Transformed Data with GMM'</span>)</span>
-<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>plt.axis(<span class="st">'equal'</span>)</span>
-<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>np.random.seed(<span class="dv">123</span>)</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> pcas <span class="kw">in</span> pcs_to_test:</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>    gmm <span class="op">=</span> GaussianMixture(n_components<span class="op">=</span><span class="dv">5</span>, random_state<span class="op">=</span><span class="dv">0</span>, init_params<span class="op">=</span><span class="st">'kmeans'</span>)</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>    clusters_gmm <span class="op">=</span> gmm.fit_predict(pca_axes[:,<span class="dv">0</span>:pcas])</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>    tsne <span class="op">=</span> TSNE(n_components<span class="op">=</span><span class="dv">2</span>, perplexity<span class="op">=</span><span class="dv">50</span>)</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>    x_tsne <span class="op">=</span> tsne.fit_transform(pca_axes[:,<span class="dv">0</span>:pcas])</span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>    plt.scatter(x_tsne[:,<span class="dv">0</span>], x_tsne[:,<span class="dv">1</span>], c<span class="op">=</span>clusters_gmm)</span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>    plt.xlabel(<span class="st">'tSNE 1'</span>)</span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>    plt.ylabel(<span class="st">'tSNE 2'</span>)</span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>    plt.title(<span class="ss">f"t-SNE Plot for log2 Transformed Data with GMM on </span><span class="sc">{</span>pcas<span class="sc">}</span><span class="ss"> PC's"</span>)</span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>    plt.axis(<span class="st">'equal'</span>)</span>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a>    plt.show()</span>
+<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><a href="naive_scrnaseq_analysis_files/figure-html/cell-16-output-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-6"><img src="naive_scrnaseq_analysis_files/figure-html/cell-16-output-1.png" class="img-fluid figure-img"></a></p>
+<p><a href="naive_scrnaseq_analysis_files/figure-html/cell-16-output-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-5"><img src="naive_scrnaseq_analysis_files/figure-html/cell-16-output-1.png" class="img-fluid figure-img"></a></p>
 </figure>
 </div>
 </div>
-</div>
-<div id="cell-35" class="cell" data-execution_count="102">
-<details open="" class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>X_train, X_test, y_train, y_test <span class="op">=</span> train_test_split(X_sc_transformed, clusters_gmm, test_size<span class="op">=</span><span class="fl">0.2</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-</div>
-<div id="cell-36" class="cell" data-execution_count="103">
-<details open="" class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>log_reg <span class="op">=</span> LogisticRegressionCV(cv<span class="op">=</span><span class="dv">10</span>,Cs<span class="op">=</span>[<span class="fl">0.01</span>,<span class="fl">0.1</span>,<span class="dv">1</span>,<span class="dv">10</span>],penalty<span class="op">=</span><span class="st">"l1"</span>,solver<span class="op">=</span><span class="st">"liblinear"</span>,multi_class<span class="op">=</span><span class="st">"ovr"</span>)</span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>log_reg.fit(X_train,y_train)</span>
-<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Train score: </span><span class="sc">{</span>log_reg<span class="sc">.</span>score(X_train,y_train)<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Test score: </span><span class="sc">{</span>log_reg<span class="sc">.</span>score(X_test,y_test)<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output cell-output-stdout">
-<pre><code>Train score: 0.9949066213921901
-Test score: 0.9321047526673133</code></pre>
-</div>
-</div>
-</div>
-<div id="tabset-1-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-3-tab">
-<div id="cell-38" class="cell" data-execution_count="104">
-<details open="" class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>np.random.seed(<span class="dv">123</span>)</span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>gmm <span class="op">=</span> GaussianMixture(n_components<span class="op">=</span><span class="dv">8</span>, random_state<span class="op">=</span><span class="dv">0</span>, init_params<span class="op">=</span><span class="st">'kmeans'</span>)</span>
-<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>clusters_gmm <span class="op">=</span> gmm.fit_predict(pca_axes[:,<span class="dv">0</span>:<span class="dv">50</span>])</span>
-<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>tsne <span class="op">=</span> TSNE(n_components<span class="op">=</span><span class="dv">2</span>, perplexity<span class="op">=</span><span class="dv">50</span>)</span>
-<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>x_tsne <span class="op">=</span> tsne.fit_transform(pca_axes[:,<span class="dv">0</span>:<span class="dv">50</span>])</span>
-<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>plt.scatter(x_tsne[:,<span class="dv">0</span>], x_tsne[:,<span class="dv">1</span>], c<span class="op">=</span>clusters_gmm)</span>
-<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'tSNE 1'</span>)</span>
-<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'tSNE 2'</span>)</span>
-<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'t-SNE Plot for log2 Transformed Data with GMM'</span>)</span>
-<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a>plt.axis(<span class="st">'equal'</span>)</span>
-<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><a href="naive_scrnaseq_analysis_files/figure-html/cell-19-output-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-7"><img src="naive_scrnaseq_analysis_files/figure-html/cell-19-output-1.png" class="img-fluid figure-img"></a></p>
+<p><a href="naive_scrnaseq_analysis_files/figure-html/cell-16-output-2.png" class="lightbox" data-gallery="quarto-lightbox-gallery-6"><img src="naive_scrnaseq_analysis_files/figure-html/cell-16-output-2.png" class="img-fluid figure-img"></a></p>
 </figure>
 </div>
 </div>
-</div>
-<div id="cell-39" class="cell" data-execution_count="105">
-<details open="" class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>X_train, X_test, y_train, y_test <span class="op">=</span> train_test_split(X_sc_transformed, clusters_gmm, test_size<span class="op">=</span><span class="fl">0.2</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-</div>
-<div id="cell-40" class="cell" data-execution_count="106">
-<details open="" class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>log_reg <span class="op">=</span> LogisticRegressionCV(cv<span class="op">=</span><span class="dv">10</span>,Cs<span class="op">=</span>[<span class="fl">0.01</span>,<span class="fl">0.1</span>,<span class="dv">1</span>,<span class="dv">10</span>],penalty<span class="op">=</span><span class="st">"l1"</span>,solver<span class="op">=</span><span class="st">"liblinear"</span>,multi_class<span class="op">=</span><span class="st">"ovr"</span>)</span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>log_reg.fit(X_train,y_train)</span>
-<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Train score: </span><span class="sc">{</span>log_reg<span class="sc">.</span>score(X_train,y_train)<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Test score: </span><span class="sc">{</span>log_reg<span class="sc">.</span>score(X_test,y_test)<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output cell-output-stdout">
-<pre><code>Train score: 1.0
-Test score: 0.92725509214355</code></pre>
-</div>
-</div>
-</div>
-<div id="tabset-1-4" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-4-tab">
-<div id="cell-42" class="cell" data-execution_count="14">
-<details open="" class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>np.random.seed(<span class="dv">123</span>)</span>
-<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>gmm <span class="op">=</span> GaussianMixture(n_components<span class="op">=</span><span class="dv">9</span>, random_state<span class="op">=</span><span class="dv">0</span>, init_params<span class="op">=</span><span class="st">'kmeans'</span>)</span>
-<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>clusters_gmm <span class="op">=</span> gmm.fit_predict(pca_axes[:,<span class="dv">0</span>:<span class="dv">50</span>])</span>
-<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>tsne <span class="op">=</span> TSNE(n_components<span class="op">=</span><span class="dv">2</span>, perplexity<span class="op">=</span><span class="dv">50</span>)</span>
-<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>x_tsne <span class="op">=</span> tsne.fit_transform(pca_axes[:,<span class="dv">0</span>:<span class="dv">50</span>])</span>
-<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a>plt.scatter(x_tsne[:,<span class="dv">0</span>], x_tsne[:,<span class="dv">1</span>], c<span class="op">=</span>clusters_gmm)</span>
-<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'tSNE 1'</span>)</span>
-<span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'tSNE 2'</span>)</span>
-<span id="cb28-13"><a href="#cb28-13" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'t-SNE Plot for log2 Transformed Data with GMM'</span>)</span>
-<span id="cb28-14"><a href="#cb28-14" aria-hidden="true" tabindex="-1"></a>plt.axis(<span class="st">'equal'</span>)</span>
-<span id="cb28-15"><a href="#cb28-15" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><a href="naive_scrnaseq_analysis_files/figure-html/cell-22-output-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-8"><img src="naive_scrnaseq_analysis_files/figure-html/cell-22-output-1.png" class="img-fluid figure-img"></a></p>
+<p><a href="naive_scrnaseq_analysis_files/figure-html/cell-16-output-3.png" class="lightbox" data-gallery="quarto-lightbox-gallery-7"><img src="naive_scrnaseq_analysis_files/figure-html/cell-16-output-3.png" class="img-fluid figure-img"></a></p>
 </figure>
-</div>
-</div>
-</div>
-<div id="cell-43" class="cell" data-execution_count="15">
-<details open="" class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>X_train, X_test, y_train, y_test <span class="op">=</span> train_test_split(X_sc_transformed, clusters_gmm, test_size<span class="op">=</span><span class="fl">0.2</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-</div>
-<div id="cell-44" class="cell" data-execution_count="16">
-<details open="" class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>log_reg <span class="op">=</span> LogisticRegressionCV(cv<span class="op">=</span><span class="dv">10</span>,Cs<span class="op">=</span>[<span class="fl">0.01</span>,<span class="fl">0.1</span>,<span class="dv">1</span>,<span class="dv">10</span>],penalty<span class="op">=</span><span class="st">"l1"</span>,solver<span class="op">=</span><span class="st">"liblinear"</span>,multi_class<span class="op">=</span><span class="st">"ovr"</span>)</span>
-<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>log_reg.fit(X_train,y_train)</span>
-<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Train score: </span><span class="sc">{</span>log_reg<span class="sc">.</span>score(X_train,y_train)<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Test score: </span><span class="sc">{</span>log_reg<span class="sc">.</span>score(X_test,y_test)<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output cell-output-stdout">
-<pre><code>Train score: 1.0
-Test score: 0.9204655674102813</code></pre>
-</div>
-</div>
 </div>
 </div>
 </div>
 
 
+</section>
 </section>
 </section>
 
@@ -1118,7 +1004,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </div>
   </div>
 </footer>
-<script>var lightboxQuarto = GLightbox({"descPosition":"bottom","loop":false,"closeEffect":"zoom","openEffect":"zoom","selector":".lightbox"});
+<script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","openEffect":"zoom","descPosition":"bottom","selector":".lightbox","loop":false});
 window.onload = () => {
   lightboxQuarto.on('slide_before_load', (data) => {
     const { slideIndex, slideNode, slideConfig, player, trigger } = data;
