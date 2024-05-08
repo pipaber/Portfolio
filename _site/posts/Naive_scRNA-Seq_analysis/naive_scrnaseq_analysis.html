@@ -517,7 +517,7 @@ Downloaded GSM6900730_JLE16_B1_matrix.mtx.gz</code></pre>
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true">Number of Clusters: 4</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">Number of Clusters: 5</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-3" role="tab" aria-controls="tabset-1-3" aria-selected="false">Number of Clusters: 8</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-4-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-4" role="tab" aria-controls="tabset-1-4" aria-selected="false">Number of Clusters: 9</a></li></ul>
 <div class="tab-content">
 <div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
-<div id="cell-34" class="cell" data-execution_count="38">
+<div id="cell-33" class="cell" data-execution_count="38">
 <details open="" class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>np.random.seed(<span class="dv">123</span>)</span>
@@ -553,7 +553,7 @@ Test score: 0.9903006789524733</code></pre>
 </div>
 </div>
 <div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
-<div id="cell-36" class="cell" data-execution_count="39">
+<div id="cell-35" class="cell" data-execution_count="39">
 <details open="" class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>np.random.seed(<span class="dv">123</span>)</span>
@@ -589,7 +589,7 @@ Test score: 0.9408341416100873</code></pre>
 </div>
 </div>
 <div id="tabset-1-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-3-tab">
-<div id="cell-38" class="cell" data-execution_count="40">
+<div id="cell-37" class="cell" data-execution_count="40">
 <details open="" class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>np.random.seed(<span class="dv">123</span>)</span>
@@ -625,7 +625,7 @@ Test score: 0.9369544131910766</code></pre>
 </div>
 </div>
 <div id="tabset-1-4" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-4-tab">
-<div id="cell-40" class="cell" data-execution_count="41">
+<div id="cell-39" class="cell" data-execution_count="41">
 <details open="" class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>np.random.seed(<span class="dv">123</span>)</span>
@@ -662,7 +662,7 @@ Test score: 0.933074684772066</code></pre>
 </div>
 </div>
 </div>
-<div id="cell-42" class="cell" data-execution_count="55">
+<div id="cell-41" class="cell">
 <details open="" class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>plt.plot([<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">8</span>,<span class="dv">9</span>], <span class="bu">list</span>(res_train.values()),c<span class="op">=</span><span class="st">"r"</span>,label<span class="op">=</span><span class="st">"Train"</span>)</span>
@@ -670,20 +670,13 @@ Test score: 0.933074684772066</code></pre>
 <span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
 <span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-display">
-<div>
-<figure class="figure">
-<p><a href="naive_scrnaseq_analysis_files/figure-html/cell-19-output-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-9"><img src="naive_scrnaseq_analysis_files/figure-html/cell-19-output-1.png" class="img-fluid figure-img"></a></p>
-</figure>
-</div>
-</div>
 </div>
 <p>We can see that the best train and test score achieved was using 4 clusters.</p>
 <p>Now, working only with four clusters we can see the effect on the clustering choosing different number of PC’s to build the t-SNE plot.</p>
 <section id="effect-of-pcs-on-t-sne" class="level4">
 <h4 class="anchored" data-anchor-id="effect-of-pcs-on-t-sne">Effect of PC’s on t-SNE</h4>
 <p>We cann choose the number of PC’s based on percentage of variance explained. LEt’s work with three values: 50, 70 and 90.</p>
-<div id="cell-47" class="cell" data-execution_count="56">
+<div id="cell-46" class="cell" data-execution_count="56">
 <details open="" class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>percentages_to_test <span class="op">=</span> [<span class="fl">0.5</span>, <span class="fl">0.7</span>, <span class="fl">0.9</span>]</span>
@@ -696,7 +689,7 @@ Test score: 0.933074684772066</code></pre>
 <pre><code>[90, 811, 2256]</code></pre>
 </div>
 </div>
-<div id="cell-48" class="cell" data-execution_count="57">
+<div id="cell-47" class="cell" data-execution_count="57">
 <details open="" class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>np.random.seed(<span class="dv">123</span>)</span>
@@ -711,21 +704,21 @@ Test score: 0.933074684772066</code></pre>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><a href="naive_scrnaseq_analysis_files/figure-html/cell-21-output-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-10"><img src="naive_scrnaseq_analysis_files/figure-html/cell-21-output-1.png" class="img-fluid figure-img"></a></p>
+<p><a href="naive_scrnaseq_analysis_files/figure-html/cell-21-output-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-9"><img src="naive_scrnaseq_analysis_files/figure-html/cell-21-output-1.png" class="img-fluid figure-img"></a></p>
 </figure>
 </div>
 </div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><a href="naive_scrnaseq_analysis_files/figure-html/cell-21-output-2.png" class="lightbox" data-gallery="quarto-lightbox-gallery-11"><img src="naive_scrnaseq_analysis_files/figure-html/cell-21-output-2.png" class="img-fluid figure-img"></a></p>
+<p><a href="naive_scrnaseq_analysis_files/figure-html/cell-21-output-2.png" class="lightbox" data-gallery="quarto-lightbox-gallery-10"><img src="naive_scrnaseq_analysis_files/figure-html/cell-21-output-2.png" class="img-fluid figure-img"></a></p>
 </figure>
 </div>
 </div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><a href="naive_scrnaseq_analysis_files/figure-html/cell-21-output-3.png" class="lightbox" data-gallery="quarto-lightbox-gallery-12"><img src="naive_scrnaseq_analysis_files/figure-html/cell-21-output-3.png" class="img-fluid figure-img"></a></p>
+<p><a href="naive_scrnaseq_analysis_files/figure-html/cell-21-output-3.png" class="lightbox" data-gallery="quarto-lightbox-gallery-11"><img src="naive_scrnaseq_analysis_files/figure-html/cell-21-output-3.png" class="img-fluid figure-img"></a></p>
 </figure>
 </div>
 </div>
@@ -1139,7 +1132,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </div>
   </div>
 </footer>
-<script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","descPosition":"bottom","openEffect":"zoom","loop":false,"selector":".lightbox"});
+<script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","loop":false,"descPosition":"bottom","selector":".lightbox","openEffect":"zoom"});
 window.onload = () => {
   lightboxQuarto.on('slide_before_load', (data) => {
     const { slideIndex, slideNode, slideConfig, player, trigger } = data;
