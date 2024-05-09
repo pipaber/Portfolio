@@ -190,10 +190,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#getting-the-data" id="toc-getting-the-data" class="nav-link active" data-scroll-target="#getting-the-data">Getting the Data</a>
-  <ul class="collapse">
+  <li><a href="#getting-the-data" id="toc-getting-the-data" class="nav-link active" data-scroll-target="#getting-the-data">Getting the Data</a></li>
   <li><a href="#analysis-of-perplexities" id="toc-analysis-of-perplexities" class="nav-link" data-scroll-target="#analysis-of-perplexities">Analysis of Perplexities</a></li>
-  </ul></li>
   <li><a href="#number-of-clusters-chosen-from-an-unsupervised-method" id="toc-number-of-clusters-chosen-from-an-unsupervised-method" class="nav-link" data-scroll-target="#number-of-clusters-chosen-from-an-unsupervised-method">Number of Clusters Chosen from an Unsupervised Method</a>
   <ul class="collapse">
   <li><a href="#clusters-analysis" id="toc-clusters-analysis" class="nav-link" data-scroll-target="#clusters-analysis">Clusters Analysis</a></li>
@@ -231,7 +229,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <section id="getting-the-data" class="level2">
 <h2 class="anchored" data-anchor-id="getting-the-data">Getting the Data</h2>
-<p>We will analyze three types of hyper-parameters: Perplexity on t-SNE and number of clusters chosen from an unsupervised method and how these affect the quality of the selected features.</p>
+<p>We will analyze three types of hyper-parameters: Perplexity on t-SNE, number of clusters chosen from an unsupervised method and how these affect the quality of the selected features and how the number of PC’s affect the t-SNE.</p>
 <p>To performs these three tasks we are gonna work with real data. Specifically, we’re gonna use scRNA-Seq data from a brain sample (GSM6900730). The data is available on this <a href="https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSM6900730">link</a>.</p>
 <p>In our case, let’s do a basic web scrapping code to get the data.</p>
 <div id="cell-4" class="cell" data-execution_count="3">
@@ -348,8 +346,9 @@ Downloaded GSM6900730_JLE16_B1_matrix.mtx.gz</code></pre>
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>top_pca_components <span class="op">=</span> np.where(csum <span class="op">&gt;=</span> <span class="fl">0.85</span>)[<span class="dv">0</span>][<span class="dv">0</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<section id="analysis-of-perplexities" class="level3">
-<h3 class="anchored" data-anchor-id="analysis-of-perplexities">Analysis of Perplexities</h3>
+</section>
+<section id="analysis-of-perplexities" class="level2">
+<h2 class="anchored" data-anchor-id="analysis-of-perplexities">Analysis of Perplexities</h2>
 <p>For the first part of the analysis, we are gonna analyze the following perplexities: 10,20,30,40,50 and see how this change the output of the t-SNE analysis.</p>
 <div id="cell-15" class="cell" data-execution_count="8">
 <details open="" class="code-fold">
@@ -398,7 +397,6 @@ Downloaded GSM6900730_JLE16_B1_matrix.mtx.gz</code></pre>
 </div>
 </div>
 <p>We can see that increasing the perplexity values make the clusters more defined. This is in consonance with the definition of the perplexity parameter which says: <em>“The perplexity is related to the number of nearest neighbors that is used in other manifold learning algorithms. Larger datasets usually require a larger perplexity. Consider selecting a value between 5 and 50. Different values can result in significantly different results. The perplexity must be less than the number of samples”</em>. Also, we can notice that from the perplexity value 30 to 50 there are more defined clusters; specifically, for perplexity 50 we see six more defined clusters so, this is the perplexity value chosen for the following analyses.</p>
-</section>
 </section>
 <section id="number-of-clusters-chosen-from-an-unsupervised-method" class="level2">
 <h2 class="anchored" data-anchor-id="number-of-clusters-chosen-from-an-unsupervised-method">Number of Clusters Chosen from an Unsupervised Method</h2>
@@ -1140,7 +1138,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </div>
   </div>
 </footer>
-<script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","descPosition":"bottom","selector":".lightbox","loop":false,"openEffect":"zoom"});
+<script>var lightboxQuarto = GLightbox({"selector":".lightbox","loop":false,"openEffect":"zoom","closeEffect":"zoom","descPosition":"bottom"});
 window.onload = () => {
   lightboxQuarto.on('slide_before_load', (data) => {
     const { slideIndex, slideNode, slideConfig, player, trigger } = data;
