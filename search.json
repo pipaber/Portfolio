@@ -30,7 +30,7 @@
   {
     "objectID": "posts/time_series/time_series_analysis.html",
     "href": "posts/time_series/time_series_analysis.html",
-    "title": "Portfolio",
+    "title": "Analysis of Time-series Data",
     "section": "",
     "text": "https://climateknowledgeportal.worldbank.org/country/peru/climate-data-historical\n\n\nCode\nimport pandas as pd\nimport numpy as np\nimport matplotlib.pyplot as plt\nimport seaborn as sns; sns.set_theme()\nfrom sklearn import linear_model\nimport statsmodels.api as sm\n\n\n\n\nCode\ntemp_df = pd.read_csv(\"observed-annual-average-mean-surface-air-temperature-of-junín,-peru-for-1901-2022.csv\", sep=\",\")\ntemp_df = temp_df.rename(columns={\"Category\":\"Year\", \"Annual Mean\":\"Temp_annual_mean\"}).drop(columns=[\"5-yr smooth\"])\n\n\nprec_df = pd.read_csv(\"observed-annual-precipitation-of-junín,-peru-for-1901-2022.csv\", sep=\",\")\nprec_df = prec_df.rename(columns={\"Category\":\"Year\", \"Annual Mean\":\"Prec_annual_mean\"}).drop(columns=[\"5-yr smooth\"])\n\nclimate_df = pd.merge(temp_df, prec_df, on=\"Year\", how=\"left\")\nclimate_df\n\n\n\n\n\n\n\n\n\n\nYear\nTemp_annual_mean\nPrec_annual_mean\n\n\n\n\n0\n1901\n14.17\n1273.85\n\n\n1\n1902\n14.16\n1273.85\n\n\n2\n1903\n13.85\n1273.85\n\n\n3\n1904\n13.70\n1273.85\n\n\n4\n1905\n14.07\n1273.85\n\n\n...\n...\n...\n...\n\n\n117\n2018\n14.65\n1273.85\n\n\n118\n2019\n14.84\n1262.93\n\n\n119\n2020\n15.00\n1273.85\n\n\n120\n2021\n14.97\n1046.47\n\n\n121\n2022\n14.84\n782.31\n\n\n\n\n122 rows × 3 columns\n\n\n\n\n\n\nCode\nplt.figure(figsize=(6, 3), dpi=80)\nsubset = climate_df[climate_df.Year &gt; 1951] \n\nsns.lineplot(data=subset, x=\"Year\", y=\"Temp_annual_mean\")\nplt.title(\"Average Temperature in Junin, Peru\")\nplt.ylabel('Temp (C)')\nplt.show()\nsubset.head()\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nYear\nTemp_annual_mean\nPrec_annual_mean\n\n\n\n\n51\n1952\n13.85\n1287.30\n\n\n52\n1953\n14.28\n1345.91\n\n\n53\n1954\n13.66\n1328.92\n\n\n54\n1955\n13.68\n1008.42\n\n\n55\n1956\n13.45\n1080.09\n\n\n\n\n\n\n\n\n\n\nCode\nclf = linear_model.LinearRegression()\nx,y = subset.Year.values.reshape(-1,1) , subset.Temp_annual_mean.values.reshape(-1,1)\n\nclf.fit(x, y)\nprint(clf.coef_) # Print the beta values found via regression \ny_hat = clf.predict(x)\nplt.plot(x, y, label='original data')\nplt.plot(x, y_hat, 'r', label='fitted line')\nplt.legend()\n\n\n[[0.01389604]]\n\n\n\n\n\n\n\n\n\n\n\nCode\nlinear_residuals = y - y_hat\nplt.plot(x, linear_residuals,'o')\n\n\n\n\n\n\n\n\n\n\n\nCode\nsns.regplot(x=x, y=linear_residuals)\n\n\n\n\n\n\n\n\n\n\n\nCode\nsm.graphics.tsa.plot_acf(linear_residuals, lags=30)\nplt.show()\nsm.graphics.tsa.plot_pacf(linear_residuals, lags=30)\nplt.show()"
   },
@@ -39,7 +39,7 @@
     "href": "projects.html",
     "title": "Data Science Projects",
     "section": "",
-    "text": "Analysis of Hyper-parameters on Single Cell RNA-Seq Data\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nLikelihood Ratio Test, Regression and Gradient Descent\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNo matching items"
+    "text": "Analysis of Time-series Data\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nAnalysis of Hyper-parameters on Single Cell RNA-Seq Data\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nLikelihood Ratio Test, Regression and Gradient Descent\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "about.html",
