@@ -15,6 +15,9 @@ about:
     - icon: envelope
       text: Contact me
       href: mailto:p.palacios.bernuy@gmail.com
+    - icon: book
+      text: Thesis
+      href: https://repositorio.lamolina.edu.pe/handle/20.500.12996/6393
 ---
 
 Hi! My name is Piero, and I’m a Biologist (with main formation in biotechnology) from Peru. I have specializations in data analysis and bioinformatics from Harvard University and MIT. Also, I love writing reproducible interactive reports using Quarto as a hobby.
