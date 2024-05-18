@@ -53,7 +53,7 @@
     "href": "about.html",
     "title": "About",
     "section": "",
-    "text": "About this blog"
+    "text": "Hi! My name is Piero, and I’m a Biologist (with main formation in biotechnology) from Peru. I have specializations in data analysis and bioinformatics from Harvard University and MIT. Also, I love writing reproducible interactive reports using Quarto as a hobby.\nWithin my bioinformatic experience you can find RNA-Seq, Methyl-Seq, WGBS-Seq, Illumina Methylation Array and Multi-omics analyses. Also, I have experience on machine learning (OLS, ridge and lasso regression, SVM, Kernels, collaborative filtering, network analysis, high-dimensional reduction, etc) and deep learning models (Feed forward NN, Recurrent NN, Convolutional NN, Graph NN, Transformers, etc)."
   },
   {
     "objectID": "index.html",
