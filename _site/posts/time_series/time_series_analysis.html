@@ -211,7 +211,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 
-<p>On this project, we’ll analyze the annual average temperature from <a href="https://climateknowledgeportal.worldbank.org/country/peru/climate-data-historical">Peru</a>.</p>
+<p>On this project we’ll analyze a time-series data. Specifically, we’ll analyze the annual average temperature from <a href="https://climateknowledgeportal.worldbank.org/country/peru/climate-data-historical">Junin, Peru</a>. The objective is build a model that can helps us predict the annual temprature for future years.</p>
 <div id="cell-2" class="cell" data-execution_count="1">
 <details open="" class="code-fold">
 <summary>Code</summary>
@@ -675,7 +675,7 @@ function(Bokeh) {
 </div>
 </div>
 </div>
-<p>Due to some rare measures on the data, let’s subset the data from the year 1951.</p>
+<p>Due to some rare measures on the data, let’s subset the data from the year 1951 and plot it.</p>
 <div id="cell-7" class="cell" data-execution_count="3">
 <details open="" class="code-fold">
 <summary>Code</summary>
@@ -745,7 +745,7 @@ function(Bokeh) {
 </div>
 </div>
 </div>
-<p>We can see the annual mean temperature training data.</p>
+<p>We can see that there is an increasing trend across the years.</p>
 <section id="removing-the-trend" class="level2">
 <h2 class="anchored" data-anchor-id="removing-the-trend">Removing the Trend</h2>
 <section id="linear-trend" class="level3">
@@ -2436,7 +2436,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </div>
   </div>
 </footer>
-<script>var lightboxQuarto = GLightbox({"openEffect":"zoom","selector":".lightbox","descPosition":"bottom","closeEffect":"zoom","loop":false});
+<script>var lightboxQuarto = GLightbox({"openEffect":"zoom","selector":".lightbox","loop":false,"closeEffect":"zoom","descPosition":"bottom"});
 window.onload = () => {
   lightboxQuarto.on('slide_before_load', (data) => {
     const { slideIndex, slideNode, slideConfig, player, trigger } = data;
