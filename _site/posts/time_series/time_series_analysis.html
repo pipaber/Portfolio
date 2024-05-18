@@ -212,7 +212,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <p>On this project, we’ll analyze the annual average temperature from <a href="https://climateknowledgeportal.worldbank.org/country/peru/climate-data-historical">Peru</a>.</p>
-<div id="cell-2" class="cell" data-execution_count="146">
+<div id="cell-2" class="cell" data-execution_count="1">
 <details open="" class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> PolynomialFeatures</span>
@@ -252,7 +252,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </style>
     <div>
         <a href="https://bokeh.org" target="_blank" class="bk-notebook-logo"></a>
-        <span id="dfed6277-7dd2-4a76-a1dc-819ad7effbaa">Loading BokehJS ...</span>
+        <span id="f51fb35a-7746-49db-8cff-5dc4c0461df4">Loading BokehJS ...</span>
     </div>
 </div>
 <div class="cell-output cell-output-display">
@@ -420,7 +420,7 @@ const JS_MIME_TYPE = 'application/javascript';
      "</div>"}};
 
   function display_loaded(error = null) {
-    const el = document.getElementById("dfed6277-7dd2-4a76-a1dc-819ad7effbaa");
+    const el = document.getElementById("f51fb35a-7746-49db-8cff-5dc4c0461df4");
     if (el != null) {
       const html = (() => {
         if (typeof root.Bokeh === "undefined") {
@@ -554,7 +554,7 @@ function(Bokeh) {
       console.log("Bokeh: BokehJS failed to load within specified timeout.");
       root._bokeh_failed_load = true;
     } else if (force !== true) {
-      const cell = $(document.getElementById("dfed6277-7dd2-4a76-a1dc-819ad7effbaa")).parents('.cell').data().cell;
+      const cell = $(document.getElementById("f51fb35a-7746-49db-8cff-5dc4c0461df4")).parents('.cell').data().cell;
       cell.output_area.append_execute_result(NB_LOAD_WARNING)
     }
   }
@@ -575,7 +575,7 @@ function(Bokeh) {
 <section id="annual-average-temperature-from-junin-peru" class="level1">
 <h1>Annual Average Temperature from Junin, Peru</h1>
 <p>First we need to load the data and create a single dataframe.</p>
-<div id="cell-5" class="cell" data-execution_count="147">
+<div id="cell-5" class="cell" data-execution_count="2">
 <details open="" class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>temp_df <span class="op">=</span> pd.read_csv(<span class="st">"observed-annual-average-mean-surface-air-temperature-of-junín,-peru-for-1901-2022.csv"</span>, sep<span class="op">=</span><span class="st">","</span>)</span>
@@ -588,7 +588,7 @@ function(Bokeh) {
 <span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>climate_df <span class="op">=</span> pd.merge(temp_df, prec_df, on<span class="op">=</span><span class="st">"Year"</span>, how<span class="op">=</span><span class="st">"left"</span>)</span>
 <span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>climate_df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="147">
+<div class="cell-output cell-output-display" data-execution_count="2">
 <div>
 
 
@@ -676,7 +676,7 @@ function(Bokeh) {
 </div>
 </div>
 <p>Due to some rare measures on the data, let’s subset the data from the year 1951.</p>
-<div id="cell-7" class="cell" data-execution_count="148">
+<div id="cell-7" class="cell" data-execution_count="3">
 <details open="" class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">6</span>, <span class="dv">3</span>), dpi<span class="op">=</span><span class="dv">80</span>)</span>
@@ -695,7 +695,7 @@ function(Bokeh) {
 </figure>
 </div>
 </div>
-<div class="cell-output cell-output-display" data-execution_count="148">
+<div class="cell-output cell-output-display" data-execution_count="3">
 <div>
 
 
@@ -751,7 +751,7 @@ function(Bokeh) {
 <section id="linear-trend" class="level3">
 <h3 class="anchored" data-anchor-id="linear-trend">Linear Trend</h3>
 <p>First let’s define the functions to calculate the Akaike Information Criteria and the Bayesian Information Criteria to test the performance of our models.</p>
-<div id="cell-12" class="cell" data-execution_count="149">
+<div id="cell-12" class="cell" data-execution_count="4">
 <details open="" class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.stats <span class="im">import</span> norm </span>
@@ -777,7 +777,7 @@ function(Bokeh) {
 </details>
 </div>
 <p>Now, we can begin fitting a linear trend to the data.</p>
-<div id="cell-14" class="cell" data-execution_count="150">
+<div id="cell-14" class="cell" data-execution_count="5">
 <details open="" class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> subset_df[<span class="st">"Year"</span>].values.reshape(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>)</span>
@@ -808,7 +808,7 @@ function(Bokeh) {
 </div>
 </div>
 <p>And plot the residuals of the model.</p>
-<div id="cell-16" class="cell" data-execution_count="151">
+<div id="cell-16" class="cell" data-execution_count="6">
 <details open="" class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>linear_residuals <span class="op">=</span> y <span class="op">-</span> y_hat</span>
@@ -834,7 +834,7 @@ BIC: 59.54449711592525</code></pre>
 </div>
 <p>The plot shows a good distribution of the residuals.</p>
 <p>Let’s check the autocorrelation and partial autocorralation of the residuals.</p>
-<div id="cell-19" class="cell" data-execution_count="152">
+<div id="cell-19" class="cell" data-execution_count="7">
 <details open="" class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>sm.graphics.tsa.plot_acf(linear_residuals, lags<span class="op">=</span><span class="dv">20</span>)</span>
@@ -862,7 +862,7 @@ BIC: 59.54449711592525</code></pre>
 <section id="quadratic-trend" class="level3">
 <h3 class="anchored" data-anchor-id="quadratic-trend">Quadratic Trend</h3>
 <p>To check that the linear trend is a good choice, let’sw compare it with a quadratic fit.</p>
-<div id="cell-23" class="cell" data-execution_count="153">
+<div id="cell-23" class="cell" data-execution_count="8">
 <details open="" class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>degree<span class="op">=</span><span class="dv">2</span></span>
@@ -893,7 +893,7 @@ BIC: 59.54449711592525</code></pre>
 </div>
 </div>
 <p>The residuals:</p>
-<div id="cell-25" class="cell" data-execution_count="155">
+<div id="cell-25" class="cell" data-execution_count="9">
 <details open="" class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>quadratic_residuals <span class="op">=</span> y <span class="op">-</span> y_hat_quad</span>
@@ -918,7 +918,7 @@ BIC: 62.105812954492805</code></pre>
 </div>
 </div>
 <p>And the autocorrelation plots.</p>
-<div id="cell-27" class="cell" data-execution_count="156">
+<div id="cell-27" class="cell" data-execution_count="10">
 <details open="" class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>sm.graphics.tsa.plot_acf(quadratic_residuals, lags<span class="op">=</span><span class="dv">20</span>)</span>
@@ -942,7 +942,7 @@ BIC: 62.105812954492805</code></pre>
 </div>
 </div>
 <p>These plots (ACF and PACF) shows that there might be a autocorrelation of order 16 (<em>AR(16)</em>) and possibly a moving average of order 13. Let’s make a grid search over possible values to corroborate this.</p>
-<div id="cell-29" class="cell" data-execution_count="157">
+<div id="cell-29" class="cell" data-execution_count="11">
 <details open="" class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> grid_search_ARIMA(data, AR_range, MA_range, verbose<span class="op">=</span><span class="va">False</span>):</span>
@@ -972,7 +972,7 @@ BIC: 62.105812954492805</code></pre>
 </details>
 </div>
 <p>Luckily, statsmodels give us the BIC and AIC scores for each models we are building. We are using these scores to get the best model in our grid search.</p>
-<div id="cell-31" class="cell" data-execution_count="158">
+<div id="cell-31" class="cell" data-execution_count="12">
 <details open="" class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>min_aic_index, min_bic_index, _, _ <span class="op">=</span> grid_search_ARIMA(linear_residuals, <span class="bu">range</span>(<span class="dv">20</span>), <span class="bu">range</span>(<span class="dv">20</span>), verbose<span class="op">=</span><span class="va">True</span>)</span>
@@ -1887,7 +1887,7 @@ AIC, BIC do not agree.</code></pre>
 </div>
 <p>We see that the grid search output an ARMA(2,9) model. Let’s work with this model and form forecasts.</p>
 <p>To evaluate the model we will use a rolling window cross-validation. This will help us view how the model improve as we include more time series data. The window we are gonna use is 20 years and we’ll forecast 20 years.</p>
-<div id="cell-34" class="cell" data-execution_count="161">
+<div id="cell-34" class="cell" data-execution_count="13">
 <details open="" class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>window_size <span class="op">=</span> <span class="dv">20</span></span>
@@ -1957,7 +1957,7 @@ Test set mean squared error:  0.039150953597273795</code></pre>
 </div>
 <p>In the first plot, we can see that only using 20 values for training, the forecast converge to the mean of the series. And, as we continue including data, the forcast improve.</p>
 <p>Let’s see if using an external variable (in this case the annual mean precipitation) improve our model.</p>
-<div id="cell-37" class="cell" data-execution_count="163">
+<div id="cell-37" class="cell" data-execution_count="14">
 <details open="" class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>window_size <span class="op">=</span> <span class="dv">20</span></span>
@@ -2436,7 +2436,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </div>
   </div>
 </footer>
-<script>var lightboxQuarto = GLightbox({"openEffect":"zoom","loop":false,"selector":".lightbox","closeEffect":"zoom","descPosition":"bottom"});
+<script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","openEffect":"zoom","descPosition":"bottom","loop":false,"selector":".lightbox"});
 window.onload = () => {
   lightboxQuarto.on('slide_before_load', (data) => {
     const { slideIndex, slideNode, slideConfig, player, trigger } = data;
