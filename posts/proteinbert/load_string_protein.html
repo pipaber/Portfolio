@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.554">
+<meta name="generator" content="quarto-1.4.555">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -234,7 +234,7 @@ div.csl-indent {
 <p>On this project we’ll learn how to use ProteinBERT (a large language model trained developed protein sequences) to get embeddings for aminoacids sequences and how to use this embeddings for visualization.</p>
 <p>Lastest deep learning models architectures designed foe sequences (e.g.&nbsp;text, audio) like GPT, BERT or LLama 3, combined with training on massive datasets, have led to a revolution on natural language processing tasks.</p>
 <p>However, most sequence-based models have been designed for processing natural languages (with a bias towards English). In this context, their architectures and pretraining tasks are not optimal fo aminoacid sequences, which differe from the human language. To mention some disimilarities, proteins dont have building blocks (words and/or sentences), have more variable length than sentences and have many interactions detween distant positions (secondary and tertiary structure).</p>
-<p>In this context ProteinBERT was developed and trained on ~106M proteins (representing the entire known protein space) derived from UniProtKB/UniRef90 and on the 8943 most frequent gene ontology annotations <span class="citation" data-cites="Brandes">Brandes et al. (<a href="#ref-Brandes" role="doc-biblioref">2022</a>)</span>, <span class="citation" data-cites="Rajan">Rajan (<a href="#ref-Rajan" role="doc-biblioref">2023</a>)</span>.</p>
+<p>In this context ProteinBERT was developed and trained on ~106M proteins (representing the entire known protein space) derived from UniProtKB/UniRef90 and on the 8943 most frequent gene ontology annotations <span class="citation" data-cites="Brandes">Brandes et al. (<a href="#ref-Brandes" role="doc-biblioref">2022</a>)</span>, <span class="citation" data-cites="Rajan">Rajan and Perez (<a href="#ref-Rajan" role="doc-biblioref">2023</a>)</span>.</p>
 <div id="cell-3" class="cell" data-execution_count="10">
 <details open="" class="code-fold">
 <summary>Code</summary>
@@ -878,10 +878,9 @@ Local embeddings shape: (158, 1212, 1562)</code></pre>
 </details>
 <div class="cell-output cell-output-display" data-execution_count="22">
 <div>
-<div>
 
 
-<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
 <thead>
 <tr class="header">
 <th data-quarto-table-cell-role="th"></th>
@@ -1084,7 +1083,6 @@ Local embeddings shape: (158, 1212, 1562)</code></pre>
 </div>
 </div>
 </div>
-</div>
 <p>Also, we need to define a function that will use these encoded labels to build an edge index. An edge index is a matrix with shape 2 x number of edges</p>
 <div id="cell-30" class="cell" data-execution_count="23">
 <details open="" class="code-fold">
@@ -1267,7 +1265,7 @@ Number of nodes labels: 1</code></pre>
 Brandes, Nadav, Dan Ofer, Yam Peleg, Nadav Rappoport, and Michal Linial. 2022. <span>“<span class="nocase">ProteinBERT: a universal deep-learning model of protein sequence and function</span>.”</span> <em>Bioinformatics</em> 38 (8): 2102–10. <a href="https://doi.org/10.1093/bioinformatics/btac020">https://doi.org/10.1093/bioinformatics/btac020</a>.
 </div>
 <div id="ref-Rajan" class="csl-entry" role="listitem">
-Rajan, Perez, Lozano. 2023. <span>“<span class="nocase">BERT2Mult: Predicting <span>‘a priori’</span> protein-protein interactions with graph neural networks and language models</span>.”</span> <a href="https://medium.com/stanford-cs224w/bert2mult-predicting-a-priori-protein-protein-interactions-with-graph-neural-networks-and-f257c8b575a0">https://medium.com/stanford-cs224w/bert2mult-predicting-a-priori-protein-protein-interactions-with-graph-neural-networks-and-f257c8b575a0</a>.
+Rajan, Lozano, and Perez. 2023. <span>“<span class="nocase">BERT2Mult: Predicting <span>‘a priori’</span> protein-protein interactions with graph neural networks and language models</span>.”</span> <a href="https://medium.com/stanford-cs224w/bert2mult-predicting-a-priori-protein-protein-interactions-with-graph-neural-networks-and-f257c8b575a0">https://medium.com/stanford-cs224w/bert2mult-predicting-a-priori-protein-protein-interactions-with-graph-neural-networks-and-f257c8b575a0</a>.
 </div>
 </div>
 
@@ -1701,7 +1699,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </div>
   </div>
 </footer>
-<script>var lightboxQuarto = GLightbox({"openEffect":"zoom","loop":false,"descPosition":"bottom","closeEffect":"zoom","selector":".lightbox"});
+<script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","descPosition":"bottom","selector":".lightbox","loop":false,"openEffect":"zoom"});
 window.onload = () => {
   lightboxQuarto.on('slide_before_load', (data) => {
     const { slideIndex, slideNode, slideConfig, player, trigger } = data;
