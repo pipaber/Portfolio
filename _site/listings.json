@@ -1,0 +1,12 @@
+[
+  {
+    "listing": "/projects.html",
+    "items": [
+      "/posts/proteinbert_graphsage/BERT2Graphsage.html",
+      "/posts/proteinbert/load_string_protein.html",
+      "/posts/time_series/time_series_analysis.html",
+      "/posts/Naive_scRNA-Seq_analysis/naive_scrnaseq_analysis.html",
+      "/posts/Regression_and_Gradient_Descent/regression_and_gradient_descent.html"
+    ]
+  }
+]

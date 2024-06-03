@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Portfolio - Bioinformatics Projects</title>
+<title>Portfolio - Data Science Projects</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -31,6 +31,8 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
 <link href="./piero.jpg" rel="icon" type="image/jpeg">
+<script src="site_libs/quarto-listing/list.min.js"></script>
+<script src="site_libs/quarto-listing/quarto-listing.js"></script>
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -40,9 +42,6 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
-<script src="site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
-<link href="site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
-<link href="site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -70,12 +69,70 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
+<script>
 
+  window.document.addEventListener("DOMContentLoaded", function (_event) {
+    const listingTargetEl = window.document.querySelector('#listing-listing .list');
+    if (!listingTargetEl) {
+      // No listing discovered, do not attach.
+      return; 
+    }
+
+    const options = {
+      valueNames: ['listing-date','listing-title','listing-author','listing-image','listing-description','listing-categories',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
+      
+      searchColumns: ["listing-date","listing-title","listing-author","listing-image","listing-description","listing-categories"],
+    };
+
+    window['quarto-listings'] = window['quarto-listings'] || {};
+    window['quarto-listings']['listing-listing'] = new List('listing-listing', options);
+
+    if (window['quarto-listing-loaded']) {
+      window['quarto-listing-loaded']();
+    }
+  });
+
+  window.addEventListener('hashchange',() => {
+    if (window['quarto-listing-loaded']) {
+      window['quarto-listing-loaded']();
+    }
+  })
+  </script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="styles.css">
 </head>
 
-<body class="nav-fixed fullcontent">
+<body class="nav-fixed">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top quarto-banner">
@@ -97,11 +154,11 @@ ul.task-list li input[type="checkbox"] {
 <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./projects.html"> 
+    <a class="nav-link active" href="./projects.html" aria-current="page"> 
 <span class="menu-text">Data Science Projects</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link active" href="./bioinformatics.html" aria-current="page"> 
+    <a class="nav-link" href="./bioinformatics.html"> 
 <span class="menu-text">Bioinformatics Projects</span></a>
   </li>  
   <li class="nav-item">
@@ -134,13 +191,13 @@ ul.task-list li input[type="checkbox"] {
 <!-- content -->
 <header id="title-block-header" class="quarto-title-block default page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
-    <div class="quarto-title column-body">
-      <h1 class="title">Bioinformatics Projects</h1>
+    <div class="quarto-title column-page-left">
+      <h1 class="title">Data Science Projects</h1>
                       </div>
   </div>
     
   
-  <div class="quarto-title-meta">
+  <div class="quarto-title-meta column-page-left">
 
       
     
@@ -148,89 +205,231 @@ ul.task-list li input[type="checkbox"] {
     </div>
     
   
-  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        
+    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(5)</span></div><div class="category" data-category="BERT">BERT <span class="quarto-category-count">(2)</span></div><div class="category" data-category="Deep learning">Deep learning <span class="quarto-category-count">(2)</span></div><div class="category" data-category="GNN">GNN <span class="quarto-category-count">(1)</span></div><div class="category" data-category="LLM">LLM <span class="quarto-category-count">(2)</span></div><div class="category" data-category="high-dimensional">high-dimensional <span class="quarto-category-count">(1)</span></div><div class="category" data-category="regression">regression <span class="quarto-category-count">(2)</span></div><div class="category" data-category="scrnaseq">scrnaseq <span class="quarto-category-count">(1)</span></div><div class="category" data-category="statistics">statistics <span class="quarto-category-count">(3)</span></div><div class="category" data-category="time-series">time-series <span class="quarto-category-count">(1)</span></div></div></div>
 <!-- main -->
-<main class="content quarto-banner-title-block" id="quarto-document-content">
+<main class="content quarto-banner-title-block column-page-left" id="quarto-document-content">
 
 
 
 
 
-<div class="columns">
-<div class="column" style="width:55%;">
-<p>The analysis of RNA-Seq data involves two distinct parts. The first one needs the use of servers or HPC (high performance computers) and has to do with quality control. pre-processing, alignment-mapping (usually with the STAR software) and counting (can be done using RSEM software). The second one is called downstream analysis and this part involves differential gene expression, gene sets analysis, etc. To see how to do the downstream analysis click <a href="https://pipaber.github.io/RNA-Seq/" target="_blank">here</a></p>
-</div><div class="column" style="width:5%;">
-
-</div><div class="column" style="width:40%;">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><a href="https://pipaber.github.io/RNA-Seq/index_files/figure-html/unnamed-chunk-22-5.png" class="lightbox" data-glightbox="description: .lightbox-desc-1" data-gallery="quarto-lightbox-gallery-1" title="Network analysis of genes and ontologies"><img src="https://pipaber.github.io/RNA-Seq/index_files/figure-html/unnamed-chunk-22-5.png" class="img-fluid figure-img" alt="Network analysis of genes and ontologies"></a></p>
-<figcaption>Network analysis of genes and ontologies</figcaption>
-</figure>
-</div>
-</div>
-</div>
-<hr>
-<div class="columns">
-<div class="column" style="width:40%;">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><a href="https://pipaber.github.io/Epigenomics/index_files/figure-html/notebooks-Methylation_analysis-fig-meth-output-1.png" class="lightbox" data-glightbox="description: .lightbox-desc-2" data-gallery="quarto-lightbox-gallery-2" title="Methylated DNA between Cancer and Normal"><img src="https://pipaber.github.io/Epigenomics/index_files/figure-html/notebooks-Methylation_analysis-fig-meth-output-1.png" class="img-fluid figure-img" alt="Methylated DNA between Cancer and Normal"></a></p>
-<figcaption>Methylated DNA between Cancer and Normal</figcaption>
-</figure>
-</div>
-</div><div class="column" style="width:5%;">
-
-</div><div class="column" style="width:55%;">
-<p>Epigenetics is the study of how your behaviors and environment can cause changes that affect the way your genes work. Unlike genetic changes, epigenetic changes are reversible and do not change your DNA sequence, but they can change how your body reads a DNA sequence (CDC,2024). To learn how to analyze 450k Illumina Arrays and Whole Genome Bisulfite Sequencing data click <a href="https://pipaber.github.io/Epigenomics/" target="_blank">here</a></p>
-</div>
-</div>
-<hr>
-<div class="columns">
-<div class="column" style="width:55%;">
-<p>In recent years the integration of <em>Omics</em> data has become important to understand the biological procesess more broadly. To learn how to use the GWAS Catalog with ChIP-Seq data or how to retrieve and analyze data from The Cancer Genome Atlas (TCGA) click <a href="https://pipaber.github.io/Multi-omics/" target="_blank">here</a></p>
-</div><div class="column" style="width:5%;">
-
-</div><div class="column" style="width:40%;">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><a href="https://pipaber.github.io/Multi-omics/notebooks/images/samples_with_mut.jpeg" class="lightbox" data-glightbox="description: .lightbox-desc-3" data-gallery="quarto-lightbox-gallery-3" title="Number of predited mutation effect per gene"><img src="https://pipaber.github.io/Multi-omics/notebooks/images/samples_with_mut.jpeg" class="img-fluid figure-img" alt="Number of predited mutation effect per gene"></a></p>
-<figcaption>Number of predited mutation effect per gene</figcaption>
-</figure>
-</div>
-</div>
-</div>
-<hr>
-<div class="columns">
-<div class="column" style="width:40%;">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><a href="https://www.genome.jp/Fig/kegg128.gif" class="lightbox" data-glightbox="description: .lightbox-desc-4" data-gallery="quarto-lightbox-gallery-4" title="KEGG"><img src="https://www.genome.jp/Fig/kegg128.gif" class="img-fluid figure-img" alt="KEGG"></a></p>
-<figcaption>KEGG</figcaption>
-</figure>
-</div>
-</div><div class="column" style="width:5%;">
-
-</div><div class="column" style="width:55%;">
-<p>An example of a proper use of interactive plots on a RNA-Seq data report can be founded <a href="https://github.com/pipaber/Omics-Potfolio" target="_blank">here</a>.</p>
-<blockquote class="blockquote">
-<p>This repository doesn’t have any code, is only to showcase what is possible using Quarto and Bioconductor</p>
-</blockquote>
-</div>
-</div>
 
 
-<div class="hidden" aria-hidden="true">
-<span class="glightbox-desc lightbox-desc-1">Network analysis of genes and ontologies</span>
-<span class="glightbox-desc lightbox-desc-2">Methylated DNA between Cancer and Normal</span>
-<span class="glightbox-desc lightbox-desc-3">Number of predited mutation effect per gene</span>
-<span class="glightbox-desc lightbox-desc-4">KEGG</span>
-</div>
 
-</main> <!-- /main -->
+
+<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
+<div class="listing-actions-group">
+   <div class="input-group input-group-sm quarto-listing-sort">
+     <span class="input-group-text"><i class="bi bi-sort-down"></i></span>
+     <select id="listing-listing-sort" class="form-select" aria-label="Order By" onchange="window['quarto-listings']['listing-listing'].sort(this.options[this.selectedIndex].value, { order: this.options[this.selectedIndex].getAttribute('data-direction')})">
+       <option value="" disabled="" selected="" hidden="">Order By</option>
+       <option value="index" data-direction="asc">Default</option>
+         <option value="listing-title" data-direction="asc">
+          Title
+        </option>
+         <option value="listing-date-sort" data-direction="asc">
+          Date - Oldest
+        </option>
+         <option value="listing-date-sort" data-direction="desc">
+          Date - Newest
+        </option>
+         <option value="listing-author" data-direction="asc">
+          Author
+        </option>
+     </select>
+  </div>
+</div>
+<div class="list quarto-listing-default">
+<div class="quarto-post image-right" data-index="0" data-categories="LLM,BERT,Deep learning,GNN" data-listing-date-sort="1717390800000" data-listing-file-modified-sort="1717435128407" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5" data-listing-word-count-sort="984">
+<div class="thumbnail">
+<p><a href="./posts/proteinbert_graphsage/BERT2Graphsage.html" class="no-external"></a></p><a href="./posts/proteinbert_graphsage/BERT2Graphsage.html" class="no-external">
+<p class="card-img-top"><img src="posts\proteinbert_graphsage\BERT2Graphsage_files\figure-html\cell-19-output-3.png"  class="thumbnail-image card-img"/></p>
+</a><p><a href="./posts/proteinbert_graphsage/BERT2Graphsage.html" class="no-external"></a></p>
+</div>
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="./posts/proteinbert_graphsage/BERT2Graphsage.html" class="no-external">Predict Protein-Protein Interactions with GraphSAGE</a>
+</h3>
+<div class="listing-subtitle">
+<a href="./posts/proteinbert_graphsage/BERT2Graphsage.html" class="no-external"></a>
+</div>
+<div class="listing-categories">
+<div class="listing-category" onclick="window.quartoListingCategory('LLM'); return false;">
+LLM
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('BERT'); return false;">
+BERT
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('Deep learning'); return false;">
+Deep learning
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('GNN'); return false;">
+GNN
+</div>
+</div>
+<div class="listing-description">
+<a href="./posts/proteinbert_graphsage/BERT2Graphsage.html" class="no-external">This is the second of a <em>Protein Embedding with ProteinBERT and STRING</em>. On this part, we are gonna build a graph neural network (GNN) to update the embeddings of PorteinBERT…</a>
+</div>
+</div>
+<div class="metadata">
+<a href="./posts/proteinbert_graphsage/BERT2Graphsage.html" class="no-external">
+<div class="listing-date">
+Jun 3, 2024
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="1" data-categories="Deep learning,BERT,LLM" data-listing-date-sort="1716526800000" data-listing-file-modified-sort="1717434923126" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4" data-listing-word-count-sort="771">
+<div class="thumbnail">
+<p><a href="./posts/proteinbert/load_string_protein.html" class="no-external"></a></p><a href="./posts/proteinbert/load_string_protein.html" class="no-external">
+<p class="card-img-top"><img src="posts\proteinbert\unfolded_protein_binding.png" alt="GO:0051082"  class="thumbnail-image card-img"/></p>
+</a><p><a href="./posts/proteinbert/load_string_protein.html" class="no-external"></a></p>
+</div>
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="./posts/proteinbert/load_string_protein.html" class="no-external">Protein Embedding with ProteinBERT and STRING</a>
+</h3>
+<div class="listing-subtitle">
+<a href="./posts/proteinbert/load_string_protein.html" class="no-external"></a>
+</div>
+<div class="listing-categories">
+<div class="listing-category" onclick="window.quartoListingCategory('Deep learning'); return false;">
+Deep learning
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('BERT'); return false;">
+BERT
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('LLM'); return false;">
+LLM
+</div>
+</div>
+<div class="listing-description">
+<a href="./posts/proteinbert/load_string_protein.html" class="no-external">On this project we’ll learn how to use ProteinBERT (a large language model trained developed protein sequences) to get embeddings for aminoacids sequences and how to use…</a>
+</div>
+</div>
+<div class="metadata">
+<a href="./posts/proteinbert/load_string_protein.html" class="no-external">
+<div class="listing-date">
+May 24, 2024
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="2" data-categories="statistics,time-series" data-listing-date-sort="1715835600000" data-listing-file-modified-sort="1717434828961" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="396">
+<div class="thumbnail">
+<p><a href="./posts/time_series/time_series_analysis.html" class="no-external"></a></p><a href="./posts/time_series/time_series_analysis.html" class="no-external">
+<p class="card-img-top"><img src="posts\time_series\time_series_analysis_files\figure-html\cell-4-output-1.png"  class="thumbnail-image card-img"/></p>
+</a><p><a href="./posts/time_series/time_series_analysis.html" class="no-external"></a></p>
+</div>
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="./posts/time_series/time_series_analysis.html" class="no-external">Analysis of Time-series Data</a>
+</h3>
+<div class="listing-subtitle">
+<a href="./posts/time_series/time_series_analysis.html" class="no-external"></a>
+</div>
+<div class="listing-categories">
+<div class="listing-category" onclick="window.quartoListingCategory('statistics'); return false;">
+statistics
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('time-series'); return false;">
+time-series
+</div>
+</div>
+<div class="listing-description">
+<a href="./posts/time_series/time_series_analysis.html" class="no-external">On this project we’ll analyze a time-series data. Specifically, we’ll analyze the annual average temperature from Junin, Peru. The objective is build a model that can helps…</a>
+</div>
+</div>
+<div class="metadata">
+<a href="./posts/time_series/time_series_analysis.html" class="no-external">
+<div class="listing-date">
+May 16, 2024
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="3" data-categories="scrnaseq,high-dimensional,statistics,regression" data-listing-date-sort="1715144400000" data-listing-file-modified-sort="1717434863679" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4" data-listing-word-count-sort="621">
+<div class="thumbnail">
+<p><a href="./posts/Naive_scRNA-Seq_analysis/naive_scrnaseq_analysis.html" class="no-external"></a></p><a href="./posts/Naive_scRNA-Seq_analysis/naive_scrnaseq_analysis.html" class="no-external">
+<p class="card-img-top"><img src="posts\Naive_scRNA-Seq_analysis\naive_scrnaseq_analysis_files\figure-html\cell-6-output-1.png"  class="thumbnail-image card-img"/></p>
+</a><p><a href="./posts/Naive_scRNA-Seq_analysis/naive_scrnaseq_analysis.html" class="no-external"></a></p>
+</div>
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="./posts/Naive_scRNA-Seq_analysis/naive_scrnaseq_analysis.html" class="no-external">Analysis of Hyper-parameters on Single Cell RNA-Seq Data</a>
+</h3>
+<div class="listing-subtitle">
+<a href="./posts/Naive_scRNA-Seq_analysis/naive_scrnaseq_analysis.html" class="no-external"></a>
+</div>
+<div class="listing-categories">
+<div class="listing-category" onclick="window.quartoListingCategory('scrnaseq'); return false;">
+scrnaseq
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('high-dimensional'); return false;">
+high-dimensional
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('statistics'); return false;">
+statistics
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('regression'); return false;">
+regression
+</div>
+</div>
+<div class="listing-description">
+<a href="./posts/Naive_scRNA-Seq_analysis/naive_scrnaseq_analysis.html" class="no-external">We will analyze three types of hyper-parameters: Perplexity on t-SNE, number of clusters chosen from an unsupervised method and how these affect the quality of the selected…</a>
+</div>
+</div>
+<div class="metadata">
+<a href="./posts/Naive_scRNA-Seq_analysis/naive_scrnaseq_analysis.html" class="no-external">
+<div class="listing-date">
+May 8, 2024
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="4" data-categories="statistics,regression" data-listing-date-sort="1714626000000" data-listing-file-modified-sort="1717434783367" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="571">
+<div class="thumbnail">
+<p><a href="./posts/Regression_and_Gradient_Descent/regression_and_gradient_descent.html" class="no-external"></a></p><a href="./posts/Regression_and_Gradient_Descent/regression_and_gradient_descent.html" class="no-external">
+<p class="card-img-top"><img src="posts\Regression_and_Gradient_Descent\regression_and_gradient_descent_files\figure-html\cell-3-output-1.png"  class="thumbnail-image card-img"/></p>
+</a><p><a href="./posts/Regression_and_Gradient_Descent/regression_and_gradient_descent.html" class="no-external"></a></p>
+</div>
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="./posts/Regression_and_Gradient_Descent/regression_and_gradient_descent.html" class="no-external">Likelihood Ratio Test, Regression and Gradient Descent</a>
+</h3>
+<div class="listing-subtitle">
+<a href="./posts/Regression_and_Gradient_Descent/regression_and_gradient_descent.html" class="no-external"></a>
+</div>
+<div class="listing-categories">
+<div class="listing-category" onclick="window.quartoListingCategory('statistics'); return false;">
+statistics
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('regression'); return false;">
+regression
+</div>
+</div>
+<div class="listing-description">
+<a href="./posts/Regression_and_Gradient_Descent/regression_and_gradient_descent.html" class="no-external">The file gamma-ray.csv contains a small quantity of data collected from the Compton Gamma Ray Observatory, a satellite launched by NASA in 1991…</a>
+</div>
+</div>
+<div class="metadata">
+<a href="./posts/Regression_and_Gradient_Descent/regression_and_gradient_descent.html" class="no-external">
+<div class="listing-date">
+May 2, 2024
+</div>
+</a>
+</div>
+</div>
+</div>
+<div class="listing-no-matching d-none">
+No matching items
+</div>
+</div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
@@ -632,31 +831,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </div>
   </div>
 </footer>
-<script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","selector":".lightbox","openEffect":"zoom","loop":false,"descPosition":"bottom"});
-window.onload = () => {
-  lightboxQuarto.on('slide_before_load', (data) => {
-    const { slideIndex, slideNode, slideConfig, player, trigger } = data;
-    const href = trigger.getAttribute('href');
-    if (href !== null) {
-      const imgEl = window.document.querySelector(`a[href="${href}"] img`);
-      if (imgEl !== null) {
-        const srcAttr = imgEl.getAttribute("src");
-        if (srcAttr && srcAttr.startsWith("data:")) {
-          slideConfig.href = srcAttr;
-        }
-      }
-    } 
-  });
-
-  lightboxQuarto.on('slide_after_load', (data) => {
-    const { slideIndex, slideNode, slideConfig, player, trigger } = data;
-    if (window.Quarto?.typesetMath) {
-      window.Quarto.typesetMath(slideNode);
-    }
-  });
-
-};
-          </script>
 
 
 
