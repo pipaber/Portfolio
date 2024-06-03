@@ -2,42 +2,46 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://pipaber.github.io/Portfolio/bioinformatics.html</loc>
-    <lastmod>2024-06-03T17:19:31.455Z</lastmod>
+    <lastmod>2024-06-03T19:09:43.533Z</lastmod>
   </url>
   <url>
     <loc>https://pipaber.github.io/Portfolio/resume.html</loc>
-    <lastmod>2024-06-03T17:19:31.503Z</lastmod>
+    <lastmod>2024-06-03T19:09:43.589Z</lastmod>
   </url>
   <url>
     <loc>https://pipaber.github.io/Portfolio/posts/proteinbert_graphsage/BERT2Graphsage.html</loc>
-    <lastmod>2024-06-03T17:19:31.495Z</lastmod>
+    <lastmod>2024-06-03T19:09:43.581Z</lastmod>
   </url>
   <url>
     <loc>https://pipaber.github.io/Portfolio/posts/time_series/time_series_analysis.html</loc>
-    <lastmod>2024-06-03T17:19:31.503Z</lastmod>
+    <lastmod>2024-06-03T19:09:43.589Z</lastmod>
   </url>
   <url>
-    <loc>https://pipaber.github.io/Portfolio/index.html</loc>
-    <lastmod>2024-06-03T17:19:31.475Z</lastmod>
+    <loc>https://pipaber.github.io/Portfolio/posts/proteinbert_coffea_arabica_thesis/aplication_to_coffea_arabica_thesis.html</loc>
+    <lastmod>2024-06-03T19:09:43.569Z</lastmod>
   </url>
   <url>
     <loc>https://pipaber.github.io/Portfolio/about.html</loc>
-    <lastmod>2024-06-03T17:19:31.455Z</lastmod>
+    <lastmod>2024-06-03T19:09:43.533Z</lastmod>
+  </url>
+  <url>
+    <loc>https://pipaber.github.io/Portfolio/index.html</loc>
+    <lastmod>2024-06-03T19:09:43.557Z</lastmod>
   </url>
   <url>
     <loc>https://pipaber.github.io/Portfolio/posts/proteinbert/load_string_protein.html</loc>
-    <lastmod>2024-06-03T17:19:31.483Z</lastmod>
+    <lastmod>2024-06-03T19:09:43.561Z</lastmod>
   </url>
   <url>
     <loc>https://pipaber.github.io/Portfolio/posts/Naive_scRNA-Seq_analysis/naive_scrnaseq_analysis.html</loc>
-    <lastmod>2024-06-03T17:19:31.479Z</lastmod>
+    <lastmod>2024-06-03T19:09:43.561Z</lastmod>
   </url>
   <url>
     <loc>https://pipaber.github.io/Portfolio/posts/Regression_and_Gradient_Descent/regression_and_gradient_descent.html</loc>
-    <lastmod>2024-06-03T17:19:31.479Z</lastmod>
+    <lastmod>2024-06-03T19:09:43.561Z</lastmod>
   </url>
   <url>
     <loc>https://pipaber.github.io/Portfolio/projects.html</loc>
-    <lastmod>2024-06-03T17:19:31.503Z</lastmod>
+    <lastmod>2024-06-03T19:09:43.589Z</lastmod>
   </url>
 </urlset>
