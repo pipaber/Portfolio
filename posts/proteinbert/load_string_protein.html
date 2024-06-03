@@ -6,7 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2025-12-05">
+<meta name="dcterms.date" content="2024-05-24">
 
 <title>Portfolio - Protein Embedding with ProteinBERT and STRING</title>
 <style>
@@ -194,7 +194,12 @@ div.csl-indent {
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
       <h1 class="title">Protein Embedding with ProteinBERT and STRING</h1>
-                      </div>
+                                <div class="quarto-categories">
+                <div class="quarto-category">Deep learning</div>
+                <div class="quarto-category">BERT</div>
+                <div class="quarto-category">LLM</div>
+              </div>
+                  </div>
   </div>
     
   
@@ -204,7 +209,7 @@ div.csl-indent {
       <div>
       <div class="quarto-title-meta-heading">Published</div>
       <div class="quarto-title-meta-contents">
-        <p class="date">December 5, 2025</p>
+        <p class="date">May 24, 2024</p>
       </div>
     </div>
     
@@ -275,7 +280,7 @@ div.csl-indent {
 <p>We’re gonna use the <a href="https://string-db.org/">STRING</a> database from protein interactions to retrieve genes that belong to the ontology <strong>Unfolded protein binding</strong> (GO:0051082) which belongs to the heat shock response. Specifically, I’m choosing <em>Coffea canephora</em> (robust coffee) due to the results achieved my thesis (Functional analysis of transcriptomes of <em>Coffea arabica</em> L. related to thermal stress) were I studied a related species: <em>Coffea arabica</em> (expensive coffee). Just to mention, the heat shock response is available from prokaryotes to eukaryotes, this means is a “conserved” response on all species.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><a href="../../posts/proteinbert/unfolded_protein_binding.png" class="lightbox" data-glightbox="description: .lightbox-desc-1" data-gallery="quarto-lightbox-gallery-1" title="GO:0051082"><img src="../../posts/proteinbert/unfolded_protein_binding.png" class="img-fluid figure-img" alt="GO:0051082"></a></p>
+<p><a href="../../posts/proteinbert/unfolded_protein_binding.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1" data-glightbox="description: .lightbox-desc-1" title="GO:0051082"><img src="../../posts/proteinbert/unfolded_protein_binding.png" class="img-fluid figure-img" alt="GO:0051082"></a></p>
 <figcaption>GO:0051082</figcaption>
 </figure>
 </div>
@@ -1706,7 +1711,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </div>
   </div>
 </footer>
-<script>var lightboxQuarto = GLightbox({"selector":".lightbox","closeEffect":"zoom","openEffect":"zoom","loop":false,"descPosition":"bottom"});
+<script>var lightboxQuarto = GLightbox({"openEffect":"zoom","loop":false,"descPosition":"bottom","closeEffect":"zoom","selector":".lightbox"});
 window.onload = () => {
   lightboxQuarto.on('slide_before_load', (data) => {
     const { slideIndex, slideNode, slideConfig, player, trigger } = data;
