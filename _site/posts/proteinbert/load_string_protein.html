@@ -234,7 +234,7 @@ div.csl-indent {
 <p>On this project we’ll learn how to use ProteinBERT (a large language model trained developed protein sequences) to get embeddings for aminoacids sequences and how to use this embeddings for visualization.</p>
 <p>Lastest deep learning models architectures designed foe sequences (e.g.&nbsp;text, audio) like GPT, BERT or LLama 3, combined with training on massive datasets, have led to a revolution on natural language processing tasks.</p>
 <p>However, most sequence-based models have been designed for processing natural languages (with a bias towards English). In this context, their architectures and pretraining tasks are not optimal fo aminoacid sequences, which differe from the human language. To mention some disimilarities, proteins dont have building blocks (words and/or sentences), have more variable length than sentences and have many interactions detween distant positions (secondary and tertiary structure).</p>
-<p>In this context ProteinBERT was developed and trained on ~106M proteins (representing the entire known protein space) derived from UniProtKB/UniRef90 and on the 8943 most frequent gene ontology annotations <span class="citation" data-cites="Brandes">Brandes et al. (<a href="#ref-Brandes" role="doc-biblioref">2022</a>)</span>, <span class="citation" data-cites="Rajan">Rajan (<a href="#ref-Rajan" role="doc-biblioref">2023</a>)</span>.</p>
+<p>In this context ProteinBERT was developed and trained on ~106M proteins (representing the entire known protein space) derived from UniProtKB/UniRef90 and on the 8943 most frequent gene ontology annotations <span class="citation" data-cites="Brandes">Brandes et al. (<a href="#ref-Brandes" role="doc-biblioref">2022</a>)</span>, <span class="citation" data-cites="Rajan">Rajan and Perez (<a href="#ref-Rajan" role="doc-biblioref">2023</a>)</span>.</p>
 <div id="cell-3" class="cell" data-execution_count="10">
 <details open="" class="code-fold">
 <summary>Code</summary>
@@ -268,7 +268,7 @@ div.csl-indent {
 <p>We’re gonna use the <a href="https://string-db.org/">STRING</a> database from protein interactions to retrieve genes that belong to the ontology <strong>Unfolded protein binding</strong> (GO:0051082) which belongs to the heat shock response. Specifically, I’m choosing <em>Coffea canephora</em> (robust coffee) due to the results achieved my thesis (Functional analysis of transcriptomes of <em>Coffea arabica</em> L. related to thermal stress) were I studied a related species: <em>Coffea arabica</em> (expensive coffee). Just to mention, the heat shock response is available from prokaryotes to eukaryotes, this means is a “conserved” response on all species.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><a href="../..\posts/proteinbert/unfolded_protein_binding.png" class="lightbox" data-glightbox="description: .lightbox-desc-1" data-gallery="quarto-lightbox-gallery-1" title="GO:0051082"><img src="../..\posts/proteinbert/unfolded_protein_binding.png" class="img-fluid figure-img" alt="GO:0051082"></a></p>
+<p><a href="../..\posts/proteinbert/unfolded_protein_binding.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1" data-glightbox="description: .lightbox-desc-1" title="GO:0051082"><img src="../..\posts/proteinbert/unfolded_protein_binding.png" class="img-fluid figure-img" alt="GO:0051082"></a></p>
 <figcaption>GO:0051082</figcaption>
 </figure>
 </div>
@@ -1265,7 +1265,7 @@ Number of nodes labels: 1</code></pre>
 Brandes, Nadav, Dan Ofer, Yam Peleg, Nadav Rappoport, and Michal Linial. 2022. <span>“<span class="nocase">ProteinBERT: a universal deep-learning model of protein sequence and function</span>.”</span> <em>Bioinformatics</em> 38 (8): 2102–10. <a href="https://doi.org/10.1093/bioinformatics/btac020">https://doi.org/10.1093/bioinformatics/btac020</a>.
 </div>
 <div id="ref-Rajan" class="csl-entry" role="listitem">
-Rajan, Perez, Lozano. 2023. <span>“<span class="nocase">BERT2Mult: Predicting <span>‘a priori’</span> protein-protein interactions with graph neural networks and language models</span>.”</span> <a href="https://medium.com/stanford-cs224w/bert2mult-predicting-a-priori-protein-protein-interactions-with-graph-neural-networks-and-f257c8b575a0">https://medium.com/stanford-cs224w/bert2mult-predicting-a-priori-protein-protein-interactions-with-graph-neural-networks-and-f257c8b575a0</a>.
+Rajan, Lozano, and Perez. 2023. <span>“<span class="nocase">BERT2Mult: Predicting <span>‘a priori’</span> protein-protein interactions with graph neural networks and language models</span>.”</span> <a href="https://medium.com/stanford-cs224w/bert2mult-predicting-a-priori-protein-protein-interactions-with-graph-neural-networks-and-f257c8b575a0">https://medium.com/stanford-cs224w/bert2mult-predicting-a-priori-protein-protein-interactions-with-graph-neural-networks-and-f257c8b575a0</a>.
 </div>
 </div>
 
@@ -1677,7 +1677,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </div>
   </div>
 </footer>
-<script>var lightboxQuarto = GLightbox({"descPosition":"bottom","closeEffect":"zoom","selector":".lightbox","openEffect":"zoom","loop":false});
+<script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","selector":".lightbox","loop":false,"openEffect":"zoom","descPosition":"bottom"});
 window.onload = () => {
   lightboxQuarto.on('slide_before_load', (data) => {
     const { slideIndex, slideNode, slideConfig, player, trigger } = data;
