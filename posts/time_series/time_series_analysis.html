@@ -2,13 +2,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.555">
+<meta name="generator" content="quarto-1.5.55">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="dcterms.date" content="2024-05-16">
 
-<title>Portfolio - Analysis of Time-series Data</title>
+<title>Analysis of Time-series Data – Portfolio</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -34,7 +34,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -125,7 +125,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
   <span class="navbar-toggler-icon"></span>
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
@@ -164,7 +164,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </li>  
 </ul>
           </div> <!-- /navcollapse -->
-          <div class="quarto-navbar-tools">
+            <div class="quarto-navbar-tools">
 </div>
       </div> <!-- /container-fluid -->
     </nav>
@@ -1726,8 +1726,6 @@ c:\Users\LENOVO\miniconda3\envs\piero\lib\site-packages\statsmodels\base\model.p
 c:\Users\LENOVO\miniconda3\envs\piero\lib\site-packages\statsmodels\base\model.py:607: ConvergenceWarning: Maximum Likelihood optimization failed to converge. Check mle_retvals
   warnings.warn("Maximum Likelihood optimization failed to "
 c:\Users\LENOVO\miniconda3\envs\piero\lib\site-packages\statsmodels\base\model.py:607: ConvergenceWarning: Maximum Likelihood optimization failed to converge. Check mle_retvals
-  warnings.warn("Maximum Likelihood optimization failed to "
-c:\Users\LENOVO\miniconda3\envs\piero\lib\site-packages\statsmodels\base\model.py:607: ConvergenceWarning: Maximum Likelihood optimization failed to converge. Check mle_retvals
   warnings.warn("Maximum Likelihood optimization failed to "</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
@@ -1895,33 +1893,37 @@ Matrix of BIC [[ 63.82116328  65.3799217   65.99637023  69.18279025  72.79858294
   162.73169593 167.07270886 171.47563387 174.04324199 178.1326179 ]]
 AIC, BIC do not agree.</code></pre>
 </div>
+<div class="cell-output cell-output-stderr">
+<pre><code>c:\Users\LENOVO\miniconda3\envs\piero\lib\site-packages\statsmodels\base\model.py:607: ConvergenceWarning: Maximum Likelihood optimization failed to converge. Check mle_retvals
+  warnings.warn("Maximum Likelihood optimization failed to "</code></pre>
+</div>
 </div>
 <p>We see that the grid search output an ARMA(2,9) model. Let’s work with this model and form forecasts.</p>
 <p>To evaluate the model we will use a rolling window cross-validation. This will help us view how the model improve as we include more time series data. The window we are gonna use is 20 years and we’ll forecast 20 years.</p>
 <div id="cell-34" class="cell" data-execution_count="13">
 <details open="" class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>window_size <span class="op">=</span> <span class="dv">20</span></span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">20</span>,<span class="dv">72</span>,window_size):</span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>    train_temp, test_temp <span class="op">=</span> quadratic_residuals[:i], quadratic_residuals[i:i<span class="op">+</span>window_size]</span>
-<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>    train_date, test_date <span class="op">=</span> X[:i], X[i:i<span class="op">+</span>window_size]</span>
-<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>    arma <span class="op">=</span> ARIMA(train_temp, order<span class="op">=</span>min_aic_index).fit()</span>
-<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>    <span class="co"># print(arma.summary())</span></span>
-<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>    fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">15</span>, <span class="dv">5</span>))</span>
-<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>    fcast <span class="op">=</span> arma.get_forecast(<span class="bu">len</span>(test_temp)).summary_frame()</span>
-<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>    arma_predictions <span class="op">=</span> arma.predict()</span>
-<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>    ax.plot(X, quadratic_residuals, label<span class="op">=</span><span class="st">'annual mean T°C, converted to stationary time series'</span>)</span>
-<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>    predicted_values <span class="op">=</span> arma_predictions.reshape(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>)</span>
-<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>    ax.plot(train_date, predicted_values, <span class="st">'r'</span>, label<span class="op">=</span><span class="st">'fitted line'</span>)</span>
-<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a>    forecast_means <span class="op">=</span> fcast[<span class="st">'mean'</span>].values.reshape(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>)</span>
-<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a>    test_set_mse <span class="op">=</span> np.mean((forecast_means.reshape(test_temp.shape) <span class="op">-</span> test_temp)<span class="op">**</span><span class="dv">2</span>)</span>
-<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a>    ax.plot(test_date, forecast_means, <span class="st">'k--'</span>, label<span class="op">=</span><span class="st">'mean forecast'</span>)</span>
-<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a>    ax.fill_between(test_date.flatten(), fcast[<span class="st">'mean_ci_lower'</span>], fcast[<span class="st">'mean_ci_upper'</span>], color<span class="op">=</span><span class="st">'k'</span>, alpha<span class="op">=</span><span class="fl">0.1</span>)<span class="op">;</span></span>
-<span id="cb19-20"><a href="#cb19-20" aria-hidden="true" tabindex="-1"></a>    plt.legend()<span class="op">;</span></span>
-<span id="cb19-21"><a href="#cb19-21" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"Test set mean squared error: "</span>, test_set_mse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>window_size <span class="op">=</span> <span class="dv">20</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">20</span>,<span class="dv">72</span>,window_size):</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>    train_temp, test_temp <span class="op">=</span> quadratic_residuals[:i], quadratic_residuals[i:i<span class="op">+</span>window_size]</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>    train_date, test_date <span class="op">=</span> X[:i], X[i:i<span class="op">+</span>window_size]</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>    arma <span class="op">=</span> ARIMA(train_temp, order<span class="op">=</span>min_aic_index).fit()</span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>    <span class="co"># print(arma.summary())</span></span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>    fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">15</span>, <span class="dv">5</span>))</span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>    fcast <span class="op">=</span> arma.get_forecast(<span class="bu">len</span>(test_temp)).summary_frame()</span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>    arma_predictions <span class="op">=</span> arma.predict()</span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>    ax.plot(X, quadratic_residuals, label<span class="op">=</span><span class="st">'annual mean T°C, converted to stationary time series'</span>)</span>
+<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>    predicted_values <span class="op">=</span> arma_predictions.reshape(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>)</span>
+<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a>    ax.plot(train_date, predicted_values, <span class="st">'r'</span>, label<span class="op">=</span><span class="st">'fitted line'</span>)</span>
+<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a>    forecast_means <span class="op">=</span> fcast[<span class="st">'mean'</span>].values.reshape(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>)</span>
+<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a>    test_set_mse <span class="op">=</span> np.mean((forecast_means.reshape(test_temp.shape) <span class="op">-</span> test_temp)<span class="op">**</span><span class="dv">2</span>)</span>
+<span id="cb20-18"><a href="#cb20-18" aria-hidden="true" tabindex="-1"></a>    ax.plot(test_date, forecast_means, <span class="st">'k--'</span>, label<span class="op">=</span><span class="st">'mean forecast'</span>)</span>
+<span id="cb20-19"><a href="#cb20-19" aria-hidden="true" tabindex="-1"></a>    ax.fill_between(test_date.flatten(), fcast[<span class="st">'mean_ci_lower'</span>], fcast[<span class="st">'mean_ci_upper'</span>], color<span class="op">=</span><span class="st">'k'</span>, alpha<span class="op">=</span><span class="fl">0.1</span>)<span class="op">;</span></span>
+<span id="cb20-20"><a href="#cb20-20" aria-hidden="true" tabindex="-1"></a>    plt.legend()<span class="op">;</span></span>
+<span id="cb20-21"><a href="#cb20-21" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"Test set mean squared error: "</span>, test_set_mse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stderr">
 <pre><code>c:\Users\LENOVO\miniconda3\envs\piero\lib\site-packages\statsmodels\tsa\statespace\sarimax.py:866: UserWarning: Too few observations to estimate starting parameters for ARMA and trend. All parameters except for variances will be set to zeros.
@@ -1931,37 +1933,45 @@ c:\Users\LENOVO\miniconda3\envs\piero\lib\site-packages\statsmodels\base\model.p
 c:\Users\LENOVO\miniconda3\envs\piero\lib\site-packages\statsmodels\tsa\statespace\sarimax.py:966: UserWarning: Non-stationary starting autoregressive parameters found. Using zeros as starting parameters.
   warn('Non-stationary starting autoregressive parameters'
 c:\Users\LENOVO\miniconda3\envs\piero\lib\site-packages\statsmodels\tsa\statespace\sarimax.py:978: UserWarning: Non-invertible starting MA parameters found. Using zeros as starting parameters.
-  warn('Non-invertible starting MA parameters found.'
-c:\Users\LENOVO\miniconda3\envs\piero\lib\site-packages\statsmodels\base\model.py:607: ConvergenceWarning: Maximum Likelihood optimization failed to converge. Check mle_retvals
+  warn('Non-invertible starting MA parameters found.'</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Test set mean squared error:  0.20590924950605077</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>c:\Users\LENOVO\miniconda3\envs\piero\lib\site-packages\statsmodels\base\model.py:607: ConvergenceWarning: Maximum Likelihood optimization failed to converge. Check mle_retvals
   warnings.warn("Maximum Likelihood optimization failed to "
 c:\Users\LENOVO\miniconda3\envs\piero\lib\site-packages\statsmodels\tsa\statespace\sarimax.py:978: UserWarning: Non-invertible starting MA parameters found. Using zeros as starting parameters.
-  warn('Non-invertible starting MA parameters found.'
-c:\Users\LENOVO\miniconda3\envs\piero\lib\site-packages\statsmodels\base\model.py:607: ConvergenceWarning: Maximum Likelihood optimization failed to converge. Check mle_retvals
+  warn('Non-invertible starting MA parameters found.'</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Test set mean squared error:  0.09063865739126532</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>c:\Users\LENOVO\miniconda3\envs\piero\lib\site-packages\statsmodels\base\model.py:607: ConvergenceWarning: Maximum Likelihood optimization failed to converge. Check mle_retvals
   warnings.warn("Maximum Likelihood optimization failed to "</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Test set mean squared error:  0.20590924950605077
-Test set mean squared error:  0.09063865739126532
-Test set mean squared error:  0.039150953597273795</code></pre>
+<pre><code>Test set mean squared error:  0.039150953597273795</code></pre>
 </div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><a href="time_series_analysis_files/figure-html/cell-14-output-3.png" class="lightbox" data-gallery="quarto-lightbox-gallery-10"><img src="time_series_analysis_files/figure-html/cell-14-output-3.png" class="img-fluid figure-img"></a></p>
+<p><a href="time_series_analysis_files/figure-html/cell-14-output-7.png" class="lightbox" data-gallery="quarto-lightbox-gallery-10"><img src="time_series_analysis_files/figure-html/cell-14-output-7.png" class="img-fluid figure-img"></a></p>
 </figure>
 </div>
 </div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><a href="time_series_analysis_files/figure-html/cell-14-output-4.png" class="lightbox" data-gallery="quarto-lightbox-gallery-11"><img src="time_series_analysis_files/figure-html/cell-14-output-4.png" class="img-fluid figure-img"></a></p>
+<p><a href="time_series_analysis_files/figure-html/cell-14-output-8.png" class="lightbox" data-gallery="quarto-lightbox-gallery-11"><img src="time_series_analysis_files/figure-html/cell-14-output-8.png" class="img-fluid figure-img"></a></p>
 </figure>
 </div>
 </div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><a href="time_series_analysis_files/figure-html/cell-14-output-5.png" class="lightbox" data-gallery="quarto-lightbox-gallery-12"><img src="time_series_analysis_files/figure-html/cell-14-output-5.png" class="img-fluid figure-img"></a></p>
+<p><a href="time_series_analysis_files/figure-html/cell-14-output-9.png" class="lightbox" data-gallery="quarto-lightbox-gallery-12"><img src="time_series_analysis_files/figure-html/cell-14-output-9.png" class="img-fluid figure-img"></a></p>
 </figure>
 </div>
 </div>
@@ -1971,31 +1981,31 @@ Test set mean squared error:  0.039150953597273795</code></pre>
 <div id="cell-37" class="cell" data-execution_count="14">
 <details open="" class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>window_size <span class="op">=</span> <span class="dv">20</span></span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">20</span>,<span class="dv">72</span>,window_size):</span>
-<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>    train_temp, test_temp <span class="op">=</span> quadratic_residuals[:i], quadratic_residuals[i:i<span class="op">+</span>window_size]</span>
-<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>    train_date, test_date <span class="op">=</span> X[:i], X[i:i<span class="op">+</span>window_size]</span>
-<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>    train_prec, test_prec <span class="op">=</span> subset_df[<span class="st">"Prec_annual_mean"</span>].values.reshape(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>)[:i], subset_df[<span class="st">"Prec_annual_mean"</span>].values.reshape(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>)[i:i<span class="op">+</span>window_size]</span>
-<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a>    arma <span class="op">=</span> ARIMA(train_temp, order<span class="op">=</span>min_aic_index, exog<span class="op">=</span>train_prec).fit()</span>
-<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a>    <span class="co"># print(arma.summary())</span></span>
-<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a>    fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">15</span>, <span class="dv">5</span>))</span>
-<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a>    fcast <span class="op">=</span> arma.get_forecast(<span class="bu">len</span>(test_temp), exog<span class="op">=</span>test_prec).summary_frame()</span>
-<span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-16"><a href="#cb22-16" aria-hidden="true" tabindex="-1"></a>    arma_predictions <span class="op">=</span> arma.predict()</span>
-<span id="cb22-17"><a href="#cb22-17" aria-hidden="true" tabindex="-1"></a>    ax.plot(X, quadratic_residuals, label<span class="op">=</span><span class="st">'annual mean T°C, converted to stationary time series'</span>)</span>
-<span id="cb22-18"><a href="#cb22-18" aria-hidden="true" tabindex="-1"></a>    predicted_values <span class="op">=</span> arma_predictions.reshape(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>)</span>
-<span id="cb22-19"><a href="#cb22-19" aria-hidden="true" tabindex="-1"></a>    ax.plot(train_date, predicted_values, <span class="st">'r'</span>, label<span class="op">=</span><span class="st">'fitted line'</span>)</span>
-<span id="cb22-20"><a href="#cb22-20" aria-hidden="true" tabindex="-1"></a>    forecast_means <span class="op">=</span> fcast[<span class="st">'mean'</span>].values.reshape(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>)</span>
-<span id="cb22-21"><a href="#cb22-21" aria-hidden="true" tabindex="-1"></a>    test_set_mse <span class="op">=</span> np.mean((forecast_means.reshape(test_temp.shape) <span class="op">-</span> test_temp)<span class="op">**</span><span class="dv">2</span>)</span>
-<span id="cb22-22"><a href="#cb22-22" aria-hidden="true" tabindex="-1"></a>    ax.plot(test_date, forecast_means, <span class="st">'k--'</span>, label<span class="op">=</span><span class="st">'mean forecast'</span>)</span>
-<span id="cb22-23"><a href="#cb22-23" aria-hidden="true" tabindex="-1"></a>    ax.fill_between(test_date.flatten(), fcast[<span class="st">'mean_ci_lower'</span>], fcast[<span class="st">'mean_ci_upper'</span>], color<span class="op">=</span><span class="st">'k'</span>, alpha<span class="op">=</span><span class="fl">0.1</span>)<span class="op">;</span></span>
-<span id="cb22-24"><a href="#cb22-24" aria-hidden="true" tabindex="-1"></a>    plt.legend()<span class="op">;</span></span>
-<span id="cb22-25"><a href="#cb22-25" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"Test set mean squared error: "</span>, test_set_mse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>window_size <span class="op">=</span> <span class="dv">20</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">20</span>,<span class="dv">72</span>,window_size):</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>    train_temp, test_temp <span class="op">=</span> quadratic_residuals[:i], quadratic_residuals[i:i<span class="op">+</span>window_size]</span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>    train_date, test_date <span class="op">=</span> X[:i], X[i:i<span class="op">+</span>window_size]</span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>    train_prec, test_prec <span class="op">=</span> subset_df[<span class="st">"Prec_annual_mean"</span>].values.reshape(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>)[:i], subset_df[<span class="st">"Prec_annual_mean"</span>].values.reshape(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>)[i:i<span class="op">+</span>window_size]</span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a>    arma <span class="op">=</span> ARIMA(train_temp, order<span class="op">=</span>min_aic_index, exog<span class="op">=</span>train_prec).fit()</span>
+<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a>    <span class="co"># print(arma.summary())</span></span>
+<span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a>    fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">15</span>, <span class="dv">5</span>))</span>
+<span id="cb27-14"><a href="#cb27-14" aria-hidden="true" tabindex="-1"></a>    fcast <span class="op">=</span> arma.get_forecast(<span class="bu">len</span>(test_temp), exog<span class="op">=</span>test_prec).summary_frame()</span>
+<span id="cb27-15"><a href="#cb27-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-16"><a href="#cb27-16" aria-hidden="true" tabindex="-1"></a>    arma_predictions <span class="op">=</span> arma.predict()</span>
+<span id="cb27-17"><a href="#cb27-17" aria-hidden="true" tabindex="-1"></a>    ax.plot(X, quadratic_residuals, label<span class="op">=</span><span class="st">'annual mean T°C, converted to stationary time series'</span>)</span>
+<span id="cb27-18"><a href="#cb27-18" aria-hidden="true" tabindex="-1"></a>    predicted_values <span class="op">=</span> arma_predictions.reshape(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>)</span>
+<span id="cb27-19"><a href="#cb27-19" aria-hidden="true" tabindex="-1"></a>    ax.plot(train_date, predicted_values, <span class="st">'r'</span>, label<span class="op">=</span><span class="st">'fitted line'</span>)</span>
+<span id="cb27-20"><a href="#cb27-20" aria-hidden="true" tabindex="-1"></a>    forecast_means <span class="op">=</span> fcast[<span class="st">'mean'</span>].values.reshape(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>)</span>
+<span id="cb27-21"><a href="#cb27-21" aria-hidden="true" tabindex="-1"></a>    test_set_mse <span class="op">=</span> np.mean((forecast_means.reshape(test_temp.shape) <span class="op">-</span> test_temp)<span class="op">**</span><span class="dv">2</span>)</span>
+<span id="cb27-22"><a href="#cb27-22" aria-hidden="true" tabindex="-1"></a>    ax.plot(test_date, forecast_means, <span class="st">'k--'</span>, label<span class="op">=</span><span class="st">'mean forecast'</span>)</span>
+<span id="cb27-23"><a href="#cb27-23" aria-hidden="true" tabindex="-1"></a>    ax.fill_between(test_date.flatten(), fcast[<span class="st">'mean_ci_lower'</span>], fcast[<span class="st">'mean_ci_upper'</span>], color<span class="op">=</span><span class="st">'k'</span>, alpha<span class="op">=</span><span class="fl">0.1</span>)<span class="op">;</span></span>
+<span id="cb27-24"><a href="#cb27-24" aria-hidden="true" tabindex="-1"></a>    plt.legend()<span class="op">;</span></span>
+<span id="cb27-25"><a href="#cb27-25" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"Test set mean squared error: "</span>, test_set_mse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stderr">
 <pre><code>c:\Users\LENOVO\miniconda3\envs\piero\lib\site-packages\statsmodels\tsa\statespace\sarimax.py:866: UserWarning: Too few observations to estimate starting parameters for ARMA and trend. All parameters except for variances will be set to zeros.
@@ -2005,35 +2015,39 @@ c:\Users\LENOVO\miniconda3\envs\piero\lib\site-packages\statsmodels\base\model.p
 c:\Users\LENOVO\miniconda3\envs\piero\lib\site-packages\statsmodels\tsa\statespace\sarimax.py:966: UserWarning: Non-stationary starting autoregressive parameters found. Using zeros as starting parameters.
   warn('Non-stationary starting autoregressive parameters'
 c:\Users\LENOVO\miniconda3\envs\piero\lib\site-packages\statsmodels\tsa\statespace\sarimax.py:978: UserWarning: Non-invertible starting MA parameters found. Using zeros as starting parameters.
-  warn('Non-invertible starting MA parameters found.'
-c:\Users\LENOVO\miniconda3\envs\piero\lib\site-packages\statsmodels\tsa\statespace\sarimax.py:978: UserWarning: Non-invertible starting MA parameters found. Using zeros as starting parameters.
+  warn('Non-invertible starting MA parameters found.'</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Test set mean squared error:  0.18613318748268368
+Test set mean squared error:  0.11609711371821685</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>c:\Users\LENOVO\miniconda3\envs\piero\lib\site-packages\statsmodels\tsa\statespace\sarimax.py:978: UserWarning: Non-invertible starting MA parameters found. Using zeros as starting parameters.
   warn('Non-invertible starting MA parameters found.'
 c:\Users\LENOVO\miniconda3\envs\piero\lib\site-packages\statsmodels\base\model.py:607: ConvergenceWarning: Maximum Likelihood optimization failed to converge. Check mle_retvals
   warnings.warn("Maximum Likelihood optimization failed to "</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Test set mean squared error:  0.18613318748268368
-Test set mean squared error:  0.11609711371821685
-Test set mean squared error:  0.07317563428347647</code></pre>
+<pre><code>Test set mean squared error:  0.07317563428347647</code></pre>
 </div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><a href="time_series_analysis_files/figure-html/cell-15-output-3.png" class="lightbox" data-gallery="quarto-lightbox-gallery-13"><img src="time_series_analysis_files/figure-html/cell-15-output-3.png" class="img-fluid figure-img"></a></p>
+<p><a href="time_series_analysis_files/figure-html/cell-15-output-5.png" class="lightbox" data-gallery="quarto-lightbox-gallery-13"><img src="time_series_analysis_files/figure-html/cell-15-output-5.png" class="img-fluid figure-img"></a></p>
 </figure>
 </div>
 </div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><a href="time_series_analysis_files/figure-html/cell-15-output-4.png" class="lightbox" data-gallery="quarto-lightbox-gallery-14"><img src="time_series_analysis_files/figure-html/cell-15-output-4.png" class="img-fluid figure-img"></a></p>
+<p><a href="time_series_analysis_files/figure-html/cell-15-output-6.png" class="lightbox" data-gallery="quarto-lightbox-gallery-14"><img src="time_series_analysis_files/figure-html/cell-15-output-6.png" class="img-fluid figure-img"></a></p>
 </figure>
 </div>
 </div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><a href="time_series_analysis_files/figure-html/cell-15-output-5.png" class="lightbox" data-gallery="quarto-lightbox-gallery-15"><img src="time_series_analysis_files/figure-html/cell-15-output-5.png" class="img-fluid figure-img"></a></p>
+<p><a href="time_series_analysis_files/figure-html/cell-15-output-7.png" class="lightbox" data-gallery="quarto-lightbox-gallery-15"><img src="time_series_analysis_files/figure-html/cell-15-output-7.png" class="img-fluid figure-img"></a></p>
 </figure>
 </div>
 </div>
@@ -2081,18 +2095,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
     return false;
   }
-  const clipboard = new window.ClipboardJS('.code-copy-button', {
-    text: function(trigger) {
-      const codeEl = trigger.previousElementSibling.cloneNode(true);
-      for (const childEl of codeEl.children) {
-        if (isCodeAnnotation(childEl)) {
-          childEl.remove();
-        }
-      }
-      return codeEl.innerText;
-    }
-  });
-  clipboard.on('success', function(e) {
+  const onCopySuccess = function(e) {
     // button target
     const button = e.trigger;
     // don't keep focus
@@ -2124,7 +2127,29 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }, 1000);
     // clear code selection
     e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
   });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
     var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
     var mailtoRegex = new RegExp(/^mailto:/);
       var filterRegex = new RegExp("https:\/\/pipaber\.github\.io\/Portfolio\/");
@@ -2132,7 +2157,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
     }
     // Inspect non-navigation links and adorn them if external
- 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
     for (var i=0; i<links.length; i++) {
       const link = links[i];
       if (!isInternal(link.href)) {
@@ -2469,30 +2494,37 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </div>
   </div>
 </footer>
-<script>var lightboxQuarto = GLightbox({"selector":".lightbox","descPosition":"bottom","closeEffect":"zoom","loop":false,"openEffect":"zoom"});
-window.onload = () => {
-  lightboxQuarto.on('slide_before_load', (data) => {
-    const { slideIndex, slideNode, slideConfig, player, trigger } = data;
-    const href = trigger.getAttribute('href');
-    if (href !== null) {
-      const imgEl = window.document.querySelector(`a[href="${href}"] img`);
-      if (imgEl !== null) {
-        const srcAttr = imgEl.getAttribute("src");
-        if (srcAttr && srcAttr.startsWith("data:")) {
-          slideConfig.href = srcAttr;
-        }
-      }
-    } 
-  });
-
-  lightboxQuarto.on('slide_after_load', (data) => {
-    const { slideIndex, slideNode, slideConfig, player, trigger } = data;
-    if (window.Quarto?.typesetMath) {
-      window.Quarto.typesetMath(slideNode);
+<script>var lightboxQuarto = GLightbox({"selector":".lightbox","openEffect":"zoom","loop":false,"descPosition":"bottom","closeEffect":"zoom"});
+(function() {
+  let previousOnload = window.onload;
+  window.onload = () => {
+    if (previousOnload) {
+      previousOnload();
     }
-  });
-
-};
+    lightboxQuarto.on('slide_before_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      const href = trigger.getAttribute('href');
+      if (href !== null) {
+        const imgEl = window.document.querySelector(`a[href="${href}"] img`);
+        if (imgEl !== null) {
+          const srcAttr = imgEl.getAttribute("src");
+          if (srcAttr && srcAttr.startsWith("data:")) {
+            slideConfig.href = srcAttr;
+          }
+        }
+      } 
+    });
+  
+    lightboxQuarto.on('slide_after_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(slideNode);
+      }
+    });
+  
+  };
+  
+})();
           </script>
 
 

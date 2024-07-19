@@ -2,13 +2,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.555">
+<meta name="generator" content="quarto-1.5.55">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="dcterms.date" content="2024-06-03">
 
-<title>Portfolio - Evaluating ProtenBERT-GraphSAGE</title>
+<title>Evaluating ProteinBERT-GraphSAGE – Portfolio</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -34,7 +34,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -125,7 +125,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
   <span class="navbar-toggler-icon"></span>
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
@@ -164,7 +164,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </li>  
 </ul>
           </div> <!-- /navcollapse -->
-          <div class="quarto-navbar-tools">
+            <div class="quarto-navbar-tools">
 </div>
       </div> <!-- /container-fluid -->
     </nav>
@@ -173,7 +173,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <header id="title-block-header" class="quarto-title-block default page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
-      <h1 class="title">Evaluating ProtenBERT-GraphSAGE</h1>
+      <h1 class="title">Evaluating ProteinBERT-GraphSAGE</h1>
                                 <div class="quarto-categories">
                 <div class="quarto-category">LLM</div>
                 <div class="quarto-category">BERT</div>
@@ -208,7 +208,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul>
   <li><a href="#data-preparation" id="toc-data-preparation" class="nav-link active" data-scroll-target="#data-preparation">Data Preparation</a></li>
   <li><a href="#embed-protein-sequences" id="toc-embed-protein-sequences" class="nav-link" data-scroll-target="#embed-protein-sequences">Embed Protein Sequences</a></li>
-  <li><a href="#using-the-model" id="toc-using-the-model" class="nav-link" data-scroll-target="#using-the-model">Using the Model</a></li>
+  <li><a href="#using-model" id="toc-using-model" class="nav-link" data-scroll-target="#using-model">Using Model</a></li>
   </ul>
 </nav>
     </div>
@@ -219,7 +219,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 
-<div id="cell-1" class="cell" data-execution_count="1">
+<div id="cell-1" class="cell" data-execution_count="3">
 <details open="" class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> Bio <span class="im">import</span> Entrez, SeqIO</span>
@@ -236,14 +236,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>This is the third part of the series using ProtenBERT and Graph neural networks (GNNs). On this part, we’re gonna use the trained model and see if the protein-protein predictions have sense with a specific dataset. The datset we are gonna use comes from a transcriptomic analysis from my thesis (Functional analysis of transcriptomes of <em>Coffea arabica</em> L. related to thermal stress) where I identified genes with high expression that belongs to the <strong>Unfolded protein binding</strong> gene ontology.</p>
 <p>To use the trained model, we need aminoacids sequences which we dont have at the moment. So, first we need to get all the proteins related to the identified genes from the NCBI proteins database.</p>
 <p>First, let’s load a csv with the genes:</p>
-<div id="cell-6" class="cell" data-execution_count="2">
+<div id="cell-6" class="cell" data-execution_count="4">
 <details open="" class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>gene_names_df <span class="op">=</span> pd.read_csv(<span class="st">"coffea_arabica_thesis_unfolded_protein_binding.csv"</span>, sep<span class="op">=</span><span class="st">","</span>)</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>gene_names <span class="op">=</span> <span class="bu">list</span>(gene_names_df[<span class="st">"gene1"</span>].unique())</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>gene_names[:<span class="dv">5</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="2">
+<div class="cell-output cell-output-display" data-execution_count="4">
 <pre><code>['LOC113706996',
  'LOC113695644',
  'LOC113692361',
@@ -252,7 +252,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>Then, define specific functions to get the protein sequences from NCBI:</p>
-<div id="cell-8" class="cell" data-execution_count="3">
+<div id="cell-8" class="cell" data-execution_count="5">
 <details open="" class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> fetch_protein_ids(gene_name):</span>
@@ -272,7 +272,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </details>
 </div>
 <p>Also, let’s save the aminoacids sequences to a fasta file:</p>
-<div id="cell-10" class="cell" data-execution_count="4">
+<div id="cell-10" class="cell" data-execution_count="6">
 <details open="" class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># List to store all protein records</span></span>
@@ -308,7 +308,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>Once we have the fasta file with all the proteins related to those genes, we need to create an interaction dataframe where we have all the possible pairwise interactions between these proteins. And , save those in a tsv file.</p>
-<div id="cell-12" class="cell" data-execution_count="6">
+<div id="cell-12" class="cell" data-execution_count="7">
 <details open="" class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> csv</span>
@@ -341,7 +341,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="embed-protein-sequences" class="level2">
 <h2 class="anchored" data-anchor-id="embed-protein-sequences">Embed Protein Sequences</h2>
 <p>Now that we have the necesary data to run the model, we need to get the embedding from the aminoacids sequences using ProteinBERT.</p>
-<div id="cell-16" class="cell" data-execution_count="7">
+<div id="cell-16" class="cell" data-execution_count="8">
 <details open="" class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> proteinbert <span class="im">import</span> load_pretrained_model</span>
@@ -350,7 +350,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </details>
 </div>
 <p>Load the .tsv file:</p>
-<div id="cell-18" class="cell" data-execution_count="8">
+<div id="cell-18" class="cell" data-execution_count="9">
 <details open="" class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> zipfile.ZipFile(<span class="st">"coffea_arabica_string_interactions.zip"</span>, <span class="st">'r'</span>) <span class="im">as</span> z:</span>
@@ -365,7 +365,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </details>
 </div>
 <p>Get the unique protein IDs:</p>
-<div id="cell-20" class="cell" data-execution_count="9">
+<div id="cell-20" class="cell" data-execution_count="10">
 <details open="" class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>unique_proteins <span class="op">=</span> <span class="bu">set</span>(df[<span class="st">"Protein1"</span>]).union(<span class="bu">set</span>(df[<span class="st">"Protein2"</span>]))</span>
@@ -379,7 +379,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>Also, read the protein sequences from the fasta file:</p>
-<div id="cell-22" class="cell" data-execution_count="10">
+<div id="cell-22" class="cell" data-execution_count="11">
 <details open="" class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> _read_proteins_from_fasta(fasta_file):</span>
@@ -390,7 +390,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> protein_dict</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<div id="cell-23" class="cell" data-execution_count="11">
+<div id="cell-23" class="cell" data-execution_count="12">
 <details open="" class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> zipfile.ZipFile(<span class="st">"coffea_arabica_string_interactions.zip"</span>, <span class="st">'r'</span>) <span class="im">as</span> z:</span>
@@ -405,12 +405,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>            protein_sequences_dict <span class="op">=</span> _read_proteins_from_fasta(f_text)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<div id="cell-24" class="cell" data-execution_count="12">
+<div id="cell-24" class="cell" data-execution_count="13">
 <details open="" class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>protein_sequences_dict</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="12">
+<div class="cell-output cell-output-display" data-execution_count="13">
 <pre><code>{'XP_027084939.1': 'MDVRLLGLDAPLVNALHHLIDAADDGDKIANAPTRTYVRDAKAMAATPADVKEYPNSYVFVVDMPGLKSGDIKVQVEDDNVLVVSGERKREEEKEGARYVRMERRVGKFMRKFVLPENANTDAISAVCQDGVLTVTVHKLPPPEPKKPKVVEVKIV',
  'XP_027070567.1': 'MALIPKLFGDMLAPSGLSDETKGIVNARVDWKETPEAHVFKVDLPGLKKEEVKIEVEDGRVLAISGEGAAEKEDKNDKWHRVERSRGRFIRKFLLPENAKVEEVKANMEYGVLTVTIPKQEVKKPEVRAIEISG',
  'XP_027066556.1': 'MALIPKLFGDMLAPSGLSDETKGMVNARVDWKETPEAHVFKVDLPGLKKEEVKVEVEDGRVLAISGERAAEKEDKNDKWHRVERSRGRFTRKFLLPENAKXEEVKANMEYGVLTVTIPKQEVKKPEVRAIEISG',
@@ -441,20 +441,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  'XP_027095883.1': 'MSLIPSVFGGRRSNVFDPFSLDIWDPFEGFPFSNTSLANVPDTARDTSAFATARIDWKETPEAHVFKADLPGLKKEEVKVEVEEGRVLQISGERSREQEEKNDKWHRVERSSGRFLRRFRLPENAKVDQVKASMENGVLTVTVPKEEVKKSDVKAIEISG'}</code></pre>
 </div>
 </div>
-<div id="cell-25" class="cell" data-execution_count="13">
+<div id="cell-25" class="cell" data-execution_count="14">
 <details open="" class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>unique_proteins <span class="op">=</span> <span class="bu">set</span>(df[<span class="st">'Protein1'</span>]).union(<span class="bu">set</span>(df[<span class="st">'Protein2'</span>]))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <p>This is to mbe sure that we have all the aminoacids sequences that are avaialble on the .tsv file:</p>
-<div id="cell-27" class="cell" data-execution_count="14">
+<div id="cell-27" class="cell" data-execution_count="15">
 <details open="" class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>filtered_protein_dict <span class="op">=</span> {protein: seq <span class="cf">for</span> protein, seq <span class="kw">in</span> protein_sequences_dict.items() <span class="cf">if</span> protein <span class="kw">in</span> unique_proteins}</span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>filtered_protein_dict</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="14">
+<div class="cell-output cell-output-display" data-execution_count="15">
 <pre><code>{'XP_027084939.1': 'MDVRLLGLDAPLVNALHHLIDAADDGDKIANAPTRTYVRDAKAMAATPADVKEYPNSYVFVVDMPGLKSGDIKVQVEDDNVLVVSGERKREEEKEGARYVRMERRVGKFMRKFVLPENANTDAISAVCQDGVLTVTVHKLPPPEPKKPKVVEVKIV',
  'XP_027070567.1': 'MALIPKLFGDMLAPSGLSDETKGIVNARVDWKETPEAHVFKVDLPGLKKEEVKIEVEDGRVLAISGEGAAEKEDKNDKWHRVERSRGRFIRKFLLPENAKVEEVKANMEYGVLTVTIPKQEVKKPEVRAIEISG',
  'XP_027066556.1': 'MALIPKLFGDMLAPSGLSDETKGMVNARVDWKETPEAHVFKVDLPGLKKEEVKVEVEDGRVLAISGERAAEKEDKNDKWHRVERSRGRFTRKFLLPENAKXEEVKANMEYGVLTVTIPKQEVKKPEVRAIEISG',
@@ -486,14 +486,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>To run ProteinBERT, we need to get the longest sequence:</p>
-<div id="cell-29" class="cell" data-execution_count="15">
+<div id="cell-29" class="cell" data-execution_count="16">
 <details open="" class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>sequences <span class="op">=</span> <span class="bu">list</span>(filtered_protein_dict.values())</span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>longest_sequence_length <span class="op">=</span> <span class="bu">max</span>(<span class="bu">len</span>(seq) <span class="cf">for</span> seq <span class="kw">in</span> sequences)</span>
 <span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>longest_sequence_length</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="15">
+<div class="cell-output cell-output-display" data-execution_count="16">
 <pre><code>346</code></pre>
 </div>
 </div>
@@ -541,9 +541,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 1/1 ━━━━━━━━━━━━━━━━━━━━ 1s 1s/step
 1/1 ━━━━━━━━━━━━━━━━━━━━ 1s 1s/step
 1/1 ━━━━━━━━━━━━━━━━━━━━ 1s 1s/step
-WARNING:tensorflow:5 out of the last 5 calls to &lt;function TensorFlowTrainer.make_predict_function.&lt;locals&gt;.one_step_on_data_distributed at 0x0000017A9F9605E0&gt; triggered tf.function retracing. Tracing is expensive and the excessive number of tracings could be due to (1) creating @tf.function repeatedly in a loop, (2) passing tensors with different shapes, (3) passing Python objects instead of tensors. For (1), please define your @tf.function outside of the loop. For (2), @tf.function has reduce_retracing=True option that can avoid unnecessary retracing. For (3), please refer to https://www.tensorflow.org/guide/function#controlling_retracing and https://www.tensorflow.org/api_docs/python/tf/function for  more details.
-1/1 ━━━━━━━━━━━━━━━━━━━━ 1s 1s/step
-WARNING:tensorflow:6 out of the last 6 calls to &lt;function TensorFlowTrainer.make_predict_function.&lt;locals&gt;.one_step_on_data_distributed at 0x0000017A9F98C5E0&gt; triggered tf.function retracing. Tracing is expensive and the excessive number of tracings could be due to (1) creating @tf.function repeatedly in a loop, (2) passing tensors with different shapes, (3) passing Python objects instead of tensors. For (1), please define your @tf.function outside of the loop. For (2), @tf.function has reduce_retracing=True option that can avoid unnecessary retracing. For (3), please refer to https://www.tensorflow.org/guide/function#controlling_retracing and https://www.tensorflow.org/api_docs/python/tf/function for  more details.
+WARNING:tensorflow:5 out of the last 5 calls to &lt;function TensorFlowTrainer.make_predict_function.&lt;locals&gt;.one_step_on_data_distributed at 0x0000029623428EE0&gt; triggered tf.function retracing. Tracing is expensive and the excessive number of tracings could be due to (1) creating @tf.function repeatedly in a loop, (2) passing tensors with different shapes, (3) passing Python objects instead of tensors. For (1), please define your @tf.function outside of the loop. For (2), @tf.function has reduce_retracing=True option that can avoid unnecessary retracing. For (3), please refer to https://www.tensorflow.org/guide/function#controlling_retracing and https://www.tensorflow.org/api_docs/python/tf/function for  more details.
+1/1 ━━━━━━━━━━━━━━━━━━━━ 2s 2s/step
+WARNING:tensorflow:6 out of the last 6 calls to &lt;function TensorFlowTrainer.make_predict_function.&lt;locals&gt;.one_step_on_data_distributed at 0x0000029623444EE0&gt; triggered tf.function retracing. Tracing is expensive and the excessive number of tracings could be due to (1) creating @tf.function repeatedly in a loop, (2) passing tensors with different shapes, (3) passing Python objects instead of tensors. For (1), please define your @tf.function outside of the loop. For (2), @tf.function has reduce_retracing=True option that can avoid unnecessary retracing. For (3), please refer to https://www.tensorflow.org/guide/function#controlling_retracing and https://www.tensorflow.org/api_docs/python/tf/function for  more details.
 1/1 ━━━━━━━━━━━━━━━━━━━━ 1s 1s/step
 1/1 ━━━━━━━━━━━━━━━━━━━━ 1s 1s/step
 1/1 ━━━━━━━━━━━━━━━━━━━━ 1s 1s/step
@@ -596,9 +596,9 @@ WARNING:tensorflow:6 out of the last 6 calls to &lt;function TensorFlowTrainer.m
 <span id="cb29-23"><a href="#cb29-23" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Missing proteins in LabelEncoder: </span><span class="sc">{</span>missing_proteins<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>All unique proteins: ['XP_027063211.1', 'XP_027108429.1', 'XP_027113320.1', 'XP_027089887.1', 'XP_027077852.1', 'XP_027070567.1', 'XP_027096450.1', 'XP_027121387.1', 'XP_027110886.1', 'XP_027105380.1', 'XP_027065019.1', 'XP_027109657.1', 'XP_027122722.1', 'XP_027095883.1', 'XP_027066556.1', 'XP_027110885.1', 'XP_027085429.1', 'XP_027084272.1', 'XP_027084168.1', 'XP_027074077.1', 'XP_027098388.1', 'XP_027084939.1', 'XP_027110883.1', 'XP_027062161.1', 'XP_027125186.1', 'XP_027084938.1', 'XP_027089120.1', 'XP_027084891.1']
+<pre><code>All unique proteins: ['XP_027110886.1', 'XP_027089887.1', 'XP_027089120.1', 'XP_027110885.1', 'XP_027110883.1', 'XP_027077852.1', 'XP_027098388.1', 'XP_027074077.1', 'XP_027084168.1', 'XP_027113320.1', 'XP_027065019.1', 'XP_027084891.1', 'XP_027095883.1', 'XP_027109657.1', 'XP_027096450.1', 'XP_027085429.1', 'XP_027084939.1', 'XP_027066556.1', 'XP_027084272.1', 'XP_027084938.1', 'XP_027070567.1', 'XP_027121387.1', 'XP_027108429.1', 'XP_027122722.1', 'XP_027125186.1', 'XP_027062161.1', 'XP_027105380.1', 'XP_027063211.1']
 Number of unique proteins: 28
-Unique proteins: ['XP_027063211.1', 'XP_027108429.1', 'XP_027113320.1', 'XP_027089887.1', 'XP_027077852.1', 'XP_027070567.1', 'XP_027096450.1', 'XP_027121387.1', 'XP_027110886.1', 'XP_027105380.1', 'XP_027065019.1', 'XP_027109657.1', 'XP_027122722.1', 'XP_027095883.1', 'XP_027066556.1', 'XP_027110885.1', 'XP_027085429.1', 'XP_027084272.1', 'XP_027084168.1', 'XP_027074077.1', 'XP_027098388.1', 'XP_027084939.1', 'XP_027110883.1', 'XP_027062161.1', 'XP_027125186.1', 'XP_027084938.1', 'XP_027089120.1', 'XP_027084891.1']
+Unique proteins: ['XP_027110886.1', 'XP_027089887.1', 'XP_027089120.1', 'XP_027110885.1', 'XP_027110883.1', 'XP_027077852.1', 'XP_027098388.1', 'XP_027074077.1', 'XP_027084168.1', 'XP_027113320.1', 'XP_027065019.1', 'XP_027084891.1', 'XP_027095883.1', 'XP_027109657.1', 'XP_027096450.1', 'XP_027085429.1', 'XP_027084939.1', 'XP_027066556.1', 'XP_027084272.1', 'XP_027084938.1', 'XP_027070567.1', 'XP_027121387.1', 'XP_027108429.1', 'XP_027122722.1', 'XP_027125186.1', 'XP_027062161.1', 'XP_027105380.1', 'XP_027063211.1']
 Number of classes in LabelEncoder: 28
 Classes: ['XP_027062161.1' 'XP_027063211.1' 'XP_027065019.1' 'XP_027066556.1'
  'XP_027070567.1' 'XP_027074077.1' 'XP_027077852.1' 'XP_027084168.1'
@@ -750,7 +750,7 @@ Transformed Protein2: [ 4  3 10 12  7 13 17 22 16 24 20  9 23 25  8 26 27 14  5 
 <span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>edge_index <span class="op">=</span> torch.LongTensor(edge_index)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stderr">
-<pre><code>C:\Users\LENOVO\AppData\Local\Temp\ipykernel_18068\4265644366.py:2: UserWarning: Creating a tensor from a list of numpy.ndarrays is extremely slow. Please consider converting the list to a single numpy.ndarray with numpy.array() before converting to a tensor. (Triggered internally at ..\torch\csrc\utils\tensor_new.cpp:277.)
+<pre><code>C:\Users\LENOVO\AppData\Local\Temp\ipykernel_3324\4265644366.py:2: UserWarning: Creating a tensor from a list of numpy.ndarrays is extremely slow. Please consider converting the list to a single numpy.ndarray with numpy.array() before converting to a tensor. (Triggered internally at ..\torch\csrc\utils\tensor_new.cpp:277.)
   edge_index = torch.LongTensor(edge_index)</code></pre>
 </div>
 </div>
@@ -812,7 +812,7 @@ Transformed Protein2: [ 4  3 10 12  7 13 17 22 16 24 20  9 23 25  8 26 27 14  5 
 </details>
 </div>
 <p>We have all the necesary to create the Data object:</p>
-<div id="cell-47" class="cell" data-execution_count="29">
+<div id="cell-47" class="cell" data-execution_count="28">
 <details open="" class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb40"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> torch_geometric.data <span class="im">import</span> Dataset, download_url, extract_zip, Data</span>
@@ -821,65 +821,61 @@ Transformed Protein2: [ 4  3 10 12  7 13 17 22 16 24 20  9 23 25  8 26 27 14  5 
 <span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> Data(x<span class="op">=</span>global_embeds,edge_index<span class="op">=</span>edge_index, y<span class="op">=</span>y)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-stderr">
-<pre><code>C:\Users\LENOVO\AppData\Local\Temp\ipykernel_18068\3991706278.py:3: UserWarning: To copy construct from a tensor, it is recommended to use sourceTensor.clone().detach() or sourceTensor.clone().detach().requires_grad_(True), rather than torch.tensor(sourceTensor).
-  global_embeds = torch.tensor(global_embeds, dtype=torch.float)</code></pre>
 </div>
-</div>
-<div id="cell-48" class="cell" data-execution_count="35">
+<div id="cell-48" class="cell" data-execution_count="29">
 <details open="" class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>data</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>data</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="35">
+<div class="cell-output cell-output-display" data-execution_count="29">
 <pre><code>Data(x=[28, 15599], edge_index=[2, 378], y=[1])</code></pre>
 </div>
 </div>
-<div id="cell-49" class="cell" data-execution_count="36">
+<div id="cell-49" class="cell" data-execution_count="30">
 <details open="" class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> torch_geometric.utils <span class="im">import</span> to_networkx</span>
-<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>G <span class="op">=</span> to_networkx(data<span class="op">=</span>data)</span>
-<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(G)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> torch_geometric.utils <span class="im">import</span> to_networkx</span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>G <span class="op">=</span> to_networkx(data<span class="op">=</span>data)</span>
+<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(G)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>DiGraph with 28 nodes and 378 edges</code></pre>
 </div>
 </div>
 <p>We can plot the network:</p>
-<div id="cell-51" class="cell" data-execution_count="37">
+<div id="cell-51" class="cell" data-execution_count="31">
 <details open="" class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>matplotlib inline</span>
-<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> networkx <span class="im">as</span> nx</span>
-<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-5"><a href="#cb46-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Visualization function for NX graph or PyTorch tensor</span></span>
-<span id="cb46-6"><a href="#cb46-6" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> visualize(h, color, epoch<span class="op">=</span><span class="va">None</span>, loss<span class="op">=</span><span class="va">None</span>, accuracy<span class="op">=</span><span class="va">None</span>, node_size<span class="op">=</span><span class="dv">300</span>):</span>
-<span id="cb46-7"><a href="#cb46-7" aria-hidden="true" tabindex="-1"></a>    plt.figure(figsize<span class="op">=</span>(<span class="dv">7</span>,<span class="dv">7</span>))</span>
-<span id="cb46-8"><a href="#cb46-8" aria-hidden="true" tabindex="-1"></a>    plt.xticks([])</span>
-<span id="cb46-9"><a href="#cb46-9" aria-hidden="true" tabindex="-1"></a>    plt.yticks([])</span>
-<span id="cb46-10"><a href="#cb46-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-11"><a href="#cb46-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> torch.is_tensor(h):</span>
-<span id="cb46-12"><a href="#cb46-12" aria-hidden="true" tabindex="-1"></a>        h <span class="op">=</span> h.detach().cpu().numpy()</span>
-<span id="cb46-13"><a href="#cb46-13" aria-hidden="true" tabindex="-1"></a>        plt.scatter(h[:, <span class="dv">0</span>], h[:, <span class="dv">1</span>], s<span class="op">=</span><span class="dv">140</span>, c<span class="op">=</span>color, cmap<span class="op">=</span><span class="st">"Set2"</span>)</span>
-<span id="cb46-14"><a href="#cb46-14" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> epoch <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span> <span class="kw">and</span> loss <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span> <span class="kw">and</span> accuracy[<span class="st">'train'</span>] <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span> <span class="kw">and</span> accuracy[<span class="st">'val'</span>] <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:</span>
-<span id="cb46-15"><a href="#cb46-15" aria-hidden="true" tabindex="-1"></a>            plt.xlabel((<span class="ss">f'Epoch: </span><span class="sc">{</span>epoch<span class="sc">}</span><span class="ss">, Loss: </span><span class="sc">{</span>loss<span class="sc">.</span>item()<span class="sc">:.4f}</span><span class="ss"> </span><span class="ch">\n</span><span class="ss">'</span></span>
-<span id="cb46-16"><a href="#cb46-16" aria-hidden="true" tabindex="-1"></a>                       <span class="ss">f'Training Accuracy: </span><span class="sc">{</span>accuracy[<span class="st">"train"</span>]<span class="op">*</span><span class="dv">100</span><span class="sc">:.2f}</span><span class="ss">% </span><span class="ch">\n</span><span class="ss">'</span></span>
-<span id="cb46-17"><a href="#cb46-17" aria-hidden="true" tabindex="-1"></a>                       <span class="ss">f' Validation Accuracy: </span><span class="sc">{</span>accuracy[<span class="st">"val"</span>]<span class="op">*</span><span class="dv">100</span><span class="sc">:.2f}</span><span class="ss">%'</span>),</span>
-<span id="cb46-18"><a href="#cb46-18" aria-hidden="true" tabindex="-1"></a>                       fontsize<span class="op">=</span><span class="dv">16</span>)</span>
-<span id="cb46-19"><a href="#cb46-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
-<span id="cb46-20"><a href="#cb46-20" aria-hidden="true" tabindex="-1"></a>        nx.draw_networkx(h, pos<span class="op">=</span>nx.spring_layout(h, seed<span class="op">=</span><span class="dv">4572321</span>), with_labels<span class="op">=</span><span class="va">False</span>,</span>
-<span id="cb46-21"><a href="#cb46-21" aria-hidden="true" tabindex="-1"></a>                         node_color<span class="op">=</span>color, cmap<span class="op">=</span><span class="st">"Set2"</span>, node_size<span class="op">=</span><span class="dv">40</span>, alpha<span class="op">=</span><span class="fl">0.6</span>)</span>
-<span id="cb46-22"><a href="#cb46-22" aria-hidden="true" tabindex="-1"></a>    plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>matplotlib inline</span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> networkx <span class="im">as</span> nx</span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-5"><a href="#cb45-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Visualization function for NX graph or PyTorch tensor</span></span>
+<span id="cb45-6"><a href="#cb45-6" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> visualize(h, color, epoch<span class="op">=</span><span class="va">None</span>, loss<span class="op">=</span><span class="va">None</span>, accuracy<span class="op">=</span><span class="va">None</span>, node_size<span class="op">=</span><span class="dv">300</span>):</span>
+<span id="cb45-7"><a href="#cb45-7" aria-hidden="true" tabindex="-1"></a>    plt.figure(figsize<span class="op">=</span>(<span class="dv">7</span>,<span class="dv">7</span>))</span>
+<span id="cb45-8"><a href="#cb45-8" aria-hidden="true" tabindex="-1"></a>    plt.xticks([])</span>
+<span id="cb45-9"><a href="#cb45-9" aria-hidden="true" tabindex="-1"></a>    plt.yticks([])</span>
+<span id="cb45-10"><a href="#cb45-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-11"><a href="#cb45-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> torch.is_tensor(h):</span>
+<span id="cb45-12"><a href="#cb45-12" aria-hidden="true" tabindex="-1"></a>        h <span class="op">=</span> h.detach().cpu().numpy()</span>
+<span id="cb45-13"><a href="#cb45-13" aria-hidden="true" tabindex="-1"></a>        plt.scatter(h[:, <span class="dv">0</span>], h[:, <span class="dv">1</span>], s<span class="op">=</span><span class="dv">140</span>, c<span class="op">=</span>color, cmap<span class="op">=</span><span class="st">"Set2"</span>)</span>
+<span id="cb45-14"><a href="#cb45-14" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> epoch <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span> <span class="kw">and</span> loss <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span> <span class="kw">and</span> accuracy[<span class="st">'train'</span>] <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span> <span class="kw">and</span> accuracy[<span class="st">'val'</span>] <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:</span>
+<span id="cb45-15"><a href="#cb45-15" aria-hidden="true" tabindex="-1"></a>            plt.xlabel((<span class="ss">f'Epoch: </span><span class="sc">{</span>epoch<span class="sc">}</span><span class="ss">, Loss: </span><span class="sc">{</span>loss<span class="sc">.</span>item()<span class="sc">:.4f}</span><span class="ss"> </span><span class="ch">\n</span><span class="ss">'</span></span>
+<span id="cb45-16"><a href="#cb45-16" aria-hidden="true" tabindex="-1"></a>                       <span class="ss">f'Training Accuracy: </span><span class="sc">{</span>accuracy[<span class="st">"train"</span>]<span class="op">*</span><span class="dv">100</span><span class="sc">:.2f}</span><span class="ss">% </span><span class="ch">\n</span><span class="ss">'</span></span>
+<span id="cb45-17"><a href="#cb45-17" aria-hidden="true" tabindex="-1"></a>                       <span class="ss">f' Validation Accuracy: </span><span class="sc">{</span>accuracy[<span class="st">"val"</span>]<span class="op">*</span><span class="dv">100</span><span class="sc">:.2f}</span><span class="ss">%'</span>),</span>
+<span id="cb45-18"><a href="#cb45-18" aria-hidden="true" tabindex="-1"></a>                       fontsize<span class="op">=</span><span class="dv">16</span>)</span>
+<span id="cb45-19"><a href="#cb45-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb45-20"><a href="#cb45-20" aria-hidden="true" tabindex="-1"></a>        nx.draw_networkx(h, pos<span class="op">=</span>nx.spring_layout(h, seed<span class="op">=</span><span class="dv">4572321</span>), with_labels<span class="op">=</span><span class="va">False</span>,</span>
+<span id="cb45-21"><a href="#cb45-21" aria-hidden="true" tabindex="-1"></a>                         node_color<span class="op">=</span>color, cmap<span class="op">=</span><span class="st">"Set2"</span>, node_size<span class="op">=</span><span class="dv">40</span>, alpha<span class="op">=</span><span class="fl">0.6</span>)</span>
+<span id="cb45-22"><a href="#cb45-22" aria-hidden="true" tabindex="-1"></a>    plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<div id="cell-52" class="cell" data-execution_count="38">
+<div id="cell-52" class="cell" data-execution_count="32">
 <details open="" class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>visualize(G, color<span class="op">=</span><span class="st">"cyan"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>visualize(G, color<span class="op">=</span><span class="st">"cyan"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stderr">
 <pre><code>c:\Users\LENOVO\miniconda3\envs\piero\lib\site-packages\networkx\drawing\nx_pylab.py:437: UserWarning: No data for colormapping provided via 'c'. Parameters 'cmap' will be ignored
@@ -895,17 +891,17 @@ Transformed Protein2: [ 4  3 10 12  7 13 17 22 16 24 20  9 23 25  8 26 27 14  5 
 </div>
 <p>Every node in this network is connected to all the other nodes. This will change with the model predictions.</p>
 <p>Let’s see the 2-D dimentional reduction from the embeddings:</p>
-<div id="cell-54" class="cell" data-execution_count="39">
+<div id="cell-54" class="cell" data-execution_count="33">
 <details open="" class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.manifold <span class="im">import</span> TSNE</span>
-<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a>tsne_components <span class="op">=</span> TSNE(n_components<span class="op">=</span><span class="dv">2</span>, perplexity<span class="op">=</span><span class="dv">5</span>, init<span class="op">=</span><span class="st">"pca"</span>).fit_transform(data.x)</span>
-<span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb49-5"><a href="#cb49-5" aria-hidden="true" tabindex="-1"></a>plt.scatter(tsne_components[:,<span class="dv">0</span>], tsne_components[:,<span class="dv">1</span>],c<span class="op">=</span><span class="st">"cyan"</span>, cmap<span class="op">=</span><span class="st">"tab20b"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.manifold <span class="im">import</span> TSNE</span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a>tsne_components <span class="op">=</span> TSNE(n_components<span class="op">=</span><span class="dv">2</span>, perplexity<span class="op">=</span><span class="dv">5</span>, init<span class="op">=</span><span class="st">"pca"</span>).fit_transform(data.x)</span>
+<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-5"><a href="#cb48-5" aria-hidden="true" tabindex="-1"></a>plt.scatter(tsne_components[:,<span class="dv">0</span>], tsne_components[:,<span class="dv">1</span>],c<span class="op">=</span><span class="st">"cyan"</span>, cmap<span class="op">=</span><span class="st">"tab20b"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stderr">
-<pre><code>C:\Users\LENOVO\AppData\Local\Temp\ipykernel_18068\233343671.py:5: UserWarning: No data for colormapping provided via 'c'. Parameters 'cmap' will be ignored
+<pre><code>C:\Users\LENOVO\AppData\Local\Temp\ipykernel_3324\233343671.py:5: UserWarning: No data for colormapping provided via 'c'. Parameters 'cmap' will be ignored
   plt.scatter(tsne_components[:,0], tsne_components[:,1],c="cyan", cmap="tab20b")</code></pre>
 </div>
 <div class="cell-output cell-output-display">
@@ -917,141 +913,141 @@ Transformed Protein2: [ 4  3 10 12  7 13 17 22 16 24 20  9 23 25  8 26 27 14  5 
 </div>
 </div>
 </section>
-<section id="using-the-model" class="level2">
-<h2 class="anchored" data-anchor-id="using-the-model">Using the Model</h2>
-<div id="cell-56" class="cell" data-execution_count="40">
+<section id="using-model" class="level2">
+<h2 class="anchored" data-anchor-id="using-model">Using Model</h2>
+<div id="cell-56" class="cell" data-execution_count="34">
 <details open="" class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch.nn <span class="im">as</span> nn</span>
-<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch.nn.functional <span class="im">as</span> F</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch.nn <span class="im">as</span> nn</span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch.nn.functional <span class="im">as</span> F</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<div id="cell-57" class="cell" data-execution_count="41">
+<div id="cell-57" class="cell" data-execution_count="35">
 <details open="" class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> torch_geometric.nn <span class="im">import</span> SAGEConv</span>
-<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> GNNStack(torch.nn.Module):</span>
-<span id="cb52-4"><a href="#cb52-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, input_dim, hidden_dim, output_dim, dropout, num_layers:<span class="bu">int</span>, emb<span class="op">=</span><span class="va">False</span>):</span>
-<span id="cb52-5"><a href="#cb52-5" aria-hidden="true" tabindex="-1"></a>        <span class="bu">super</span>(GNNStack, <span class="va">self</span>).<span class="fu">__init__</span>()</span>
-<span id="cb52-6"><a href="#cb52-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-7"><a href="#cb52-7" aria-hidden="true" tabindex="-1"></a>        </span>
-<span id="cb52-8"><a href="#cb52-8" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.dropout <span class="op">=</span> dropout</span>
-<span id="cb52-9"><a href="#cb52-9" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.num_layers <span class="op">=</span> num_layers</span>
-<span id="cb52-10"><a href="#cb52-10" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.emb <span class="op">=</span> emb</span>
-<span id="cb52-11"><a href="#cb52-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-12"><a href="#cb52-12" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.convs <span class="op">=</span> nn.ModuleList()</span>
-<span id="cb52-13"><a href="#cb52-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-14"><a href="#cb52-14" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> layer <span class="kw">in</span> <span class="bu">range</span>(<span class="va">self</span>.num_layers):</span>
-<span id="cb52-15"><a href="#cb52-15" aria-hidden="true" tabindex="-1"></a>            in_channels <span class="op">=</span> input_dim <span class="cf">if</span> layer <span class="op">==</span> <span class="dv">0</span> <span class="cf">else</span> hidden_dim</span>
-<span id="cb52-16"><a href="#cb52-16" aria-hidden="true" tabindex="-1"></a>            out_channels <span class="op">=</span> hidden_dim </span>
-<span id="cb52-17"><a href="#cb52-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-18"><a href="#cb52-18" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>.convs.append(SAGEConv(in_channels, out_channels, normalize<span class="op">=</span><span class="va">True</span>))</span>
-<span id="cb52-19"><a href="#cb52-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-20"><a href="#cb52-20" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.post_mp <span class="op">=</span> nn.Sequential(</span>
-<span id="cb52-21"><a href="#cb52-21" aria-hidden="true" tabindex="-1"></a>            nn.Linear(hidden_dim, hidden_dim),</span>
-<span id="cb52-22"><a href="#cb52-22" aria-hidden="true" tabindex="-1"></a>            nn.Dropout(<span class="va">self</span>.dropout),</span>
-<span id="cb52-23"><a href="#cb52-23" aria-hidden="true" tabindex="-1"></a>            nn.Linear(hidden_dim, hidden_dim)</span>
-<span id="cb52-24"><a href="#cb52-24" aria-hidden="true" tabindex="-1"></a>        ) </span>
-<span id="cb52-25"><a href="#cb52-25" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb52-26"><a href="#cb52-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-27"><a href="#cb52-27" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> forward(<span class="va">self</span>, x, edge_index):</span>
-<span id="cb52-28"><a href="#cb52-28" aria-hidden="true" tabindex="-1"></a>        </span>
-<span id="cb52-29"><a href="#cb52-29" aria-hidden="true" tabindex="-1"></a>            </span>
-<span id="cb52-30"><a href="#cb52-30" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="va">self</span>.num_layers):</span>
-<span id="cb52-31"><a href="#cb52-31" aria-hidden="true" tabindex="-1"></a>            x <span class="op">=</span> <span class="va">self</span>.convs[i](x, edge_index)</span>
-<span id="cb52-32"><a href="#cb52-32" aria-hidden="true" tabindex="-1"></a>            x <span class="op">=</span> F.gelu(x)</span>
-<span id="cb52-33"><a href="#cb52-33" aria-hidden="true" tabindex="-1"></a>            x <span class="op">=</span> F.dropout(x, p<span class="op">=</span><span class="va">self</span>.dropout,training<span class="op">=</span><span class="va">self</span>.training)</span>
-<span id="cb52-34"><a href="#cb52-34" aria-hidden="true" tabindex="-1"></a>        </span>
-<span id="cb52-35"><a href="#cb52-35" aria-hidden="true" tabindex="-1"></a>        x <span class="op">=</span> <span class="va">self</span>.post_mp(x)</span>
-<span id="cb52-36"><a href="#cb52-36" aria-hidden="true" tabindex="-1"></a>        </span>
-<span id="cb52-37"><a href="#cb52-37" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-38"><a href="#cb52-38" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="va">self</span>.emb <span class="op">==</span> <span class="va">True</span>:</span>
-<span id="cb52-39"><a href="#cb52-39" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> x</span>
-<span id="cb52-40"><a href="#cb52-40" aria-hidden="true" tabindex="-1"></a>            </span>
-<span id="cb52-41"><a href="#cb52-41" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-42"><a href="#cb52-42" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> F.log_softmax(x, dim<span class="op">=</span><span class="dv">1</span>)</span>
-<span id="cb52-43"><a href="#cb52-43" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-44"><a href="#cb52-44" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> loss(<span class="va">self</span>, pred, label):</span>
-<span id="cb52-45"><a href="#cb52-45" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> F.nll_loss(pred, label)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> torch_geometric.nn <span class="im">import</span> SAGEConv</span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> GNNStack(torch.nn.Module):</span>
+<span id="cb51-4"><a href="#cb51-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, input_dim, hidden_dim, output_dim, dropout, num_layers:<span class="bu">int</span>, emb<span class="op">=</span><span class="va">False</span>):</span>
+<span id="cb51-5"><a href="#cb51-5" aria-hidden="true" tabindex="-1"></a>        <span class="bu">super</span>(GNNStack, <span class="va">self</span>).<span class="fu">__init__</span>()</span>
+<span id="cb51-6"><a href="#cb51-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-7"><a href="#cb51-7" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb51-8"><a href="#cb51-8" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.dropout <span class="op">=</span> dropout</span>
+<span id="cb51-9"><a href="#cb51-9" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.num_layers <span class="op">=</span> num_layers</span>
+<span id="cb51-10"><a href="#cb51-10" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.emb <span class="op">=</span> emb</span>
+<span id="cb51-11"><a href="#cb51-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-12"><a href="#cb51-12" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.convs <span class="op">=</span> nn.ModuleList()</span>
+<span id="cb51-13"><a href="#cb51-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-14"><a href="#cb51-14" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> layer <span class="kw">in</span> <span class="bu">range</span>(<span class="va">self</span>.num_layers):</span>
+<span id="cb51-15"><a href="#cb51-15" aria-hidden="true" tabindex="-1"></a>            in_channels <span class="op">=</span> input_dim <span class="cf">if</span> layer <span class="op">==</span> <span class="dv">0</span> <span class="cf">else</span> hidden_dim</span>
+<span id="cb51-16"><a href="#cb51-16" aria-hidden="true" tabindex="-1"></a>            out_channels <span class="op">=</span> hidden_dim </span>
+<span id="cb51-17"><a href="#cb51-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-18"><a href="#cb51-18" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>.convs.append(SAGEConv(in_channels, out_channels, normalize<span class="op">=</span><span class="va">True</span>))</span>
+<span id="cb51-19"><a href="#cb51-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-20"><a href="#cb51-20" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.post_mp <span class="op">=</span> nn.Sequential(</span>
+<span id="cb51-21"><a href="#cb51-21" aria-hidden="true" tabindex="-1"></a>            nn.Linear(hidden_dim, hidden_dim),</span>
+<span id="cb51-22"><a href="#cb51-22" aria-hidden="true" tabindex="-1"></a>            nn.Dropout(<span class="va">self</span>.dropout),</span>
+<span id="cb51-23"><a href="#cb51-23" aria-hidden="true" tabindex="-1"></a>            nn.Linear(hidden_dim, hidden_dim)</span>
+<span id="cb51-24"><a href="#cb51-24" aria-hidden="true" tabindex="-1"></a>        ) </span>
+<span id="cb51-25"><a href="#cb51-25" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb51-26"><a href="#cb51-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-27"><a href="#cb51-27" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> forward(<span class="va">self</span>, x, edge_index):</span>
+<span id="cb51-28"><a href="#cb51-28" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb51-29"><a href="#cb51-29" aria-hidden="true" tabindex="-1"></a>            </span>
+<span id="cb51-30"><a href="#cb51-30" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="va">self</span>.num_layers):</span>
+<span id="cb51-31"><a href="#cb51-31" aria-hidden="true" tabindex="-1"></a>            x <span class="op">=</span> <span class="va">self</span>.convs[i](x, edge_index)</span>
+<span id="cb51-32"><a href="#cb51-32" aria-hidden="true" tabindex="-1"></a>            x <span class="op">=</span> F.gelu(x)</span>
+<span id="cb51-33"><a href="#cb51-33" aria-hidden="true" tabindex="-1"></a>            x <span class="op">=</span> F.dropout(x, p<span class="op">=</span><span class="va">self</span>.dropout,training<span class="op">=</span><span class="va">self</span>.training)</span>
+<span id="cb51-34"><a href="#cb51-34" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb51-35"><a href="#cb51-35" aria-hidden="true" tabindex="-1"></a>        x <span class="op">=</span> <span class="va">self</span>.post_mp(x)</span>
+<span id="cb51-36"><a href="#cb51-36" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb51-37"><a href="#cb51-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-38"><a href="#cb51-38" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="va">self</span>.emb <span class="op">==</span> <span class="va">True</span>:</span>
+<span id="cb51-39"><a href="#cb51-39" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> x</span>
+<span id="cb51-40"><a href="#cb51-40" aria-hidden="true" tabindex="-1"></a>            </span>
+<span id="cb51-41"><a href="#cb51-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-42"><a href="#cb51-42" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> F.log_softmax(x, dim<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb51-43"><a href="#cb51-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-44"><a href="#cb51-44" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> loss(<span class="va">self</span>, pred, label):</span>
+<span id="cb51-45"><a href="#cb51-45" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> F.nll_loss(pred, label)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<div id="cell-58" class="cell" data-execution_count="42">
+<div id="cell-58" class="cell" data-execution_count="36">
 <details open="" class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> LinkPredictorHead(nn.Module):</span>
-<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, in_channels:<span class="bu">int</span>, hidden_channels:<span class="bu">int</span>, out_channels:<span class="bu">int</span>, n_layers:<span class="bu">int</span>,dropout_probabilty:<span class="bu">float</span><span class="op">=</span><span class="fl">0.3</span>):</span>
-<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a>        <span class="co">"""</span></span>
-<span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a><span class="co">        Args:</span></span>
-<span id="cb53-5"><a href="#cb53-5" aria-hidden="true" tabindex="-1"></a><span class="co">            in_channels (int):     Number of input features.</span></span>
-<span id="cb53-6"><a href="#cb53-6" aria-hidden="true" tabindex="-1"></a><span class="co">            hidden_channels (int): Number of hidden features.</span></span>
-<span id="cb53-7"><a href="#cb53-7" aria-hidden="true" tabindex="-1"></a><span class="co">            out_channels (int):    Number of output features.</span></span>
-<span id="cb53-8"><a href="#cb53-8" aria-hidden="true" tabindex="-1"></a><span class="co">            n_layers (int):        Number of MLP layers.</span></span>
-<span id="cb53-9"><a href="#cb53-9" aria-hidden="true" tabindex="-1"></a><span class="co">            dropout (float):       Dropout probability.</span></span>
-<span id="cb53-10"><a href="#cb53-10" aria-hidden="true" tabindex="-1"></a><span class="co">            """</span></span>
-<span id="cb53-11"><a href="#cb53-11" aria-hidden="true" tabindex="-1"></a>        <span class="bu">super</span>(LinkPredictorHead, <span class="va">self</span>).<span class="fu">__init__</span>()</span>
-<span id="cb53-12"><a href="#cb53-12" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.dropout_probabilty    <span class="op">=</span> dropout_probabilty  <span class="co"># dropout probability</span></span>
-<span id="cb53-13"><a href="#cb53-13" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.mlp_layers            <span class="op">=</span> nn.ModuleList()     <span class="co"># ModuleList: is a list of modules</span></span>
-<span id="cb53-14"><a href="#cb53-14" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.non_linearity         <span class="op">=</span> F.relu              <span class="co"># non-linearity</span></span>
-<span id="cb53-15"><a href="#cb53-15" aria-hidden="true" tabindex="-1"></a>        </span>
-<span id="cb53-16"><a href="#cb53-16" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(n_layers <span class="op">-</span> <span class="dv">1</span>):                                 </span>
-<span id="cb53-17"><a href="#cb53-17" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> i <span class="op">==</span> <span class="dv">0</span>:</span>
-<span id="cb53-18"><a href="#cb53-18" aria-hidden="true" tabindex="-1"></a>                <span class="va">self</span>.mlp_layers.append(nn.Linear(in_channels, hidden_channels))          <span class="co"># input layer (in_channels, hidden_channels)</span></span>
-<span id="cb53-19"><a href="#cb53-19" aria-hidden="true" tabindex="-1"></a>            <span class="cf">else</span>:</span>
-<span id="cb53-20"><a href="#cb53-20" aria-hidden="true" tabindex="-1"></a>                <span class="va">self</span>.mlp_layers.append(nn.Linear(hidden_channels, hidden_channels))      <span class="co"># hidden layers (hidden_channels, hidden_channels)</span></span>
-<span id="cb53-21"><a href="#cb53-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb53-22"><a href="#cb53-22" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.mlp_layers.append(nn.Linear(hidden_channels, out_channels))                 <span class="co"># output layer (hidden_channels, out_channels)</span></span>
-<span id="cb53-23"><a href="#cb53-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb53-24"><a href="#cb53-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb53-25"><a href="#cb53-25" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> reset_parameters(<span class="va">self</span>):</span>
-<span id="cb53-26"><a href="#cb53-26" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> mlp_layer <span class="kw">in</span> <span class="va">self</span>.mlp_layers:</span>
-<span id="cb53-27"><a href="#cb53-27" aria-hidden="true" tabindex="-1"></a>            mlp_layer.reset_parameters()</span>
-<span id="cb53-28"><a href="#cb53-28" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb53-29"><a href="#cb53-29" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> forward(<span class="va">self</span>, x_i, x_j):</span>
-<span id="cb53-30"><a href="#cb53-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb53-31"><a href="#cb53-31" aria-hidden="true" tabindex="-1"></a>        x <span class="op">=</span> x_i <span class="op">*</span> x_j                                                     <span class="co"># element-wise multiplication</span></span>
-<span id="cb53-32"><a href="#cb53-32" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> mlp_layer <span class="kw">in</span> <span class="va">self</span>.mlp_layers[:<span class="op">-</span><span class="dv">1</span>]:                            <span class="co"># iterate over all layers except the last one</span></span>
-<span id="cb53-33"><a href="#cb53-33" aria-hidden="true" tabindex="-1"></a>            x <span class="op">=</span> mlp_layer(x)                                              <span class="co"># apply linear transformation</span></span>
-<span id="cb53-34"><a href="#cb53-34" aria-hidden="true" tabindex="-1"></a>            x <span class="op">=</span> <span class="va">self</span>.non_linearity(x)                                     <span class="co"># Apply non linear activation function</span></span>
-<span id="cb53-35"><a href="#cb53-35" aria-hidden="true" tabindex="-1"></a>            x <span class="op">=</span> F.dropout(x, p<span class="op">=</span><span class="va">self</span>.dropout_probabilty,training<span class="op">=</span><span class="va">self</span>.training)      <span class="co"># Apply dropout</span></span>
-<span id="cb53-36"><a href="#cb53-36" aria-hidden="true" tabindex="-1"></a>        x <span class="op">=</span> <span class="va">self</span>.mlp_layers[<span class="op">-</span><span class="dv">1</span>](x)                                        <span class="co"># apply linear transformation to the last layer</span></span>
-<span id="cb53-37"><a href="#cb53-37" aria-hidden="true" tabindex="-1"></a>        x <span class="op">=</span> torch.sigmoid(x)                                              <span class="co"># apply sigmoid activation function to get the probability</span></span>
-<span id="cb53-38"><a href="#cb53-38" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb53-39"><a href="#cb53-39" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> x</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> LinkPredictorHead(nn.Module):</span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, in_channels:<span class="bu">int</span>, hidden_channels:<span class="bu">int</span>, out_channels:<span class="bu">int</span>, n_layers:<span class="bu">int</span>,dropout_probabilty:<span class="bu">float</span><span class="op">=</span><span class="fl">0.3</span>):</span>
+<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a>        <span class="co">"""</span></span>
+<span id="cb52-4"><a href="#cb52-4" aria-hidden="true" tabindex="-1"></a><span class="co">        Args:</span></span>
+<span id="cb52-5"><a href="#cb52-5" aria-hidden="true" tabindex="-1"></a><span class="co">            in_channels (int):     Number of input features.</span></span>
+<span id="cb52-6"><a href="#cb52-6" aria-hidden="true" tabindex="-1"></a><span class="co">            hidden_channels (int): Number of hidden features.</span></span>
+<span id="cb52-7"><a href="#cb52-7" aria-hidden="true" tabindex="-1"></a><span class="co">            out_channels (int):    Number of output features.</span></span>
+<span id="cb52-8"><a href="#cb52-8" aria-hidden="true" tabindex="-1"></a><span class="co">            n_layers (int):        Number of MLP layers.</span></span>
+<span id="cb52-9"><a href="#cb52-9" aria-hidden="true" tabindex="-1"></a><span class="co">            dropout (float):       Dropout probability.</span></span>
+<span id="cb52-10"><a href="#cb52-10" aria-hidden="true" tabindex="-1"></a><span class="co">            """</span></span>
+<span id="cb52-11"><a href="#cb52-11" aria-hidden="true" tabindex="-1"></a>        <span class="bu">super</span>(LinkPredictorHead, <span class="va">self</span>).<span class="fu">__init__</span>()</span>
+<span id="cb52-12"><a href="#cb52-12" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.dropout_probabilty    <span class="op">=</span> dropout_probabilty  <span class="co"># dropout probability</span></span>
+<span id="cb52-13"><a href="#cb52-13" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.mlp_layers            <span class="op">=</span> nn.ModuleList()     <span class="co"># ModuleList: is a list of modules</span></span>
+<span id="cb52-14"><a href="#cb52-14" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.non_linearity         <span class="op">=</span> F.relu              <span class="co"># non-linearity</span></span>
+<span id="cb52-15"><a href="#cb52-15" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb52-16"><a href="#cb52-16" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(n_layers <span class="op">-</span> <span class="dv">1</span>):                                 </span>
+<span id="cb52-17"><a href="#cb52-17" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> i <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb52-18"><a href="#cb52-18" aria-hidden="true" tabindex="-1"></a>                <span class="va">self</span>.mlp_layers.append(nn.Linear(in_channels, hidden_channels))          <span class="co"># input layer (in_channels, hidden_channels)</span></span>
+<span id="cb52-19"><a href="#cb52-19" aria-hidden="true" tabindex="-1"></a>            <span class="cf">else</span>:</span>
+<span id="cb52-20"><a href="#cb52-20" aria-hidden="true" tabindex="-1"></a>                <span class="va">self</span>.mlp_layers.append(nn.Linear(hidden_channels, hidden_channels))      <span class="co"># hidden layers (hidden_channels, hidden_channels)</span></span>
+<span id="cb52-21"><a href="#cb52-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-22"><a href="#cb52-22" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.mlp_layers.append(nn.Linear(hidden_channels, out_channels))                 <span class="co"># output layer (hidden_channels, out_channels)</span></span>
+<span id="cb52-23"><a href="#cb52-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-24"><a href="#cb52-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-25"><a href="#cb52-25" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> reset_parameters(<span class="va">self</span>):</span>
+<span id="cb52-26"><a href="#cb52-26" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> mlp_layer <span class="kw">in</span> <span class="va">self</span>.mlp_layers:</span>
+<span id="cb52-27"><a href="#cb52-27" aria-hidden="true" tabindex="-1"></a>            mlp_layer.reset_parameters()</span>
+<span id="cb52-28"><a href="#cb52-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-29"><a href="#cb52-29" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> forward(<span class="va">self</span>, x_i, x_j):</span>
+<span id="cb52-30"><a href="#cb52-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-31"><a href="#cb52-31" aria-hidden="true" tabindex="-1"></a>        x <span class="op">=</span> x_i <span class="op">*</span> x_j                                                     <span class="co"># element-wise multiplication</span></span>
+<span id="cb52-32"><a href="#cb52-32" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> mlp_layer <span class="kw">in</span> <span class="va">self</span>.mlp_layers[:<span class="op">-</span><span class="dv">1</span>]:                            <span class="co"># iterate over all layers except the last one</span></span>
+<span id="cb52-33"><a href="#cb52-33" aria-hidden="true" tabindex="-1"></a>            x <span class="op">=</span> mlp_layer(x)                                              <span class="co"># apply linear transformation</span></span>
+<span id="cb52-34"><a href="#cb52-34" aria-hidden="true" tabindex="-1"></a>            x <span class="op">=</span> <span class="va">self</span>.non_linearity(x)                                     <span class="co"># Apply non linear activation function</span></span>
+<span id="cb52-35"><a href="#cb52-35" aria-hidden="true" tabindex="-1"></a>            x <span class="op">=</span> F.dropout(x, p<span class="op">=</span><span class="va">self</span>.dropout_probabilty,training<span class="op">=</span><span class="va">self</span>.training)      <span class="co"># Apply dropout</span></span>
+<span id="cb52-36"><a href="#cb52-36" aria-hidden="true" tabindex="-1"></a>        x <span class="op">=</span> <span class="va">self</span>.mlp_layers[<span class="op">-</span><span class="dv">1</span>](x)                                        <span class="co"># apply linear transformation to the last layer</span></span>
+<span id="cb52-37"><a href="#cb52-37" aria-hidden="true" tabindex="-1"></a>        x <span class="op">=</span> torch.sigmoid(x)                                              <span class="co"># apply sigmoid activation function to get the probability</span></span>
+<span id="cb52-38"><a href="#cb52-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-39"><a href="#cb52-39" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> x</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <p>Let’s load the model we trained before:</p>
-<div id="cell-60" class="cell" data-execution_count="44">
+<div id="cell-60" class="cell" data-execution_count="37">
 <details open="" class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a>device <span class="op">=</span> <span class="st">'cuda'</span> <span class="cf">if</span> torch.cuda.is_available() <span class="cf">else</span> <span class="st">'cpu'</span></span>
-<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb54-3"><a href="#cb54-3" aria-hidden="true" tabindex="-1"></a>input_dim <span class="op">=</span> data.x.shape[<span class="dv">1</span>]</span>
-<span id="cb54-4"><a href="#cb54-4" aria-hidden="true" tabindex="-1"></a>hidden_dim <span class="op">=</span> <span class="dv">1024</span></span>
-<span id="cb54-5"><a href="#cb54-5" aria-hidden="true" tabindex="-1"></a>dropout <span class="op">=</span> <span class="fl">0.3</span></span>
-<span id="cb54-6"><a href="#cb54-6" aria-hidden="true" tabindex="-1"></a>num_layers<span class="op">=</span> <span class="dv">3</span></span>
-<span id="cb54-7"><a href="#cb54-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb54-8"><a href="#cb54-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb54-9"><a href="#cb54-9" aria-hidden="true" tabindex="-1"></a>model          <span class="op">=</span> GNNStack(input_dim, hidden_dim, hidden_dim, dropout,num_layers, emb<span class="op">=</span><span class="va">True</span>).to(device) <span class="co"># the graph neural network that takes all the node embeddings as inputs to message pass and agregate</span></span>
-<span id="cb54-10"><a href="#cb54-10" aria-hidden="true" tabindex="-1"></a>link_predictor <span class="op">=</span> LinkPredictorHead(hidden_dim, hidden_dim, <span class="dv">1</span>, num_layers , dropout).to(device)</span>
-<span id="cb54-11"><a href="#cb54-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb54-12"><a href="#cb54-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb54-13"><a href="#cb54-13" aria-hidden="true" tabindex="-1"></a>best_graphsage_model_path      <span class="op">=</span> <span class="ss">f"GraphSage_epoch_</span><span class="sc">{</span><span class="dv">404</span><span class="sc">}</span><span class="ss">.pt"</span></span>
-<span id="cb54-14"><a href="#cb54-14" aria-hidden="true" tabindex="-1"></a>best_link_predictor_model_path <span class="op">=</span>  <span class="ss">f"link_predictor_epoch_</span><span class="sc">{</span><span class="dv">404</span><span class="sc">}</span><span class="ss">.pt"</span></span>
-<span id="cb54-15"><a href="#cb54-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb54-16"><a href="#cb54-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Loading best models:  </span><span class="sc">{</span>best_graphsage_model_path <span class="sc">}</span><span class="ss">  </span><span class="sc">{</span>best_link_predictor_model_path<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb54-17"><a href="#cb54-17" aria-hidden="true" tabindex="-1"></a>checkpoint <span class="op">=</span> torch.load(best_graphsage_model_path, map_location<span class="op">=</span>device)</span>
-<span id="cb54-18"><a href="#cb54-18" aria-hidden="true" tabindex="-1"></a>model.load_state_dict(checkpoint[<span class="st">'model_state_dict'</span>])</span>
-<span id="cb54-19"><a href="#cb54-19" aria-hidden="true" tabindex="-1"></a>model.<span class="bu">eval</span>()</span>
-<span id="cb54-20"><a href="#cb54-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb54-21"><a href="#cb54-21" aria-hidden="true" tabindex="-1"></a>checkpoint <span class="op">=</span> torch.load(best_link_predictor_model_path, map_location<span class="op">=</span>device)</span>
-<span id="cb54-22"><a href="#cb54-22" aria-hidden="true" tabindex="-1"></a>link_predictor.load_state_dict(checkpoint[<span class="st">'model_state_dict'</span>])</span>
-<span id="cb54-23"><a href="#cb54-23" aria-hidden="true" tabindex="-1"></a>link_predictor.<span class="bu">eval</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a>device <span class="op">=</span> <span class="st">'cuda'</span> <span class="cf">if</span> torch.cuda.is_available() <span class="cf">else</span> <span class="st">'cpu'</span></span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a>input_dim <span class="op">=</span> data.x.shape[<span class="dv">1</span>]</span>
+<span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a>hidden_dim <span class="op">=</span> <span class="dv">1024</span></span>
+<span id="cb53-5"><a href="#cb53-5" aria-hidden="true" tabindex="-1"></a>dropout <span class="op">=</span> <span class="fl">0.3</span></span>
+<span id="cb53-6"><a href="#cb53-6" aria-hidden="true" tabindex="-1"></a>num_layers<span class="op">=</span> <span class="dv">3</span></span>
+<span id="cb53-7"><a href="#cb53-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb53-8"><a href="#cb53-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb53-9"><a href="#cb53-9" aria-hidden="true" tabindex="-1"></a>model          <span class="op">=</span> GNNStack(input_dim, hidden_dim, hidden_dim, dropout,num_layers, emb<span class="op">=</span><span class="va">True</span>).to(device) <span class="co"># the graph neural network that takes all the node embeddings as inputs to message pass and agregate</span></span>
+<span id="cb53-10"><a href="#cb53-10" aria-hidden="true" tabindex="-1"></a>link_predictor <span class="op">=</span> LinkPredictorHead(hidden_dim, hidden_dim, <span class="dv">1</span>, num_layers , dropout).to(device)</span>
+<span id="cb53-11"><a href="#cb53-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb53-12"><a href="#cb53-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb53-13"><a href="#cb53-13" aria-hidden="true" tabindex="-1"></a>best_graphsage_model_path      <span class="op">=</span> <span class="ss">f"GraphSage_epoch_</span><span class="sc">{</span><span class="dv">404</span><span class="sc">}</span><span class="ss">.pt"</span></span>
+<span id="cb53-14"><a href="#cb53-14" aria-hidden="true" tabindex="-1"></a>best_link_predictor_model_path <span class="op">=</span>  <span class="ss">f"link_predictor_epoch_</span><span class="sc">{</span><span class="dv">404</span><span class="sc">}</span><span class="ss">.pt"</span></span>
+<span id="cb53-15"><a href="#cb53-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb53-16"><a href="#cb53-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Loading best models:  </span><span class="sc">{</span>best_graphsage_model_path <span class="sc">}</span><span class="ss">  </span><span class="sc">{</span>best_link_predictor_model_path<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb53-17"><a href="#cb53-17" aria-hidden="true" tabindex="-1"></a>checkpoint <span class="op">=</span> torch.load(best_graphsage_model_path, map_location<span class="op">=</span>device)</span>
+<span id="cb53-18"><a href="#cb53-18" aria-hidden="true" tabindex="-1"></a>model.load_state_dict(checkpoint[<span class="st">'model_state_dict'</span>])</span>
+<span id="cb53-19"><a href="#cb53-19" aria-hidden="true" tabindex="-1"></a>model.<span class="bu">eval</span>()</span>
+<span id="cb53-20"><a href="#cb53-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb53-21"><a href="#cb53-21" aria-hidden="true" tabindex="-1"></a>checkpoint <span class="op">=</span> torch.load(best_link_predictor_model_path, map_location<span class="op">=</span>device)</span>
+<span id="cb53-22"><a href="#cb53-22" aria-hidden="true" tabindex="-1"></a>link_predictor.load_state_dict(checkpoint[<span class="st">'model_state_dict'</span>])</span>
+<span id="cb53-23"><a href="#cb53-23" aria-hidden="true" tabindex="-1"></a>link_predictor.<span class="bu">eval</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>Loading best models:  GraphSage_epoch_404.pt  link_predictor_epoch_404.pt</code></pre>
 </div>
-<div class="cell-output cell-output-display" data-execution_count="44">
+<div class="cell-output cell-output-display" data-execution_count="37">
 <pre><code>LinkPredictorHead(
   (mlp_layers): ModuleList(
     (0-1): 2 x Linear(in_features=1024, out_features=1024, bias=True)
@@ -1061,29 +1057,29 @@ Transformed Protein2: [ 4  3 10 12  7 13 17 22 16 24 20  9 23 25  8 26 27 14  5 
 </div>
 </div>
 <p>Now, let’s update our ProteinBERT embeddings:</p>
-<div id="cell-62" class="cell" data-execution_count="45">
+<div id="cell-62" class="cell" data-execution_count="38">
 <details open="" class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> torch.FloatTensor(data.x).to(device)</span>
-<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a>edge_index <span class="op">=</span> data.edge_index.to(device)</span>
-<span id="cb57-3"><a href="#cb57-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb57-4"><a href="#cb57-4" aria-hidden="true" tabindex="-1"></a>embs <span class="op">=</span> model(x, edge_index)</span>
-<span id="cb57-5"><a href="#cb57-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb57-6"><a href="#cb57-6" aria-hidden="true" tabindex="-1"></a>embs.shape</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> torch.FloatTensor(data.x).to(device)</span>
+<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a>edge_index <span class="op">=</span> data.edge_index.to(device)</span>
+<span id="cb56-3"><a href="#cb56-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb56-4"><a href="#cb56-4" aria-hidden="true" tabindex="-1"></a>embs <span class="op">=</span> model(x, edge_index)</span>
+<span id="cb56-5"><a href="#cb56-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb56-6"><a href="#cb56-6" aria-hidden="true" tabindex="-1"></a>embs.shape</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="45">
+<div class="cell-output cell-output-display" data-execution_count="38">
 <pre><code>torch.Size([28, 1024])</code></pre>
 </div>
 </div>
-<div id="cell-63" class="cell" data-execution_count="61">
+<div id="cell-63" class="cell" data-execution_count="42">
 <details open="" class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a>tsne_components <span class="op">=</span> TSNE(n_components<span class="op">=</span><span class="dv">2</span>, perplexity<span class="op">=</span><span class="dv">27</span>, init<span class="op">=</span><span class="st">"pca"</span>).fit_transform(embs.detach().cpu().numpy())</span>
-<span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb59-3"><a href="#cb59-3" aria-hidden="true" tabindex="-1"></a>plt.scatter(tsne_components[:,<span class="dv">0</span>], tsne_components[:,<span class="dv">1</span>],c<span class="op">=</span><span class="st">"cyan"</span>, cmap<span class="op">=</span><span class="st">"tab20b"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a>tsne_components <span class="op">=</span> TSNE(n_components<span class="op">=</span><span class="dv">2</span>, perplexity<span class="op">=</span><span class="dv">27</span>, init<span class="op">=</span><span class="st">"pca"</span>).fit_transform(embs.detach().cpu().numpy())</span>
+<span id="cb58-2"><a href="#cb58-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb58-3"><a href="#cb58-3" aria-hidden="true" tabindex="-1"></a>plt.scatter(tsne_components[:,<span class="dv">0</span>], tsne_components[:,<span class="dv">1</span>],c<span class="op">=</span><span class="st">"cyan"</span>, cmap<span class="op">=</span><span class="st">"tab20b"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stderr">
-<pre><code>C:\Users\LENOVO\AppData\Local\Temp\ipykernel_18068\1092476614.py:3: UserWarning: No data for colormapping provided via 'c'. Parameters 'cmap' will be ignored
+<pre><code>C:\Users\LENOVO\AppData\Local\Temp\ipykernel_3324\1092476614.py:3: UserWarning: No data for colormapping provided via 'c'. Parameters 'cmap' will be ignored
   plt.scatter(tsne_components[:,0], tsne_components[:,1],c="cyan", cmap="tab20b")</code></pre>
 </div>
 <div class="cell-output cell-output-display">
@@ -1096,115 +1092,115 @@ Transformed Protein2: [ 4  3 10 12  7 13 17 22 16 24 20  9 23 25  8 26 27 14  5 
 </div>
 <p>We can see a similar behaviour to the graph we plotted before.</p>
 <p>Now, let’s pass those embedings to the <code>LinkPredictorHead</code> to get the probabilities of protein-protein interactions.</p>
-<div id="cell-65" class="cell" data-execution_count="62">
+<div id="cell-65" class="cell" data-execution_count="43">
 <details open="" class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> itertools</span>
-<span id="cb61-2"><a href="#cb61-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb61-3"><a href="#cb61-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> generate_pairs(num_embeddings):</span>
-<span id="cb61-4"><a href="#cb61-4" aria-hidden="true" tabindex="-1"></a>    pairs <span class="op">=</span> itertools.combinations(<span class="bu">range</span>(num_embeddings), <span class="dv">2</span>)</span>
-<span id="cb61-5"><a href="#cb61-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="bu">list</span>(pairs)</span>
-<span id="cb61-6"><a href="#cb61-6" aria-hidden="true" tabindex="-1"></a></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> itertools</span>
+<span id="cb60-2"><a href="#cb60-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb60-3"><a href="#cb60-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> generate_pairs(num_embeddings):</span>
+<span id="cb60-4"><a href="#cb60-4" aria-hidden="true" tabindex="-1"></a>    pairs <span class="op">=</span> itertools.combinations(<span class="bu">range</span>(num_embeddings), <span class="dv">2</span>)</span>
+<span id="cb60-5"><a href="#cb60-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="bu">list</span>(pairs)</span>
+<span id="cb60-6"><a href="#cb60-6" aria-hidden="true" tabindex="-1"></a></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<div id="cell-66" class="cell" data-execution_count="63">
+<div id="cell-66" class="cell" data-execution_count="44">
 <details open="" class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a>pairwise_combinations <span class="op">=</span> generate_pairs(<span class="bu">len</span>(embs))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a>pairwise_combinations <span class="op">=</span> generate_pairs(<span class="bu">len</span>(embs))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<div id="cell-67" class="cell" data-execution_count="64">
+<div id="cell-67" class="cell" data-execution_count="45">
 <details open="" class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a>results <span class="op">=</span> []</span>
-<span id="cb63-2"><a href="#cb63-2" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> torch.no_grad():  <span class="co"># Ensure no gradients are computed</span></span>
-<span id="cb63-3"><a href="#cb63-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i, j <span class="kw">in</span> pairwise_combinations:</span>
-<span id="cb63-4"><a href="#cb63-4" aria-hidden="true" tabindex="-1"></a>        vec1 <span class="op">=</span> embs[i].unsqueeze(<span class="dv">0</span>)  <span class="co"># Add batch dimension</span></span>
-<span id="cb63-5"><a href="#cb63-5" aria-hidden="true" tabindex="-1"></a>        vec2 <span class="op">=</span> embs[j].unsqueeze(<span class="dv">0</span>)  <span class="co"># Add batch dimension</span></span>
-<span id="cb63-6"><a href="#cb63-6" aria-hidden="true" tabindex="-1"></a>        prediction <span class="op">=</span> link_predictor(vec1, vec2).item()  <span class="co"># Convert to scalar</span></span>
-<span id="cb63-7"><a href="#cb63-7" aria-hidden="true" tabindex="-1"></a>        results.append((i, j, prediction))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a>results <span class="op">=</span> []</span>
+<span id="cb62-2"><a href="#cb62-2" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> torch.no_grad():  <span class="co"># Ensure no gradients are computed</span></span>
+<span id="cb62-3"><a href="#cb62-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i, j <span class="kw">in</span> pairwise_combinations:</span>
+<span id="cb62-4"><a href="#cb62-4" aria-hidden="true" tabindex="-1"></a>        vec1 <span class="op">=</span> embs[i].unsqueeze(<span class="dv">0</span>)  <span class="co"># Add batch dimension</span></span>
+<span id="cb62-5"><a href="#cb62-5" aria-hidden="true" tabindex="-1"></a>        vec2 <span class="op">=</span> embs[j].unsqueeze(<span class="dv">0</span>)  <span class="co"># Add batch dimension</span></span>
+<span id="cb62-6"><a href="#cb62-6" aria-hidden="true" tabindex="-1"></a>        prediction <span class="op">=</span> link_predictor(vec1, vec2).item()  <span class="co"># Convert to scalar</span></span>
+<span id="cb62-7"><a href="#cb62-7" aria-hidden="true" tabindex="-1"></a>        results.append((i, j, prediction))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<div id="cell-68" class="cell" data-execution_count="65">
+<div id="cell-68" class="cell" data-execution_count="46">
 <details open="" class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a>results</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a>results</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="65">
+<div class="cell-output cell-output-display" data-execution_count="46">
 <pre><code>[(0, 1, 0.6516209244728088),
  (0, 2, 0.6353868246078491),
- (0, 3, 0.1549677848815918),
+ (0, 3, 0.1549677550792694),
  (0, 4, 0.00240265647880733),
- (0, 5, 0.6596816182136536),
- (0, 6, 0.6366677284240723),
+ (0, 5, 0.6596815586090088),
+ (0, 6, 0.6366676688194275),
  (0, 7, 0.6536526679992676),
- (0, 8, 0.6611047983169556),
+ (0, 8, 0.6611047387123108),
  (0, 9, 0.6263799667358398),
- (0, 10, 0.5428963899612427),
+ (0, 10, 0.5428963303565979),
  (0, 11, 0.5935388207435608),
- (0, 12, 0.6135592460632324),
- (0, 13, 0.6762287020683289),
+ (0, 12, 0.6135593056678772),
+ (0, 13, 0.6762287616729736),
  (0, 14, 0.6489772796630859),
  (0, 15, 0.6287089586257935),
- (0, 16, 0.6755352020263672),
+ (0, 16, 0.6755351424217224),
  (0, 17, 0.6885703802108765),
  (0, 18, 0.6545939445495605),
- (0, 19, 0.6656284332275391),
+ (0, 19, 0.6656283736228943),
  (0, 20, 0.6443829536437988),
  (0, 21, 0.6490920186042786),
- (0, 22, 0.6958609819412231),
+ (0, 22, 0.6958609223365784),
  (0, 23, 0.6536524295806885),
- (0, 24, 0.6821669340133667),
- (0, 25, 0.6490938663482666),
+ (0, 24, 0.6821668744087219),
+ (0, 25, 0.6490938067436218),
  (0, 26, 0.6867173910140991),
- (0, 27, 0.6356632709503174),
+ (0, 27, 0.6356632113456726),
  (1, 2, 0.6407619118690491),
  (1, 3, 0.16379830241203308),
- (1, 4, 0.0026919611264020205),
+ (1, 4, 0.0026919585652649403),
  (1, 5, 0.663702130317688),
- (1, 6, 0.6410141587257385),
- (1, 7, 0.6575545072555542),
- (1, 8, 0.6650682687759399),
- (1, 9, 0.6302983164787292),
+ (1, 6, 0.6410140991210938),
+ (1, 7, 0.6575544476509094),
+ (1, 8, 0.6650683283805847),
+ (1, 9, 0.6302982568740845),
  (1, 10, 0.5495249032974243),
  (1, 11, 0.5960684418678284),
  (1, 12, 0.6183051466941833),
  (1, 13, 0.6807677149772644),
- (1, 14, 0.652899980545044),
+ (1, 14, 0.6529000401496887),
  (1, 15, 0.6348029375076294),
  (1, 16, 0.6794295310974121),
- (1, 17, 0.6925675868988037),
+ (1, 17, 0.6925675272941589),
  (1, 18, 0.6591278314590454),
  (1, 19, 0.6698798537254333),
  (1, 20, 0.6476978063583374),
  (1, 21, 0.6544296145439148),
  (1, 22, 0.6998830437660217),
- (1, 23, 0.6579517126083374),
+ (1, 23, 0.657951831817627),
  (1, 24, 0.6857574582099915),
- (1, 25, 0.6525058150291443),
+ (1, 25, 0.6525057554244995),
  (1, 26, 0.6906378269195557),
  (1, 27, 0.6393598318099976),
- (2, 3, 0.16432040929794312),
+ (2, 3, 0.1643204391002655),
  (2, 4, 0.002355146687477827),
  (2, 5, 0.6558791399002075),
  (2, 6, 0.6311058402061462),
  (2, 7, 0.6712092161178589),
  (2, 8, 0.6630185842514038),
- (2, 9, 0.6322582960128784),
- (2, 10, 0.5704501271247864),
+ (2, 9, 0.6322583556175232),
+ (2, 10, 0.5704501867294312),
  (2, 11, 0.5828412771224976),
  (2, 12, 0.6378066539764404),
  (2, 13, 0.69139564037323),
  (2, 14, 0.6474908590316772),
- (2, 15, 0.6154056191444397),
- (2, 16, 0.6871444582939148),
+ (2, 15, 0.6154056787490845),
+ (2, 16, 0.68714439868927),
  (2, 17, 0.7023219466209412),
- (2, 18, 0.643196702003479),
+ (2, 18, 0.6431967616081238),
  (2, 19, 0.6586276292800903),
  (2, 20, 0.650769054889679),
- (2, 21, 0.6362647414207458),
+ (2, 21, 0.6362648010253906),
  (2, 22, 0.7066485285758972),
- (2, 23, 0.6588586568832397),
+ (2, 23, 0.6588587164878845),
  (2, 24, 0.6905868053436279),
  (2, 25, 0.6514662504196167),
  (2, 26, 0.6880756616592407),
@@ -1213,29 +1209,29 @@ Transformed Protein2: [ 4  3 10 12  7 13 17 22 16 24 20  9 23 25  8 26 27 14  5 
  (3, 5, 0.1512165665626526),
  (3, 6, 0.1380177140235901),
  (3, 7, 0.20171405375003815),
- (3, 8, 0.1526450216770172),
+ (3, 8, 0.1526450365781784),
  (3, 9, 0.13056907057762146),
  (3, 10, 0.23209062218666077),
  (3, 11, 0.7857808470726013),
- (3, 12, 0.21389546990394592),
- (3, 13, 0.20203480124473572),
+ (3, 12, 0.21389544010162354),
+ (3, 13, 0.20203478634357452),
  (3, 14, 0.14245127141475677),
- (3, 15, 0.16068249940872192),
+ (3, 15, 0.16068245470523834),
  (3, 16, 0.17039823532104492),
- (3, 17, 0.20283138751983643),
- (3, 18, 0.17598100006580353),
+ (3, 17, 0.20283134281635284),
+ (3, 18, 0.17598101496696472),
  (3, 19, 0.17448773980140686),
- (3, 20, 0.14938105642795563),
+ (3, 20, 0.14938104152679443),
  (3, 21, 0.17380648851394653),
  (3, 22, 0.22450312972068787),
- (3, 23, 0.14858990907669067),
- (3, 24, 0.19588249921798706),
+ (3, 23, 0.14858992397785187),
+ (3, 24, 0.19588254392147064),
  (3, 25, 0.1469128578901291),
- (3, 26, 0.19678886234760284),
+ (3, 26, 0.19678889214992523),
  (3, 27, 0.12700866162776947),
  (4, 5, 0.0031711102928966284),
  (4, 6, 0.002816929016262293),
- (4, 7, 0.0280473530292511),
+ (4, 7, 0.028047362342476845),
  (4, 8, 0.004311413504183292),
  (4, 9, 0.006255981046706438),
  (4, 10, 0.04060244560241699),
@@ -1248,65 +1244,65 @@ Transformed Protein2: [ 4  3 10 12  7 13 17 22 16 24 20  9 23 25  8 26 27 14  5 
  (4, 17, 0.01686677150428295),
  (4, 18, 0.0031696499790996313),
  (4, 19, 0.003379370318725705),
- (4, 20, 0.008798898197710514),
- (4, 21, 0.0027418346144258976),
- (4, 22, 0.017997099086642265),
+ (4, 20, 0.008798902854323387),
+ (4, 21, 0.0027418360114097595),
+ (4, 22, 0.01799710839986801),
  (4, 23, 0.005963128991425037),
  (4, 24, 0.013169199228286743),
- (4, 25, 0.004866437986493111),
+ (4, 25, 0.004866440314799547),
  (4, 26, 0.005824151914566755),
- (4, 27, 0.0032935712952166796),
- (5, 6, 0.6407256126403809),
+ (4, 27, 0.0032935740891844034),
+ (5, 6, 0.6407255530357361),
  (5, 7, 0.6145603656768799),
  (5, 8, 0.6539314389228821),
  (5, 9, 0.6078476905822754),
  (5, 10, 0.48655009269714355),
  (5, 11, 0.6330196261405945),
  (5, 12, 0.5605289936065674),
- (5, 13, 0.6491217017173767),
- (5, 14, 0.6484203934669495),
+ (5, 13, 0.6491217613220215),
+ (5, 14, 0.6484204530715942),
  (5, 15, 0.6462467908859253),
  (5, 16, 0.6530637741088867),
  (5, 17, 0.6639900803565979),
  (5, 18, 0.6656372547149658),
- (5, 19, 0.6717554926872253),
- (5, 20, 0.6260454058647156),
+ (5, 19, 0.6717554330825806),
+ (5, 20, 0.6260453462600708),
  (5, 21, 0.6658167839050293),
- (5, 22, 0.6743162274360657),
- (5, 23, 0.6420108079910278),
- (5, 24, 0.6638981699943542),
- (5, 25, 0.6400291323661804),
- (5, 26, 0.6836236715316772),
+ (5, 22, 0.6743161678314209),
+ (5, 23, 0.6420108675956726),
+ (5, 24, 0.663898229598999),
+ (5, 25, 0.6400290727615356),
+ (5, 26, 0.683623731136322),
  (5, 27, 0.6318883895874023),
  (6, 7, 0.6121296882629395),
- (6, 8, 0.6378515362739563),
- (6, 9, 0.5936035513877869),
+ (6, 8, 0.6378514766693115),
+ (6, 9, 0.5936034917831421),
  (6, 10, 0.48594003915786743),
  (6, 11, 0.6049470901489258),
  (6, 12, 0.5616738796234131),
  (6, 13, 0.6440476775169373),
  (6, 14, 0.6289294958114624),
  (6, 15, 0.6212337017059326),
- (6, 16, 0.6450724601745605),
+ (6, 16, 0.6450724005699158),
  (6, 17, 0.6578848361968994),
  (6, 18, 0.6423628926277161),
- (6, 19, 0.6506401300430298),
+ (6, 19, 0.650640070438385),
  (6, 20, 0.6123230457305908),
  (6, 21, 0.6414790153503418),
- (6, 22, 0.6681964993476868),
- (6, 23, 0.6280676126480103),
+ (6, 22, 0.668196439743042),
+ (6, 23, 0.6280677318572998),
  (6, 24, 0.6558521389961243),
- (6, 25, 0.6238583922386169),
+ (6, 25, 0.6238582730293274),
  (6, 26, 0.6675381660461426),
  (6, 27, 0.6140040159225464),
  (7, 8, 0.5666692852973938),
  (7, 9, 0.473154753446579),
- (7, 10, 0.3175905644893646),
+ (7, 10, 0.31759050488471985),
  (7, 11, 0.786492645740509),
  (7, 12, 0.3461472690105438),
  (7, 13, 0.45529621839523315),
  (7, 14, 0.6007402539253235),
- (7, 15, 0.6579588055610657),
+ (7, 15, 0.6579587459564209),
  (7, 16, 0.4867945909500122),
  (7, 17, 0.48854517936706543),
  (7, 18, 0.6632601618766785),
@@ -1314,70 +1310,70 @@ Transformed Protein2: [ 4  3 10 12  7 13 17 22 16 24 20  9 23 25  8 26 27 14  5 
  (7, 20, 0.478398859500885),
  (7, 21, 0.6722728610038757),
  (7, 22, 0.5271363854408264),
- (7, 23, 0.520740270614624),
+ (7, 23, 0.5207403302192688),
  (7, 24, 0.521931529045105),
  (7, 25, 0.5416330099105835),
- (7, 26, 0.6081286668777466),
+ (7, 26, 0.6081287264823914),
  (7, 27, 0.5660364627838135),
- (8, 9, 0.5807304382324219),
+ (8, 9, 0.5807303786277771),
  (8, 10, 0.43117350339889526),
- (8, 11, 0.6539418697357178),
- (8, 12, 0.50054931640625),
+ (8, 11, 0.653941810131073),
+ (8, 12, 0.5005493760108948),
  (8, 13, 0.6095291972160339),
- (8, 14, 0.6396583914756775),
- (8, 15, 0.650992214679718),
+ (8, 14, 0.6396584510803223),
+ (8, 15, 0.6509921550750732),
  (8, 16, 0.6240960955619812),
  (8, 17, 0.6322875618934631),
  (8, 18, 0.6669977307319641),
- (8, 19, 0.6707510352134705),
+ (8, 19, 0.6707509756088257),
  (8, 20, 0.5967980623245239),
- (8, 21, 0.6697534918785095),
+ (8, 21, 0.6697534322738647),
  (8, 22, 0.6486610770225525),
- (8, 23, 0.6173008680343628),
+ (8, 23, 0.6173009872436523),
  (8, 24, 0.6384821534156799),
  (8, 25, 0.6230064034461975),
  (8, 26, 0.6710716485977173),
  (8, 27, 0.6209467649459839),
- (9, 10, 0.33942726254463196),
+ (9, 10, 0.33942732214927673),
  (9, 11, 0.6700907349586487),
  (9, 12, 0.40345248579978943),
  (9, 13, 0.5232086181640625),
  (9, 14, 0.5914512276649475),
  (9, 15, 0.6193699836730957),
- (9, 16, 0.5470945835113525),
+ (9, 16, 0.5470945239067078),
  (9, 17, 0.5522660613059998),
  (9, 18, 0.6310119032859802),
- (9, 19, 0.631758987903595),
+ (9, 19, 0.6317589282989502),
  (9, 20, 0.5196877121925354),
  (9, 21, 0.6380939483642578),
- (9, 22, 0.578601062297821),
- (9, 23, 0.5554649233818054),
- (9, 24, 0.5697510838508606),
- (9, 25, 0.5597212314605713),
- (9, 26, 0.6233639121055603),
+ (9, 22, 0.5786010026931763),
+ (9, 23, 0.5554651021957397),
+ (9, 24, 0.5697511434555054),
+ (9, 25, 0.5597211718559265),
+ (9, 26, 0.6233639717102051),
  (9, 27, 0.5657612085342407),
  (10, 11, 0.8320461511611938),
  (10, 12, 0.2759856879711151),
  (10, 13, 0.36178725957870483),
  (10, 14, 0.4756852090358734),
- (10, 15, 0.5591268539428711),
+ (10, 15, 0.5591267347335815),
  (10, 16, 0.3717026114463806),
- (10, 17, 0.383733868598938),
+ (10, 17, 0.3837338387966156),
  (10, 18, 0.5580776333808899),
- (10, 19, 0.5381459593772888),
+ (10, 19, 0.5381458401679993),
  (10, 20, 0.35380661487579346),
  (10, 21, 0.5728854537010193),
- (10, 22, 0.41806933283805847),
- (10, 23, 0.3892827033996582),
+ (10, 22, 0.41806942224502563),
+ (10, 23, 0.38928279280662537),
  (10, 24, 0.40968748927116394),
  (10, 25, 0.4041808843612671),
- (10, 26, 0.4880358576774597),
- (10, 27, 0.43004873394966125),
+ (10, 26, 0.4880358874797821),
+ (10, 27, 0.43004876375198364),
  (11, 12, 0.8281411528587341),
  (11, 13, 0.7587007284164429),
  (11, 14, 0.6126635074615479),
- (11, 15, 0.5350322127342224),
- (11, 16, 0.7190828919410706),
+ (11, 15, 0.5350322723388672),
+ (11, 16, 0.7190828323364258),
  (11, 17, 0.7444915175437927),
  (11, 18, 0.5951054096221924),
  (11, 19, 0.6181790232658386),
@@ -1386,24 +1382,24 @@ Transformed Protein2: [ 4  3 10 12  7 13 17 22 16 24 20  9 23 25  8 26 27 14  5 
  (11, 22, 0.6954312324523926),
  (11, 23, 0.6608714461326599),
  (11, 24, 0.6787600517272949),
- (11, 25, 0.6585937142372131),
- (11, 26, 0.6285814642906189),
- (11, 27, 0.6335500478744507),
+ (11, 25, 0.6585936546325684),
+ (11, 26, 0.6285814046859741),
+ (11, 27, 0.6335501074790955),
  (12, 13, 0.3908439874649048),
- (12, 14, 0.5473572015762329),
- (12, 15, 0.6265749931335449),
- (12, 16, 0.41871169209480286),
+ (12, 14, 0.5473573207855225),
+ (12, 15, 0.6265749335289001),
+ (12, 16, 0.4187116324901581),
  (12, 17, 0.42472636699676514),
- (12, 18, 0.6254512667655945),
+ (12, 18, 0.6254512071609497),
  (12, 19, 0.6057702302932739),
- (12, 20, 0.41026049852371216),
- (12, 21, 0.638272225856781),
- (12, 22, 0.4646745026111603),
- (12, 23, 0.4522153437137604),
+ (12, 20, 0.410260409116745),
+ (12, 21, 0.6382721662521362),
+ (12, 22, 0.4646744430065155),
+ (12, 23, 0.45221537351608276),
  (12, 24, 0.45593759417533875),
  (12, 25, 0.47443559765815735),
- (12, 26, 0.5471858978271484),
- (12, 27, 0.5039544105529785),
+ (12, 26, 0.5471859574317932),
+ (12, 27, 0.5039544701576233),
  (13, 14, 0.6351994872093201),
  (13, 15, 0.6790755987167358),
  (13, 16, 0.5415701866149902),
@@ -1413,34 +1409,34 @@ Transformed Protein2: [ 4  3 10 12  7 13 17 22 16 24 20  9 23 25  8 26 27 14  5 
  (13, 20, 0.5312950015068054),
  (13, 21, 0.6924731135368347),
  (13, 22, 0.5747604370117188),
- (13, 23, 0.5711760520935059),
- (13, 24, 0.5694891214370728),
- (13, 25, 0.5893359780311584),
- (13, 26, 0.6470932364463806),
- (13, 27, 0.6072431802749634),
+ (13, 23, 0.5711761116981506),
+ (13, 24, 0.5694891810417175),
+ (13, 25, 0.5893358588218689),
+ (13, 26, 0.6470932960510254),
+ (13, 27, 0.6072432398796082),
  (14, 15, 0.6351761817932129),
  (14, 16, 0.6383631825447083),
  (14, 17, 0.6506357789039612),
- (14, 18, 0.655508816242218),
+ (14, 18, 0.6555088758468628),
  (14, 19, 0.6611577272415161),
- (14, 20, 0.6099812984466553),
- (14, 21, 0.6557841300964355),
+ (14, 20, 0.6099813580513),
+ (14, 21, 0.6557841897010803),
  (14, 22, 0.6608516573905945),
- (14, 23, 0.6267027258872986),
+ (14, 23, 0.6267029047012329),
  (14, 24, 0.6494652628898621),
  (14, 25, 0.6262791156768799),
- (14, 26, 0.6703993678092957),
+ (14, 26, 0.6703994870185852),
  (14, 27, 0.6172877550125122),
- (15, 16, 0.674156904220581),
+ (15, 16, 0.6741568446159363),
  (15, 17, 0.6897742748260498),
  (15, 18, 0.6372163891792297),
  (15, 19, 0.6502119302749634),
  (15, 20, 0.6392190456390381),
- (15, 21, 0.6295965909957886),
- (15, 22, 0.6940183639526367),
- (15, 23, 0.6454129815101624),
+ (15, 21, 0.6295965313911438),
+ (15, 22, 0.6940183043479919),
+ (15, 23, 0.6454131007194519),
  (15, 24, 0.6772948503494263),
- (15, 25, 0.6392379999160767),
+ (15, 25, 0.6392379403114319),
  (15, 26, 0.6756613254547119),
  (15, 27, 0.623073399066925),
  (16, 17, 0.5736261010169983),
@@ -1448,81 +1444,81 @@ Transformed Protein2: [ 4  3 10 12  7 13 17 22 16 24 20  9 23 25  8 26 27 14  5 
  (16, 19, 0.6805753111839294),
  (16, 20, 0.5568569898605347),
  (16, 21, 0.6898322105407715),
- (16, 22, 0.6020230650901794),
- (16, 23, 0.5932598114013672),
- (16, 24, 0.5982497930526733),
- (16, 25, 0.6057555079460144),
+ (16, 22, 0.6020229458808899),
+ (16, 23, 0.593259871006012),
+ (16, 24, 0.5982497334480286),
+ (16, 25, 0.6057554483413696),
  (16, 26, 0.6600492596626282),
- (16, 27, 0.6153603792190552),
+ (16, 27, 0.6153603196144104),
  (17, 18, 0.6978296041488647),
  (17, 19, 0.6904391646385193),
  (17, 20, 0.5623536705970764),
- (17, 21, 0.7035312056541443),
+ (17, 21, 0.7035311460494995),
  (17, 22, 0.6020848751068115),
- (17, 23, 0.5980621576309204),
+ (17, 23, 0.59806227684021),
  (17, 24, 0.6001761555671692),
  (17, 25, 0.6134010553359985),
  (17, 26, 0.6648403406143188),
  (17, 27, 0.625240683555603),
  (18, 19, 0.6715191602706909),
- (18, 20, 0.6481855511665344),
+ (18, 20, 0.6481854915618896),
  (18, 21, 0.6572598814964294),
  (18, 22, 0.70438152551651),
- (18, 23, 0.6600648164749146),
+ (18, 23, 0.6600649356842041),
  (18, 24, 0.688887894153595),
  (18, 25, 0.6536574363708496),
  (18, 26, 0.6930991411209106),
  (18, 27, 0.6409668922424316),
  (19, 20, 0.6499772667884827),
- (19, 21, 0.6694555878639221),
- (19, 22, 0.6986954212188721),
- (19, 23, 0.6628071069717407),
+ (19, 21, 0.6694555282592773),
+ (19, 22, 0.6986953616142273),
+ (19, 23, 0.6628071665763855),
  (19, 24, 0.6879525184631348),
- (19, 25, 0.6575807929039001),
+ (19, 25, 0.6575807332992554),
  (19, 26, 0.6970205307006836),
  (19, 27, 0.6467885375022888),
- (20, 21, 0.6571310758590698),
+ (20, 21, 0.657131016254425),
  (20, 22, 0.5877546072006226),
- (20, 23, 0.5712948441505432),
+ (20, 23, 0.571294903755188),
  (20, 24, 0.5778743624687195),
- (20, 25, 0.5762937664985657),
+ (20, 25, 0.5762938261032104),
  (20, 26, 0.6398497223854065),
  (20, 27, 0.5857248902320862),
  (21, 22, 0.7083775997161865),
- (21, 23, 0.6642311811447144),
+ (21, 23, 0.6642312407493591),
  (21, 24, 0.6941034197807312),
- (21, 25, 0.6580119132995605),
- (21, 26, 0.6938483119010925),
+ (21, 25, 0.658011794090271),
+ (21, 26, 0.6938483715057373),
  (21, 27, 0.6433342695236206),
  (22, 23, 0.6195434927940369),
- (22, 24, 0.6229152083396912),
- (22, 25, 0.6323351263999939),
+ (22, 24, 0.6229152679443359),
+ (22, 25, 0.6323350667953491),
  (22, 26, 0.6771524548530579),
  (22, 27, 0.6395193338394165),
- (23, 24, 0.6132277250289917),
+ (23, 24, 0.6132277846336365),
  (23, 25, 0.600766658782959),
- (23, 26, 0.6547660827636719),
- (23, 27, 0.6039469838142395),
- (24, 25, 0.6209598183631897),
+ (23, 26, 0.6547662019729614),
+ (23, 27, 0.603947103023529),
+ (24, 25, 0.6209597587585449),
  (24, 26, 0.6712677478790283),
  (24, 27, 0.6275331974029541),
  (25, 26, 0.6600415706634521),
- (25, 27, 0.6034720540046692),
- (26, 27, 0.6551727652549744)]</code></pre>
+ (25, 27, 0.6034719944000244),
+ (26, 27, 0.6551728844642639)]</code></pre>
 </div>
 </div>
 <p>Let’s put those probabilities to a sorted dataframe:</p>
-<div id="cell-70" class="cell" data-execution_count="67">
+<div id="cell-70" class="cell" data-execution_count="47">
 <details open="" class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb66"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a>results_df <span class="op">=</span> pd.DataFrame(results, columns<span class="op">=</span>[<span class="st">"Protein1"</span>, <span class="st">"Protein2"</span>, <span class="st">"Prediction"</span>])</span>
-<span id="cb66-2"><a href="#cb66-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb66-3"><a href="#cb66-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Sort the DataFrame by prediction score in descending order</span></span>
-<span id="cb66-4"><a href="#cb66-4" aria-hidden="true" tabindex="-1"></a>results_df <span class="op">=</span> results_df.sort_values(by<span class="op">=</span><span class="st">"Prediction"</span>, ascending<span class="op">=</span><span class="va">False</span>)</span>
-<span id="cb66-5"><a href="#cb66-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb66-6"><a href="#cb66-6" aria-hidden="true" tabindex="-1"></a>results_df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb65"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a>results_df <span class="op">=</span> pd.DataFrame(results, columns<span class="op">=</span>[<span class="st">"Protein1"</span>, <span class="st">"Protein2"</span>, <span class="st">"Prediction"</span>])</span>
+<span id="cb65-2"><a href="#cb65-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb65-3"><a href="#cb65-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Sort the DataFrame by prediction score in descending order</span></span>
+<span id="cb65-4"><a href="#cb65-4" aria-hidden="true" tabindex="-1"></a>results_df <span class="op">=</span> results_df.sort_values(by<span class="op">=</span><span class="st">"Prediction"</span>, ascending<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb65-5"><a href="#cb65-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb65-6"><a href="#cb65-6" aria-hidden="true" tabindex="-1"></a>results_df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="67">
+<div class="cell-output cell-output-display" data-execution_count="47">
 <div>
 
 
@@ -1610,15 +1606,15 @@ Transformed Protein2: [ 4  3 10 12  7 13 17 22 16 24 20  9 23 25  8 26 27 14  5 
 </div>
 </div>
 <p>Here, we can filter out probabilities less than 50%:</p>
-<div id="cell-72" class="cell" data-execution_count="71">
+<div id="cell-72" class="cell" data-execution_count="48">
 <details open="" class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb67"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a>mask <span class="op">=</span> results_df[<span class="st">"Prediction"</span>] <span class="op">&gt;</span> <span class="fl">0.5</span></span>
-<span id="cb67-2"><a href="#cb67-2" aria-hidden="true" tabindex="-1"></a>filtered_results_df <span class="op">=</span> results_df[mask]</span>
-<span id="cb67-3"><a href="#cb67-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb67-4"><a href="#cb67-4" aria-hidden="true" tabindex="-1"></a>filtered_results_df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb66"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a>mask <span class="op">=</span> results_df[<span class="st">"Prediction"</span>] <span class="op">&gt;</span> <span class="fl">0.5</span></span>
+<span id="cb66-2"><a href="#cb66-2" aria-hidden="true" tabindex="-1"></a>filtered_results_df <span class="op">=</span> results_df[mask]</span>
+<span id="cb66-3"><a href="#cb66-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-4"><a href="#cb66-4" aria-hidden="true" tabindex="-1"></a>filtered_results_df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="71">
+<div class="cell-output cell-output-display" data-execution_count="48">
 <div>
 
 
@@ -1706,28 +1702,28 @@ Transformed Protein2: [ 4  3 10 12  7 13 17 22 16 24 20  9 23 25  8 26 27 14  5 
 </div>
 </div>
 <p>And, get back the protein ID’s:</p>
-<div id="cell-74" class="cell" data-execution_count="72">
+<div id="cell-74" class="cell" data-execution_count="49">
 <details open="" class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb68"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a>filtered_results_df[<span class="st">"Protein1"</span>] <span class="op">=</span> lbl_protein.inverse_transform(filtered_results_df[<span class="st">"Protein1"</span>])</span>
-<span id="cb68-2"><a href="#cb68-2" aria-hidden="true" tabindex="-1"></a>filtered_results_df[<span class="st">"Protein2"</span>] <span class="op">=</span> lbl_protein.inverse_transform(filtered_results_df[<span class="st">"Protein2"</span>])</span>
-<span id="cb68-3"><a href="#cb68-3" aria-hidden="true" tabindex="-1"></a>filtered_results_df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb67"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a>filtered_results_df[<span class="st">"Protein1"</span>] <span class="op">=</span> lbl_protein.inverse_transform(filtered_results_df[<span class="st">"Protein1"</span>])</span>
+<span id="cb67-2"><a href="#cb67-2" aria-hidden="true" tabindex="-1"></a>filtered_results_df[<span class="st">"Protein2"</span>] <span class="op">=</span> lbl_protein.inverse_transform(filtered_results_df[<span class="st">"Protein2"</span>])</span>
+<span id="cb67-3"><a href="#cb67-3" aria-hidden="true" tabindex="-1"></a>filtered_results_df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stderr">
-<pre><code>C:\Users\LENOVO\AppData\Local\Temp\ipykernel_18068\338268944.py:1: SettingWithCopyWarning: 
+<pre><code>C:\Users\LENOVO\AppData\Local\Temp\ipykernel_3324\338268944.py:1: SettingWithCopyWarning: 
 A value is trying to be set on a copy of a slice from a DataFrame.
 Try using .loc[row_indexer,col_indexer] = value instead
 
 See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
   filtered_results_df["Protein1"] = lbl_protein.inverse_transform(filtered_results_df["Protein1"])
-C:\Users\LENOVO\AppData\Local\Temp\ipykernel_18068\338268944.py:2: SettingWithCopyWarning: 
+C:\Users\LENOVO\AppData\Local\Temp\ipykernel_3324\338268944.py:2: SettingWithCopyWarning: 
 A value is trying to be set on a copy of a slice from a DataFrame.
 Try using .loc[row_indexer,col_indexer] = value instead
 
 See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
   filtered_results_df["Protein2"] = lbl_protein.inverse_transform(filtered_results_df["Protein2"])</code></pre>
 </div>
-<div class="cell-output cell-output-display" data-execution_count="72">
+<div class="cell-output cell-output-display" data-execution_count="49">
 <div>
 
 
@@ -1815,22 +1811,22 @@ See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stab
 </div>
 </div>
 <p>To check, let’s left-join the first dsf to the filtered to see that the protein ID’s are correct:</p>
-<div id="cell-76" class="cell" data-execution_count="73">
+<div id="cell-76" class="cell" data-execution_count="50">
 <details open="" class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb70"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a>filtered_results_df <span class="op">=</span> pd.merge(</span>
-<span id="cb70-2"><a href="#cb70-2" aria-hidden="true" tabindex="-1"></a>    filtered_results_df,</span>
-<span id="cb70-3"><a href="#cb70-3" aria-hidden="true" tabindex="-1"></a>    df,</span>
-<span id="cb70-4"><a href="#cb70-4" aria-hidden="true" tabindex="-1"></a>    how<span class="op">=</span><span class="st">'left'</span>,</span>
-<span id="cb70-5"><a href="#cb70-5" aria-hidden="true" tabindex="-1"></a>    left_on<span class="op">=</span>[<span class="st">'Protein1'</span>, <span class="st">'Protein2'</span>],</span>
-<span id="cb70-6"><a href="#cb70-6" aria-hidden="true" tabindex="-1"></a>    right_on<span class="op">=</span>[<span class="st">'Protein1'</span>, <span class="st">'Protein2'</span>]</span>
-<span id="cb70-7"><a href="#cb70-7" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb70-8"><a href="#cb70-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb70-9"><a href="#cb70-9" aria-hidden="true" tabindex="-1"></a>filtered_results_df <span class="op">=</span> filtered_results_df.drop(columns<span class="op">=</span>[<span class="st">'node1_string_id'</span>, <span class="st">'node2_string_id'</span>])</span>
-<span id="cb70-10"><a href="#cb70-10" aria-hidden="true" tabindex="-1"></a>filtered_results_df <span class="op">=</span> filtered_results_df.sort_values(by<span class="op">=</span><span class="st">"Prediction"</span>, ascending<span class="op">=</span><span class="va">False</span>)</span>
-<span id="cb70-11"><a href="#cb70-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb70-12"><a href="#cb70-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Display the filtered results DataFrame</span></span>
-<span id="cb70-13"><a href="#cb70-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(filtered_results_df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb69"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a>filtered_results_df <span class="op">=</span> pd.merge(</span>
+<span id="cb69-2"><a href="#cb69-2" aria-hidden="true" tabindex="-1"></a>    filtered_results_df,</span>
+<span id="cb69-3"><a href="#cb69-3" aria-hidden="true" tabindex="-1"></a>    df,</span>
+<span id="cb69-4"><a href="#cb69-4" aria-hidden="true" tabindex="-1"></a>    how<span class="op">=</span><span class="st">'left'</span>,</span>
+<span id="cb69-5"><a href="#cb69-5" aria-hidden="true" tabindex="-1"></a>    left_on<span class="op">=</span>[<span class="st">'Protein1'</span>, <span class="st">'Protein2'</span>],</span>
+<span id="cb69-6"><a href="#cb69-6" aria-hidden="true" tabindex="-1"></a>    right_on<span class="op">=</span>[<span class="st">'Protein1'</span>, <span class="st">'Protein2'</span>]</span>
+<span id="cb69-7"><a href="#cb69-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb69-8"><a href="#cb69-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb69-9"><a href="#cb69-9" aria-hidden="true" tabindex="-1"></a>filtered_results_df <span class="op">=</span> filtered_results_df.drop(columns<span class="op">=</span>[<span class="st">'node1_string_id'</span>, <span class="st">'node2_string_id'</span>])</span>
+<span id="cb69-10"><a href="#cb69-10" aria-hidden="true" tabindex="-1"></a>filtered_results_df <span class="op">=</span> filtered_results_df.sort_values(by<span class="op">=</span><span class="st">"Prediction"</span>, ascending<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb69-11"><a href="#cb69-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb69-12"><a href="#cb69-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Display the filtered results DataFrame</span></span>
+<span id="cb69-13"><a href="#cb69-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(filtered_results_df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>           Protein1        Protein2  Prediction
@@ -1850,77 +1846,79 @@ See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stab
 </div>
 </div>
 <p>And, we can plot the graph with the edges coloured by the predicted probaility of interaction:</p>
-<div id="cell-78" class="cell" data-execution_count="75">
+<div id="cell-78" class="cell" data-execution_count="51">
 <details open="" class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb72"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> networkx <span class="im">as</span> nx</span>
-<span id="cb72-2"><a href="#cb72-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb72-3"><a href="#cb72-3" aria-hidden="true" tabindex="-1"></a>G <span class="op">=</span> nx.Graph()</span>
-<span id="cb72-4"><a href="#cb72-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb72-5"><a href="#cb72-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Add edges to the graph</span></span>
-<span id="cb72-6"><a href="#cb72-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> index, row <span class="kw">in</span> filtered_results_df.iterrows():</span>
-<span id="cb72-7"><a href="#cb72-7" aria-hidden="true" tabindex="-1"></a>    G.add_edge(row[<span class="st">'Protein1'</span>], row[<span class="st">'Protein2'</span>], weight<span class="op">=</span><span class="bu">round</span>(row[<span class="st">'Prediction'</span>],<span class="dv">3</span>))</span>
-<span id="cb72-8"><a href="#cb72-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb72-9"><a href="#cb72-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Print some info about the graph</span></span>
-<span id="cb72-10"><a href="#cb72-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(G)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb71"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> networkx <span class="im">as</span> nx</span>
+<span id="cb71-2"><a href="#cb71-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb71-3"><a href="#cb71-3" aria-hidden="true" tabindex="-1"></a>G <span class="op">=</span> nx.Graph()</span>
+<span id="cb71-4"><a href="#cb71-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb71-5"><a href="#cb71-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Add edges to the graph</span></span>
+<span id="cb71-6"><a href="#cb71-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> index, row <span class="kw">in</span> filtered_results_df.iterrows():</span>
+<span id="cb71-7"><a href="#cb71-7" aria-hidden="true" tabindex="-1"></a>    G.add_edge(row[<span class="st">'Protein1'</span>], row[<span class="st">'Protein2'</span>], weight<span class="op">=</span><span class="bu">round</span>(row[<span class="st">'Prediction'</span>],<span class="dv">3</span>))</span>
+<span id="cb71-8"><a href="#cb71-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb71-9"><a href="#cb71-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Print some info about the graph</span></span>
+<span id="cb71-10"><a href="#cb71-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(G)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>Graph with 28 nodes and 295 edges</code></pre>
 </div>
 </div>
-<div id="cell-79" class="cell" data-execution_count="76">
+<div id="cell-79" class="cell" data-execution_count="64">
 <details open="" class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb74"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb74-2"><a href="#cb74-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> networkx <span class="im">as</span> nx</span>
-<span id="cb74-3"><a href="#cb74-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb74-4"><a href="#cb74-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.colors <span class="im">as</span> mcolors</span>
-<span id="cb74-5"><a href="#cb74-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.cm <span class="im">as</span> cm</span>
-<span id="cb74-6"><a href="#cb74-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib <span class="im">as</span> mpl</span>
-<span id="cb74-7"><a href="#cb74-7" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> mpl_toolkits.axes_grid1 <span class="im">import</span> make_axes_locatable</span>
-<span id="cb74-8"><a href="#cb74-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb74-9"><a href="#cb74-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb74-10"><a href="#cb74-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the plot size and create a subplot</span></span>
-<span id="cb74-11"><a href="#cb74-11" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">14</span>, <span class="dv">14</span>))</span>
-<span id="cb74-12"><a href="#cb74-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb74-13"><a href="#cb74-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the layout for the nodes</span></span>
-<span id="cb74-14"><a href="#cb74-14" aria-hidden="true" tabindex="-1"></a>pos <span class="op">=</span> nx.spring_layout(G, seed<span class="op">=</span><span class="dv">120</span>)  <span class="co"># for consistent layout</span></span>
-<span id="cb74-15"><a href="#cb74-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb74-16"><a href="#cb74-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Draw the nodes</span></span>
-<span id="cb74-17"><a href="#cb74-17" aria-hidden="true" tabindex="-1"></a>nx.draw_networkx_nodes(G, pos, node_size<span class="op">=</span><span class="dv">700</span>, ax<span class="op">=</span>ax)</span>
-<span id="cb74-18"><a href="#cb74-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb74-19"><a href="#cb74-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Get edge weights and normalize them</span></span>
-<span id="cb74-20"><a href="#cb74-20" aria-hidden="true" tabindex="-1"></a>weights <span class="op">=</span> nx.get_edge_attributes(G, <span class="st">'weight'</span>).values()</span>
-<span id="cb74-21"><a href="#cb74-21" aria-hidden="true" tabindex="-1"></a>norm <span class="op">=</span> mcolors.Normalize(vmin<span class="op">=</span><span class="bu">min</span>(weights), vmax<span class="op">=</span><span class="bu">max</span>(weights))</span>
-<span id="cb74-22"><a href="#cb74-22" aria-hidden="true" tabindex="-1"></a>cmap <span class="op">=</span> cm.jet</span>
-<span id="cb74-23"><a href="#cb74-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb74-24"><a href="#cb74-24" aria-hidden="true" tabindex="-1"></a><span class="co"># Draw the edges with colors based on the weights</span></span>
-<span id="cb74-25"><a href="#cb74-25" aria-hidden="true" tabindex="-1"></a>edges <span class="op">=</span> G.edges(data<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb74-26"><a href="#cb74-26" aria-hidden="true" tabindex="-1"></a>edge_colors <span class="op">=</span> [cmap(norm(weight[<span class="st">'weight'</span>])) <span class="cf">for</span> _, _, weight <span class="kw">in</span> edges]</span>
-<span id="cb74-27"><a href="#cb74-27" aria-hidden="true" tabindex="-1"></a>edge_alphas <span class="op">=</span> [norm(weight[<span class="st">'weight'</span>]) <span class="cf">for</span> _, _, weight <span class="kw">in</span> edges]</span>
-<span id="cb74-28"><a href="#cb74-28" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb74-29"><a href="#cb74-29" aria-hidden="true" tabindex="-1"></a>nx.draw_networkx_edges(G, pos, edge_color<span class="op">=</span>edge_colors, width<span class="op">=</span><span class="fl">1.0</span>, alpha<span class="op">=</span>edge_alphas, ax<span class="op">=</span>ax)</span>
-<span id="cb74-30"><a href="#cb74-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb74-31"><a href="#cb74-31" aria-hidden="true" tabindex="-1"></a><span class="co"># Draw the labels</span></span>
-<span id="cb74-32"><a href="#cb74-32" aria-hidden="true" tabindex="-1"></a>nx.draw_networkx_labels(G, pos, font_size<span class="op">=</span><span class="dv">9</span>, font_family<span class="op">=</span><span class="st">"sans-serif"</span>, ax<span class="op">=</span>ax)</span>
-<span id="cb74-33"><a href="#cb74-33" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb74-34"><a href="#cb74-34" aria-hidden="true" tabindex="-1"></a><span class="co"># Add edge weights as labels (optional)</span></span>
-<span id="cb74-35"><a href="#cb74-35" aria-hidden="true" tabindex="-1"></a>edge_labels <span class="op">=</span> nx.get_edge_attributes(G, <span class="st">'weight'</span>)</span>
-<span id="cb74-36"><a href="#cb74-36" aria-hidden="true" tabindex="-1"></a>nx.draw_networkx_edge_labels(G, pos, edge_labels<span class="op">=</span>edge_labels, font_size<span class="op">=</span><span class="dv">5</span>, ax<span class="op">=</span>ax)</span>
-<span id="cb74-37"><a href="#cb74-37" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb74-38"><a href="#cb74-38" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a colorbar as a legend</span></span>
-<span id="cb74-39"><a href="#cb74-39" aria-hidden="true" tabindex="-1"></a>divider <span class="op">=</span> make_axes_locatable(ax)</span>
-<span id="cb74-40"><a href="#cb74-40" aria-hidden="true" tabindex="-1"></a>cax <span class="op">=</span> divider.append_axes(<span class="st">"right"</span>, size<span class="op">=</span><span class="st">"5%"</span>, pad<span class="op">=</span><span class="fl">0.1</span>)</span>
-<span id="cb74-41"><a href="#cb74-41" aria-hidden="true" tabindex="-1"></a>sm <span class="op">=</span> plt.cm.ScalarMappable(cmap<span class="op">=</span>cmap, norm<span class="op">=</span>norm)</span>
-<span id="cb74-42"><a href="#cb74-42" aria-hidden="true" tabindex="-1"></a>sm.set_array([])</span>
-<span id="cb74-43"><a href="#cb74-43" aria-hidden="true" tabindex="-1"></a>cbar <span class="op">=</span> plt.colorbar(sm, cax<span class="op">=</span>cax)</span>
-<span id="cb74-44"><a href="#cb74-44" aria-hidden="true" tabindex="-1"></a>cbar.set_label(<span class="st">'Prediction Probability'</span>)</span>
-<span id="cb74-45"><a href="#cb74-45" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb74-46"><a href="#cb74-46" aria-hidden="true" tabindex="-1"></a><span class="co"># Show the plot</span></span>
-<span id="cb74-47"><a href="#cb74-47" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Protein-Protein Interaction Network"</span>)</span>
-<span id="cb74-48"><a href="#cb74-48" aria-hidden="true" tabindex="-1"></a>plt.axis(<span class="st">'off'</span>)  <span class="co"># Turn off the axis</span></span>
-<span id="cb74-49"><a href="#cb74-49" aria-hidden="true" tabindex="-1"></a>plt.savefig(<span class="st">"protein_interaction_network.svg"</span>, <span class="bu">format</span><span class="op">=</span><span class="st">'svg'</span>)</span>
-<span id="cb74-50"><a href="#cb74-50" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb73"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb73-2"><a href="#cb73-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> networkx <span class="im">as</span> nx</span>
+<span id="cb73-3"><a href="#cb73-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb73-4"><a href="#cb73-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.colors <span class="im">as</span> mcolors</span>
+<span id="cb73-5"><a href="#cb73-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.cm <span class="im">as</span> cm</span>
+<span id="cb73-6"><a href="#cb73-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib <span class="im">as</span> mpl</span>
+<span id="cb73-7"><a href="#cb73-7" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> mpl_toolkits.axes_grid1 <span class="im">import</span> make_axes_locatable</span>
+<span id="cb73-8"><a href="#cb73-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb73-9"><a href="#cb73-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb73-10"><a href="#cb73-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the plot size and create a subplot</span></span>
+<span id="cb73-11"><a href="#cb73-11" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">14</span>, <span class="dv">14</span>))</span>
+<span id="cb73-12"><a href="#cb73-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb73-13"><a href="#cb73-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Get edge weights and normalize them</span></span>
+<span id="cb73-14"><a href="#cb73-14" aria-hidden="true" tabindex="-1"></a>weights <span class="op">=</span> nx.get_edge_attributes(G, <span class="st">'weight'</span>).values()</span>
+<span id="cb73-15"><a href="#cb73-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb73-16"><a href="#cb73-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the layout for the nodes</span></span>
+<span id="cb73-17"><a href="#cb73-17" aria-hidden="true" tabindex="-1"></a>pos <span class="op">=</span> nx.spring_layout(G, seed<span class="op">=</span><span class="dv">120</span>, weight<span class="op">=</span><span class="st">'weight'</span>)  <span class="co"># for consistent layout</span></span>
+<span id="cb73-18"><a href="#cb73-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb73-19"><a href="#cb73-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Draw the nodes</span></span>
+<span id="cb73-20"><a href="#cb73-20" aria-hidden="true" tabindex="-1"></a>nx.draw_networkx_nodes(G, pos, node_size<span class="op">=</span><span class="dv">700</span>, ax<span class="op">=</span>ax)</span>
+<span id="cb73-21"><a href="#cb73-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb73-22"><a href="#cb73-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb73-23"><a href="#cb73-23" aria-hidden="true" tabindex="-1"></a>norm <span class="op">=</span> mcolors.Normalize(vmin<span class="op">=</span><span class="bu">min</span>(weights), vmax<span class="op">=</span><span class="bu">max</span>(weights))</span>
+<span id="cb73-24"><a href="#cb73-24" aria-hidden="true" tabindex="-1"></a>cmap <span class="op">=</span> cm.jet</span>
+<span id="cb73-25"><a href="#cb73-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb73-26"><a href="#cb73-26" aria-hidden="true" tabindex="-1"></a><span class="co"># Draw the edges with colors based on the weights</span></span>
+<span id="cb73-27"><a href="#cb73-27" aria-hidden="true" tabindex="-1"></a>edges <span class="op">=</span> G.edges(data<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb73-28"><a href="#cb73-28" aria-hidden="true" tabindex="-1"></a>edge_colors <span class="op">=</span> [cmap(norm(weight[<span class="st">'weight'</span>])) <span class="cf">for</span> _, _, weight <span class="kw">in</span> edges]</span>
+<span id="cb73-29"><a href="#cb73-29" aria-hidden="true" tabindex="-1"></a>edge_alphas <span class="op">=</span> [norm(weight[<span class="st">'weight'</span>]) <span class="cf">for</span> _, _, weight <span class="kw">in</span> edges]</span>
+<span id="cb73-30"><a href="#cb73-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb73-31"><a href="#cb73-31" aria-hidden="true" tabindex="-1"></a>nx.draw_networkx_edges(G, pos, edge_color<span class="op">=</span>edge_colors, width<span class="op">=</span><span class="fl">1.0</span>, alpha<span class="op">=</span>edge_alphas, ax<span class="op">=</span>ax)</span>
+<span id="cb73-32"><a href="#cb73-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb73-33"><a href="#cb73-33" aria-hidden="true" tabindex="-1"></a><span class="co"># Draw the labels</span></span>
+<span id="cb73-34"><a href="#cb73-34" aria-hidden="true" tabindex="-1"></a>nx.draw_networkx_labels(G, pos, font_size<span class="op">=</span><span class="dv">9</span>, font_family<span class="op">=</span><span class="st">"sans-serif"</span>, ax<span class="op">=</span>ax)</span>
+<span id="cb73-35"><a href="#cb73-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb73-36"><a href="#cb73-36" aria-hidden="true" tabindex="-1"></a><span class="co"># Add edge weights as labels (optional)</span></span>
+<span id="cb73-37"><a href="#cb73-37" aria-hidden="true" tabindex="-1"></a>edge_labels <span class="op">=</span> nx.get_edge_attributes(G, <span class="st">'weight'</span>)</span>
+<span id="cb73-38"><a href="#cb73-38" aria-hidden="true" tabindex="-1"></a>nx.draw_networkx_edge_labels(G, pos, edge_labels<span class="op">=</span>edge_labels, font_size<span class="op">=</span><span class="dv">5</span>, ax<span class="op">=</span>ax)</span>
+<span id="cb73-39"><a href="#cb73-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb73-40"><a href="#cb73-40" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a colorbar as a legend</span></span>
+<span id="cb73-41"><a href="#cb73-41" aria-hidden="true" tabindex="-1"></a>divider <span class="op">=</span> make_axes_locatable(ax)</span>
+<span id="cb73-42"><a href="#cb73-42" aria-hidden="true" tabindex="-1"></a>cax <span class="op">=</span> divider.append_axes(<span class="st">"right"</span>, size<span class="op">=</span><span class="st">"5%"</span>, pad<span class="op">=</span><span class="fl">0.1</span>)</span>
+<span id="cb73-43"><a href="#cb73-43" aria-hidden="true" tabindex="-1"></a>sm <span class="op">=</span> plt.cm.ScalarMappable(cmap<span class="op">=</span>cmap, norm<span class="op">=</span>norm)</span>
+<span id="cb73-44"><a href="#cb73-44" aria-hidden="true" tabindex="-1"></a>sm.set_array([])</span>
+<span id="cb73-45"><a href="#cb73-45" aria-hidden="true" tabindex="-1"></a>cbar <span class="op">=</span> plt.colorbar(sm, cax<span class="op">=</span>cax)</span>
+<span id="cb73-46"><a href="#cb73-46" aria-hidden="true" tabindex="-1"></a>cbar.set_label(<span class="st">'Prediction Probability'</span>)</span>
+<span id="cb73-47"><a href="#cb73-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb73-48"><a href="#cb73-48" aria-hidden="true" tabindex="-1"></a><span class="co"># Show the plot</span></span>
+<span id="cb73-49"><a href="#cb73-49" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Protein-Protein Interaction Network"</span>)</span>
+<span id="cb73-50"><a href="#cb73-50" aria-hidden="true" tabindex="-1"></a>plt.axis(<span class="st">'off'</span>)  <span class="co"># Turn off the axis</span></span>
+<span id="cb73-51"><a href="#cb73-51" aria-hidden="true" tabindex="-1"></a>plt.savefig(<span class="st">"protein_interaction_network.svg"</span>, <span class="bu">format</span><span class="op">=</span><span class="st">'svg'</span>)</span>
+<span id="cb73-52"><a href="#cb73-52" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display">
 <div>
@@ -1971,18 +1969,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
     return false;
   }
-  const clipboard = new window.ClipboardJS('.code-copy-button', {
-    text: function(trigger) {
-      const codeEl = trigger.previousElementSibling.cloneNode(true);
-      for (const childEl of codeEl.children) {
-        if (isCodeAnnotation(childEl)) {
-          childEl.remove();
-        }
-      }
-      return codeEl.innerText;
-    }
-  });
-  clipboard.on('success', function(e) {
+  const onCopySuccess = function(e) {
     // button target
     const button = e.trigger;
     // don't keep focus
@@ -2014,7 +2001,29 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }, 1000);
     // clear code selection
     e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
   });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
     var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
     var mailtoRegex = new RegExp(/^mailto:/);
       var filterRegex = new RegExp("https:\/\/pipaber\.github\.io\/Portfolio\/");
@@ -2022,7 +2031,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
     }
     // Inspect non-navigation links and adorn them if external
- 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
     for (var i=0; i<links.length; i++) {
       const link = links[i];
       if (!isInternal(link.href)) {
@@ -2359,30 +2368,37 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </div>
   </div>
 </footer>
-<script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","selector":".lightbox","openEffect":"zoom","loop":false,"descPosition":"bottom"});
-window.onload = () => {
-  lightboxQuarto.on('slide_before_load', (data) => {
-    const { slideIndex, slideNode, slideConfig, player, trigger } = data;
-    const href = trigger.getAttribute('href');
-    if (href !== null) {
-      const imgEl = window.document.querySelector(`a[href="${href}"] img`);
-      if (imgEl !== null) {
-        const srcAttr = imgEl.getAttribute("src");
-        if (srcAttr && srcAttr.startsWith("data:")) {
-          slideConfig.href = srcAttr;
-        }
-      }
-    } 
-  });
-
-  lightboxQuarto.on('slide_after_load', (data) => {
-    const { slideIndex, slideNode, slideConfig, player, trigger } = data;
-    if (window.Quarto?.typesetMath) {
-      window.Quarto.typesetMath(slideNode);
+<script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","selector":".lightbox","loop":false,"descPosition":"bottom","openEffect":"zoom"});
+(function() {
+  let previousOnload = window.onload;
+  window.onload = () => {
+    if (previousOnload) {
+      previousOnload();
     }
-  });
-
-};
+    lightboxQuarto.on('slide_before_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      const href = trigger.getAttribute('href');
+      if (href !== null) {
+        const imgEl = window.document.querySelector(`a[href="${href}"] img`);
+        if (imgEl !== null) {
+          const srcAttr = imgEl.getAttribute("src");
+          if (srcAttr && srcAttr.startsWith("data:")) {
+            slideConfig.href = srcAttr;
+          }
+        }
+      } 
+    });
+  
+    lightboxQuarto.on('slide_after_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(slideNode);
+      }
+    });
+  
+  };
+  
+})();
           </script>
 
 
