@@ -2,8 +2,9 @@
   {
     "listing": "/projects.html",
     "items": [
-      "/posts/proteinbert_coffea_arabica_thesis/aplication_to_coffea_arabica_thesis.html",
+      "/posts/gaussian processes/ocean_flow.html",
       "/posts/proteinbert_graphsage/BERT2Graphsage.html",
+      "/posts/proteinbert_coffea_arabica_thesis/aplication_to_coffea_arabica_thesis.html",
       "/posts/proteinbert/load_string_protein.html",
       "/posts/time_series/time_series_analysis.html",
       "/posts/Naive_scRNA-Seq_analysis/naive_scrnaseq_analysis.html",
