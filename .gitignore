@@ -5,3 +5,4 @@
 *.gz
 *.h5ad
 /.quarto/
+.idea
