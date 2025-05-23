@@ -65,7 +65,7 @@ To learn how to use the GWAS Catalog with ChIP-Seq data or how to retrieve and a
 :::
 
 :::{.column width="55%"}
-An example of a proper use of interactive plots on a RNA-Seq data report can be founded [here](https://github.com/pipaber/Omics-Potfolio){target=_blank}. 
+An example of a proper use of interactive plots on a RNA-Seq data report can be founded [here](https://github.com/pipaber/Omics-Portfolio){target=_blank}. 
 
 > This repository doesn't have any code, is only to showcase what is possible using Quarto and Bioconductor
 :::
