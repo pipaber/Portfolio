@@ -2,12 +2,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.31">
+<meta name="generator" content="quarto-1.8.26">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="dcterms.date" content="2024-05-16">
 
-<title>Loading Data – Portfolio</title>
+<title>Analysis of Ocean Flow with Gaussian Processes – Portfolio</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -58,7 +59,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </style>
 
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script><script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" integrity="sha384-ZvpUoO/+PpLXR1lu4jmpXWu80pZlYUAfxl5NsBMWOEPSjUn/6Z/hRTt8+pR6L4N2" crossorigin="anonymous"></script><script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="../../site_libs/quarto-nav/headroom.min.js"></script>
 <script src="../../site_libs/clipboard/clipboard.min.js"></script>
 <script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
@@ -68,14 +69,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../piero.jpg" rel="icon" type="image/jpeg">
 <script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
 <script src="../../site_libs/quarto-html/popper.min.js"></script>
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-52a0159e1581fd4d72d8415155fb0da6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-69a118ed5aa843c5d3f13e92a12ee77e.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-b5768a5af88307919259f1c9cbec1ec2.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-a5481d7d010072fa366a505c25b94bf5.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script src="../../site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
 <link href="../../site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
 <link href="../../site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet">
@@ -106,7 +108,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/requirejs@2.3.6/require.min.js" integrity="sha384-c9c+LnTbwQ3aujuU7ULEPVvgLs+Fn6fJUvIGTsuu1ZcCf11fiEubah0ttpca4ntM sha384-6V1/AdqZRWk1KAlWbKBlGhN7VG4iE/yAZcO6NZPMF8od0vukrvr0tg4qY6NSrItx" crossorigin="anonymous"></script>
 
 <script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
 
@@ -114,7 +116,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link rel="stylesheet" href="../../styles.css">
 </head>
 
-<body class="nav-fixed fullcontent quarto-light">
+<body class="nav-fixed quarto-light">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top quarto-banner">
@@ -174,14 +176,25 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <header id="title-block-header" class="quarto-title-block default page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
-      <h1 class="title">Loading Data</h1>
-                      </div>
+      <h1 class="title">Analysis of Ocean Flow with Gaussian Processes</h1>
+                                <div class="quarto-categories">
+                <div class="quarto-category">statistics</div>
+                <div class="quarto-category">gaussian-processes</div>
+                <div class="quarto-category">oceanography</div>
+              </div>
+                  </div>
   </div>
     
   
   <div class="quarto-title-meta">
 
       
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">May 16, 2024</p>
+      </div>
+    </div>
     
       
     </div>
@@ -190,7 +203,35 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#loading-data" id="toc-loading-data" class="nav-link active" data-scroll-target="#loading-data">Loading Data</a></li>
+  <li><a href="#compute-the-velocities-using-euclidean-norm" id="toc-compute-the-velocities-using-euclidean-norm" class="nav-link" data-scroll-target="#compute-the-velocities-using-euclidean-norm">Compute the Velocities using euclidean norm</a></li>
+  <li><a href="#compute-variance-across-time" id="toc-compute-variance-across-time" class="nav-link" data-scroll-target="#compute-variance-across-time">Compute variance across time</a></li>
+  <li><a href="#smallest-variance-but-bigger-than-cero" id="toc-smallest-variance-but-bigger-than-cero" class="nav-link" data-scroll-target="#smallest-variance-but-bigger-than-cero">Smallest Variance but bigger than cero</a></li>
+  <li><a href="#maximus-x-axis-velocity" id="toc-maximus-x-axis-velocity" class="nav-link" data-scroll-target="#maximus-x-axis-velocity">Maximus x-axis velocity</a></li>
+  <li><a href="#average-over-all-x-axis-and-y-axis" id="toc-average-over-all-x-axis-and-y-axis" class="nav-link" data-scroll-target="#average-over-all-x-axis-and-y-axis">Average over all x-axis and y-axis</a></li>
+  <li><a href="#identify-long-correlation-areas" id="toc-identify-long-correlation-areas" class="nav-link" data-scroll-target="#identify-long-correlation-areas">Identify long-correlation areas</a></li>
+  <li><a href="#simulation-with-jax" id="toc-simulation-with-jax" class="nav-link" data-scroll-target="#simulation-with-jax">Simulation with JAX</a>
+  <ul class="collapse">
+  <li><a href="#animation-with-matplotlib" id="toc-animation-with-matplotlib" class="nav-link" data-scroll-target="#animation-with-matplotlib">Animation with matplotlib</a></li>
+  <li><a href="#acceleration-with-jax" id="toc-acceleration-with-jax" class="nav-link" data-scroll-target="#acceleration-with-jax">Acceleration with JAX</a></li>
+  </ul></li>
+  <li><a href="#estimating-flows-with-gaussian-processes" id="toc-estimating-flows-with-gaussian-processes" class="nav-link" data-scroll-target="#estimating-flows-with-gaussian-processes">Estimating Flows with Gaussian Processes</a>
+  <ul class="collapse">
+  <li><a href="#defining-the-gaussian-process" id="toc-defining-the-gaussian-process" class="nav-link" data-scroll-target="#defining-the-gaussian-process">Defining the Gaussian Process</a></li>
+  <li><a href="#defining-the-cross-validation" id="toc-defining-the-cross-validation" class="nav-link" data-scroll-target="#defining-the-cross-validation">Defining the Cross-validation</a></li>
+  <li><a href="#running-gaussian-processes-with-sklearn" id="toc-running-gaussian-processes-with-sklearn" class="nav-link" data-scroll-target="#running-gaussian-processes-with-sklearn">Running Gaussian Processes with sklearn</a></li>
+  <li><a href="#make-predictions" id="toc-make-predictions" class="nav-link" data-scroll-target="#make-predictions">Make Predictions</a></li>
+  <li><a href="#make-predictions-with-sklearn" id="toc-make-predictions-with-sklearn" class="nav-link" data-scroll-target="#make-predictions-with-sklearn">Make Predictions with sklearn</a></li>
+  </ul></li>
+  <li><a href="#simulation" id="toc-simulation" class="nav-link" data-scroll-target="#simulation">Simulation</a></li>
+  </ul>
+</nav>
+    </div>
 <!-- main -->
 <main class="content quarto-banner-title-block" id="quarto-document-content">
 
@@ -198,10 +239,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 
-<div id="cell-1" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;}}" data-outputid="6340c9d0-093b-46a8-d772-8ef9e1600490">
+<p>On this project , we analyze ocean flow data using Gaussian Processes (GPs) to model and predict ocean current patterns. The dataset consists of time-series measurements of ocean currents collected from various sensors deployed in the ocean.</p>
+<div id="cell-2" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;}}" data-outputid="6340c9d0-093b-46a8-d772-8ef9e1600490">
 <details open="" class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>wget https:<span class="op">//</span>courses.edx.org<span class="op">/</span>assets<span class="op">/</span>courseware<span class="op">/</span>v1<span class="op">/</span>ded9e59839c77f4037c800dcade5bd58<span class="op">/</span>asset<span class="op">-</span>v1:MITx<span class="op">+</span><span class="fl">6.419</span><span class="er">x</span><span class="op">+</span><span class="dv">2</span><span class="er">T2023</span><span class="op">+</span>type<span class="op">@</span>asset<span class="op">+</span>block<span class="op">/</span>release_gp_homework_data.tar.gz <span class="op">-</span>P <span class="op">/</span>content</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>wget https:<span class="op">//</span>courses.edx.org<span class="op">/</span>assets<span class="op">/</span>courseware<span class="op">/</span>v1<span class="op">/</span>ded9e59839c77f4037c800dcade5bd58<span class="op">/</span>asset<span class="op">-</span>v1:MITx<span class="op">+</span><span class="fl">6.419</span><span class="er">x</span><span class="op">+</span><span class="dv">2</span><span class="er">T2023</span><span class="op">+</span>type<span class="op">@</span>asset<span class="op">+</span>block<span class="op">/</span>release_gp_homework_data.tar.gz <span class="op">-</span>P <span class="op">/</span>content</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>--2024-07-22 15:45:20--  https://courses.edx.org/assets/courseware/v1/ded9e59839c77f4037c800dcade5bd58/asset-v1:MITx+6.419x+2T2023+type@asset+block/release_gp_homework_data.tar.gz
@@ -217,11 +259,11 @@ release_gp_homework 100%[===================&gt;] 144.47M  49.5MB/s    in 2.9s
 </code></pre>
 </div>
 </div>
-<div id="cell-2" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;}}" data-outputid="aa83cc57-540d-419d-9826-813be4fe963a">
+<div id="cell-3" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;}}" data-outputid="aa83cc57-540d-419d-9826-813be4fe963a">
 <details open="" class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>gunzip release_gp_homework_data.tar.gz</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>tar <span class="op">-</span>xvf release_gp_homework_data.tar</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>gunzip release_gp_homework_data.tar.gz</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>tar <span class="op">-</span>xvf release_gp_homework_data.tar</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>./._OceanFlow
@@ -630,19 +672,21 @@ OceanFlow/._mask.csv
 OceanFlow/mask.csv</code></pre>
 </div>
 </div>
-<div id="cell-3" class="cell">
+<div id="cell-4" class="cell">
 <details open="" class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
-<div id="cell-5" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;}}" data-outputid="551c2971-6be9-4fb6-f174-58929c9b1870">
+<section id="loading-data" class="level2">
+<h2 class="anchored" data-anchor-id="loading-data">Loading Data</h2>
+<div id="cell-6" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;}}" data-outputid="551c2971-6be9-4fb6-f174-58929c9b1870">
 <details open="" class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># prompt: read 100 csv files with pandas in order from 1 to 100 and with the format {number}{u}.csv. Also there is two types of .csv files: u and v. I want to stack for exmaple 1u and 1v and then stack the 100 files to a new dimention</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># prompt: read 100 csv files with pandas in order from 1 to 100 and with the format {number}{u}.csv. Also there is two types of .csv files: u and v. I want to stack for exmaple 1u and 1v and then stack the 100 files to a new dimention</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>arys <span class="op">=</span> []</span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -657,17 +701,17 @@ OceanFlow/mask.csv</code></pre>
 <span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> np.array(arys)</span>
 <span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>data.shape</span>
-<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-display" data-execution_count="4">
 <pre><code>(100, 555, 504, 2)</code></pre>
 </div>
 </div>
-<div id="cell-6" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;}}" data-outputid="c75d06cd-45ba-49bd-ef2f-18baf7eae09c">
+<div id="cell-7" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;}}" data-outputid="c75d06cd-45ba-49bd-ef2f-18baf7eae09c">
 <details open="" class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>mask <span class="op">=</span> pd.read_csv(<span class="st">"OceanFlow/mask.csv"</span>, header<span class="op">=</span><span class="va">None</span>).to_numpy().T</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>mask</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>mask <span class="op">=</span> pd.read_csv(<span class="st">"OceanFlow/mask.csv"</span>, header<span class="op">=</span><span class="va">None</span>).to_numpy().T</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>mask</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-display" data-execution_count="5">
 <pre><code>array([[1, 1, 1, ..., 1, 1, 1],
@@ -679,14 +723,15 @@ OceanFlow/mask.csv</code></pre>
        [1, 1, 1, ..., 1, 1, 1]])</code></pre>
 </div>
 </div>
+</section>
 <section id="compute-the-velocities-using-euclidean-norm" class="level2">
 <h2 class="anchored" data-anchor-id="compute-the-velocities-using-euclidean-norm">Compute the Velocities using euclidean norm</h2>
-<div id="cell-8" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;}}" data-outputid="0c1e12af-217a-40f9-abae-e875da4431ca">
+<div id="cell-9" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;}}" data-outputid="0c1e12af-217a-40f9-abae-e875da4431ca">
 <details open="" class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>velocities_per_time <span class="op">=</span> np.linalg.norm(data, axis<span class="op">=</span><span class="dv">3</span>)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>velocities_per_time <span class="op">=</span> np.linalg.norm(data, axis<span class="op">=</span><span class="dv">3</span>)</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>velocities_per_time.shape</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>velocities_per_time.shape</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-display" data-execution_count="6">
 <pre><code>(100, 555, 504)</code></pre>
@@ -695,25 +740,25 @@ OceanFlow/mask.csv</code></pre>
 </section>
 <section id="compute-variance-across-time" class="level2">
 <h2 class="anchored" data-anchor-id="compute-variance-across-time">Compute variance across time</h2>
-<div id="cell-10" class="cell">
+<div id="cell-11" class="cell">
 <details open="" class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>variance_in_time <span class="op">=</span> np.var(velocities_per_time, axis<span class="op">=</span><span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>variance_in_time <span class="op">=</span> np.var(velocities_per_time, axis<span class="op">=</span><span class="dv">0</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 </section>
 <section id="smallest-variance-but-bigger-than-cero" class="level2">
 <h2 class="anchored" data-anchor-id="smallest-variance-but-bigger-than-cero">Smallest Variance but bigger than cero</h2>
-<div id="cell-12" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;}}" data-outputid="0195066c-12e4-41eb-b560-371fce1e2842">
+<div id="cell-13" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;}}" data-outputid="0195066c-12e4-41eb-b560-371fce1e2842">
 <details open="" class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># prompt: find the indeces of the smallest variance on the variance_in_time matrix but bigger than cero</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># prompt: find the indeces of the smallest variance on the variance_in_time matrix but bigger than cero</span></span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Get the indices of the smallest variance values that are greater than zero.</span></span>
 <span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>smallest_variance_indices <span class="op">=</span> np.where(np.logical_and(variance_in_time <span class="op">&gt;</span> <span class="dv">0</span>, variance_in_time <span class="op">==</span> np.<span class="bu">min</span>(variance_in_time[variance_in_time <span class="op">&gt;</span> <span class="dv">0</span>])))</span>
 <span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the indices.</span></span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>((smallest_variance_indices<span class="op">*</span>np.array([<span class="dv">3</span>])))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>((smallest_variance_indices<span class="op">*</span>np.array([<span class="dv">3</span>])))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>[[510]
@@ -723,10 +768,10 @@ OceanFlow/mask.csv</code></pre>
 </section>
 <section id="maximus-x-axis-velocity" class="level2">
 <h2 class="anchored" data-anchor-id="maximus-x-axis-velocity">Maximus x-axis velocity</h2>
-<div id="cell-14" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;}}" data-outputid="0e5eeb97-008a-4951-c9f5-f46085391c6b">
+<div id="cell-15" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;}}" data-outputid="0e5eeb97-008a-4951-c9f5-f46085391c6b">
 <details open="" class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># prompt: I can get the maximun value for the x-axis whit this code: new_dim[:, 0,:,:].max(). But, how can I know in which of the 100 times occurs and the indeces?</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># prompt: I can get the maximun value for the x-axis whit this code: new_dim[:, 0,:,:].max(). But, how can I know in which of the 100 times occurs and the indeces?</span></span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>max_value <span class="op">=</span> data[:, :,:,<span class="dv">0</span>].<span class="bu">max</span>()</span>
 <span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>max_indices <span class="op">=</span> np.where(data[:, :,:,<span class="dv">0</span>] <span class="op">==</span> max_value)</span>
@@ -734,7 +779,7 @@ OceanFlow/mask.csv</code></pre>
 <span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Maximum x-axis velocity:"</span>, max_value)</span>
 <span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Time index:"</span>, max_indices[<span class="dv">0</span>][<span class="dv">0</span>]<span class="op">*</span>np.array([<span class="dv">3</span>]))</span>
 <span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"y index:"</span>, max_indices[<span class="dv">1</span>][<span class="dv">0</span>]<span class="op">*</span>np.array([<span class="dv">3</span>]))</span>
-<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"z index:"</span>, max_indices[<span class="dv">2</span>][<span class="dv">0</span>]<span class="op">*</span>np.array([<span class="dv">3</span>]))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"z index:"</span>, max_indices[<span class="dv">2</span>][<span class="dv">0</span>]<span class="op">*</span>np.array([<span class="dv">3</span>]))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>Maximum x-axis velocity: 5.7993
@@ -746,10 +791,10 @@ z index: [543]</code></pre>
 </section>
 <section id="average-over-all-x-axis-and-y-axis" class="level2">
 <h2 class="anchored" data-anchor-id="average-over-all-x-axis-and-y-axis">Average over all x-axis and y-axis</h2>
-<div id="cell-16" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;}}" data-outputid="64c7038c-c60a-44a2-ebcf-c21692d7c17e">
+<div id="cell-17" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;}}" data-outputid="64c7038c-c60a-44a2-ebcf-c21692d7c17e">
 <details open="" class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>np.mean(data, axis<span class="op">=</span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">2</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>np.mean(data, axis<span class="op">=</span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">2</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-display" data-execution_count="10">
 <pre><code>array([-0.09359308, -0.03547521], dtype=float32)</code></pre>
@@ -758,10 +803,10 @@ z index: [543]</code></pre>
 </section>
 <section id="identify-long-correlation-areas" class="level2">
 <h2 class="anchored" data-anchor-id="identify-long-correlation-areas">Identify long-correlation areas</h2>
-<div id="cell-18" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:1000}}" data-outputid="75473318-6f4d-48ca-da66-572a623b133d">
+<div id="cell-19" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:1000}}" data-outputid="75473318-6f4d-48ca-da66-572a623b133d">
 <details open="" class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_correlated_pairs(d, num_pairs, dist_threshold, mag_threshold<span class="op">=</span><span class="va">None</span>):</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_correlated_pairs(d, num_pairs, dist_threshold, mag_threshold<span class="op">=</span><span class="va">None</span>):</span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  pairs <span class="op">=</span> np.array([ np.random.randint(<span class="dv">0</span>, data.shape[<span class="dv">1</span>], size<span class="op">=</span>[<span class="dv">2</span>, num_pairs]), np.random.randint(<span class="dv">0</span>, data.shape[<span class="dv">2</span>], size<span class="op">=</span>[<span class="dv">2</span>, num_pairs]) ]).transpose([<span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">0</span>])</span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  idx_dist_threshold <span class="op">=</span> dist_threshold<span class="op">/</span><span class="fl">3.0</span></span>
 <span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  pairs_dists <span class="op">=</span> np.sqrt(np.square(pairs[:,<span class="dv">0</span>,:] <span class="op">-</span> pairs[:, <span class="dv">1</span>, :]).<span class="bu">sum</span>(axis<span class="op">=</span><span class="dv">1</span>))</span>
@@ -800,7 +845,7 @@ z index: [543]</code></pre>
 <span id="cb19-37"><a href="#cb19-37" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb19-38"><a href="#cb19-38" aria-hidden="true" tabindex="-1"></a>p2_pairs, p2_corrs <span class="op">=</span> get_correlated_pairs(data, <span class="dv">1000000</span>, <span class="fl">1000.0</span>)</span>
 <span id="cb19-39"><a href="#cb19-39" aria-hidden="true" tabindex="-1"></a>plot_correlated_pairs(p2_pairs, p2_corrs, p2_corrs.<span class="bu">min</span>(axis<span class="op">=</span><span class="dv">1</span>).<span class="bu">max</span>(axis<span class="op">=</span><span class="dv">0</span>))</span>
-<span id="cb19-40"><a href="#cb19-40" aria-hidden="true" tabindex="-1"></a>plot_correlated_pairs(p2_pairs, p2_corrs, p2_corrs.<span class="bu">max</span>(axis<span class="op">=</span><span class="dv">1</span>).<span class="bu">min</span>(axis<span class="op">=</span><span class="dv">0</span>), negative<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb19-40"><a href="#cb19-40" aria-hidden="true" tabindex="-1"></a>plot_correlated_pairs(p2_pairs, p2_corrs, p2_corrs.<span class="bu">max</span>(axis<span class="op">=</span><span class="dv">1</span>).<span class="bu">min</span>(axis<span class="op">=</span><span class="dv">0</span>), negative<span class="op">=</span><span class="va">True</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stderr">
 <pre><code>RuntimeWarning: invalid value encountered in divide
@@ -828,14 +873,14 @@ z index: [543]</code></pre>
 </div>
 </div>
 </div>
-<div id="cell-19" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:1000}}" data-outputid="31324bbc-2646-4e41-8ee8-506c97fe1942">
+<div id="cell-20" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:1000}}" data-outputid="31324bbc-2646-4e41-8ee8-506c97fe1942">
 <details open="" class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>p2_pairs, p2_corrs <span class="op">=</span> get_correlated_pairs(data, <span class="dv">2000000</span>, <span class="fl">1000.0</span>, mag_threshold<span class="op">=</span><span class="fl">0.3</span>)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>p2_pairs, p2_corrs <span class="op">=</span> get_correlated_pairs(data, <span class="dv">2000000</span>, <span class="fl">1000.0</span>, mag_threshold<span class="op">=</span><span class="fl">0.3</span>)</span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>plt.hist(p2_corrs, bins<span class="op">=</span><span class="dv">30</span>)</span>
 <span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
 <span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>plot_correlated_pairs(p2_pairs, p2_corrs, p2_corrs.<span class="bu">min</span>(axis<span class="op">=</span><span class="dv">1</span>).<span class="bu">max</span>(axis<span class="op">=</span><span class="dv">0</span>)<span class="op">-</span><span class="fl">0.1</span>)</span>
-<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>plot_correlated_pairs(p2_pairs, p2_corrs, p2_corrs.<span class="bu">max</span>(axis<span class="op">=</span><span class="dv">1</span>).<span class="bu">min</span>(axis<span class="op">=</span><span class="dv">0</span>)<span class="op">+</span><span class="fl">0.1</span>, negative<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>plot_correlated_pairs(p2_pairs, p2_corrs, p2_corrs.<span class="bu">max</span>(axis<span class="op">=</span><span class="dv">1</span>).<span class="bu">min</span>(axis<span class="op">=</span><span class="dv">0</span>)<span class="op">+</span><span class="fl">0.1</span>, negative<span class="op">=</span><span class="va">True</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-display">
 <div>
@@ -864,10 +909,10 @@ z index: [543]</code></pre>
 <h2 class="anchored" data-anchor-id="simulation-with-jax">Simulation with JAX</h2>
 <section id="animation-with-matplotlib" class="level3">
 <h3 class="anchored" data-anchor-id="animation-with-matplotlib">Animation with matplotlib</h3>
-<div id="cell-22" class="cell">
+<div id="cell-23" class="cell">
 <details open="" class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>plt.rcParams[<span class="st">"figure.figsize"</span>] <span class="op">=</span> (<span class="dv">8</span>,<span class="dv">8</span>)</span>
 <span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> flowplot(ax, grid_x, grid_y, title, overlay<span class="op">=</span><span class="va">None</span>, grid_stride<span class="op">=</span><span class="dv">1</span>, density<span class="op">=</span><span class="va">False</span>):</span>
@@ -923,16 +968,16 @@ z index: [543]</code></pre>
 <span id="cb22-54"><a href="#cb22-54" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-55"><a href="#cb22-55" aria-hidden="true" tabindex="-1"></a>  animation <span class="op">=</span> anim.FuncAnimation(fig, frame, frames<span class="op">=</span>state, blit<span class="op">=</span><span class="va">True</span>)</span>
 <span id="cb22-56"><a href="#cb22-56" aria-hidden="true" tabindex="-1"></a>  plt.close()</span>
-<span id="cb22-57"><a href="#cb22-57" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> animation</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb22-57"><a href="#cb22-57" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> animation</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 </section>
 <section id="acceleration-with-jax" class="level3">
 <h3 class="anchored" data-anchor-id="acceleration-with-jax">Acceleration with JAX</h3>
-<div id="cell-24" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;}}" data-outputid="59c74918-f763-44d1-9738-5e865c8642f2">
+<div id="cell-25" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;}}" data-outputid="59c74918-f763-44d1-9738-5e865c8642f2">
 <details open="" class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>pip install <span class="op">-</span>U jax</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>pip install <span class="op">-</span>U jax</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <div class="ansi-escaped-output">
@@ -981,10 +1026,10 @@ Successfully installed jax-0.4.30 jaxlib-0.4.30
 </div>
 </div>
 </div>
-<div id="cell-25" class="cell">
+<div id="cell-26" class="cell">
 <details open="" class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> jax <span class="im">import</span> config</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> jax <span class="im">import</span> config</span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>config.update(<span class="st">"jax_enable_x64"</span>, <span class="va">True</span>)</span>
 <span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> jax.numpy <span class="im">as</span> jnp</span>
 <span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> jax</span>
@@ -1024,13 +1069,13 @@ Successfully installed jax-0.4.30 jaxlib-0.4.30
 <span id="cb24-38"><a href="#cb24-38" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> new_state, new_state</span>
 <span id="cb24-39"><a href="#cb24-39" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb24-40"><a href="#cb24-40" aria-hidden="true" tabindex="-1"></a>  _, states <span class="op">=</span> jax.lax.scan(save_step, state_0, xs<span class="op">=</span>jnp.arange(<span class="dv">0</span>, N, save_stride))</span>
-<span id="cb24-41"><a href="#cb24-41" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> states</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb24-41"><a href="#cb24-41" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> states</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
-<div id="cell-26" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;}}" data-outputid="7b561868-f37b-43fd-fc9c-c04da3ae131f">
+<div id="cell-27" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;}}" data-outputid="7b561868-f37b-43fd-fc9c-c04da3ae131f">
 <details open="" class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>T <span class="op">=</span> <span class="fl">300.0</span> <span class="co">#@param {type:"number"}</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>T <span class="op">=</span> <span class="fl">300.0</span> <span class="co">#@param {type:"number"}</span></span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>N <span class="op">=</span> <span class="dv">200000</span> <span class="co">#@param {type:"integer"}</span></span>
 <span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>num <span class="op">=</span> <span class="dv">1000</span> <span class="co">#@param {type:"integer"}</span></span>
 <span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>epsilon <span class="op">=</span> T<span class="op">/</span>N <span class="co"># hours</span></span>
@@ -1051,20 +1096,20 @@ Successfully installed jax-0.4.30 jaxlib-0.4.30
 <span id="cb25-19"><a href="#cb25-19" aria-hidden="true" tabindex="-1"></a>  ax.axis([<span class="dv">0</span>, grid_x_edges.<span class="bu">max</span>(), <span class="dv">0</span>, grid_y_edges.<span class="bu">max</span>()])</span>
 <span id="cb25-20"><a href="#cb25-20" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb25-21"><a href="#cb25-21" aria-hidden="true" tabindex="-1"></a>states <span class="op">=</span> jax_sim(N, N<span class="op">//</span><span class="dv">100</span>, grid_t_edges, grid_x_edges, grid_y_edges, data, x_0, epsilon)</span>
-<span id="cb25-22"><a href="#cb25-22" aria-hidden="true" tabindex="-1"></a></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb25-22"><a href="#cb25-22" aria-hidden="true" tabindex="-1"></a></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>300.0 hours of simulation, 
  200000 iterations</code></pre>
 </div>
 </div>
-<div id="cell-27" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:876}}" data-outputid="e17ff76c-1acd-4e09-ad8b-c2211f535971">
+<div id="cell-28" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:876}}" data-outputid="e17ff76c-1acd-4e09-ad8b-c2211f535971">
 <details open="" class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>animation <span class="op">=</span> animate(<span class="bu">zip</span>(<span class="op">*</span>states), grid_x, grid_y, <span class="st">"</span><span class="sc">{}</span><span class="st">"</span>, overlay<span class="op">=</span>plot_overlay, grid_stride<span class="op">=</span><span class="dv">20</span>)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>animation <span class="op">=</span> animate(<span class="bu">zip</span>(<span class="op">*</span>states), grid_x, grid_y, <span class="st">"</span><span class="sc">{}</span><span class="st">"</span>, overlay<span class="op">=</span>plot_overlay, grid_stride<span class="op">=</span><span class="dv">20</span>)</span>
 <span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> IPython.display</span>
 <span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> IPython.display <span class="im">import</span> HTML</span>
-<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>HTML(animation.to_html5_video())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>HTML(animation.to_html5_video())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stderr">
 <pre><code>UserWarning: frames=&lt;zip object at 0x7e27dddb0a80&gt; which we can infer the length of, did not pass an explicit *save_count* and passed cache_frame_data=True.  To avoid a possibly unbounded cache, frame data caching has been disabled. To suppress this warning either pass `cache_frame_data=False` or `save_count=MAX_FRAMES`.
@@ -41067,15 +41112,15 @@ YQAAAAEAAAAATGF2ZjU4Ljc2LjEwMA==
 </video>
 </div>
 </div>
-<div id="cell-28" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:1000}}" data-outputid="e96b5c55-fed8-4357-a4ef-30e25de241ba">
+<div id="cell-29" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:1000}}" data-outputid="e96b5c55-fed8-4357-a4ef-30e25de241ba">
 <details open="" class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> x_0_variance <span class="kw">in</span> [<span class="dv">10</span><span class="op">**</span><span class="dv">2</span>, <span class="dv">30</span><span class="op">**</span><span class="dv">2</span>, <span class="dv">50</span><span class="op">**</span><span class="dv">2</span>]:</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> x_0_variance <span class="kw">in</span> [<span class="dv">10</span><span class="op">**</span><span class="dv">2</span>, <span class="dv">30</span><span class="op">**</span><span class="dv">2</span>, <span class="dv">50</span><span class="op">**</span><span class="dv">2</span>]:</span>
 <span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>  x_0 <span class="op">=</span> np.random.multivariate_normal(mean<span class="op">=</span>[<span class="dv">300</span>, <span class="dv">1050</span>], cov<span class="op">=</span>[[x_0_variance, <span class="dv">0</span>], [<span class="dv">0</span>, x_0_variance]], size<span class="op">=</span>num)</span>
 <span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>  plane_states <span class="op">=</span> jax_sim(N, N<span class="op">//</span><span class="dv">100</span>, grid_t_edges, grid_x_edges, grid_y_edges, data, x_0, epsilon)</span>
 <span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>  plane_animation <span class="op">=</span> animate(<span class="bu">zip</span>(<span class="op">*</span>plane_states), grid_x, grid_y, <span class="st">"</span><span class="sc">{}</span><span class="st">"</span>, overlay<span class="op">=</span>plot_overlay, grid_stride<span class="op">=</span><span class="dv">20</span>, density<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>  IPython.display.display(HTML(plane_animation.to_html5_video()))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>  IPython.display.display(HTML(plane_animation.to_html5_video()))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stderr">
 <pre><code>UserWarning: frames=&lt;zip object at 0x7e27ddeee180&gt; which we can infer the length of, did not pass an explicit *save_count* and passed cache_frame_data=True.  To avoid a possibly unbounded cache, frame data caching has been disabled. To suppress this warning either pass `cache_frame_data=False` or `save_count=MAX_FRAMES`.
@@ -90184,10 +90229,10 @@ AAAALWlsc3QAAAAlqXRvbwAAAB1kYXRhAAAAAQAAAABMYXZmNTguNzYuMTAw
 <h2 class="anchored" data-anchor-id="estimating-flows-with-gaussian-processes">Estimating Flows with Gaussian Processes</h2>
 <section id="defining-the-gaussian-process" class="level3">
 <h3 class="anchored" data-anchor-id="defining-the-gaussian-process">Defining the Gaussian Process</h3>
-<div id="cell-31" class="cell">
+<div id="cell-32" class="cell">
 <details open="" class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> scipy</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> scipy</span>
 <span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> gaussian_process(x0_mean, x1_mean, x1, cov_blocks, tau):</span>
 <span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>  cov_11_noise <span class="op">=</span> cov_blocks[<span class="dv">1</span>][<span class="dv">1</span>] <span class="op">+</span> tau <span class="op">*</span> np.eye(x1_mean.shape[<span class="dv">0</span>])</span>
@@ -90196,16 +90241,16 @@ AAAALWlsc3QAAAAlqXRvbwAAAB1kYXRhAAAAAQAAAABMYXZmNTguNzYuMTAw
 <span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a>  cov_00_cond2 <span class="op">=</span> cov_blocks[<span class="dv">0</span>][<span class="dv">0</span>] <span class="op">-</span> cov_blocks[<span class="dv">0</span>][<span class="dv">1</span>].dot(np.linalg.solve(cov_11_noise, cov_blocks[<span class="dv">0</span>][<span class="dv">1</span>].T))</span>
 <span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> x0_mean_cond1, cov_00_cond2</span>
-<span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 </section>
 <section id="defining-the-cross-validation" class="level3">
 <h3 class="anchored" data-anchor-id="defining-the-cross-validation">Defining the Cross-validation</h3>
-<div id="cell-33" class="cell">
+<div id="cell-34" class="cell">
 <details open="" class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> cross_validate(K, values, means, cov, tau):</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> cross_validate(K, values, means, cov, tau):</span>
 <span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>  perm <span class="op">=</span> np.random.permutation(values.shape[<span class="dv">0</span>])</span>
 <span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>  folds <span class="op">=</span> <span class="bu">list</span>(<span class="bu">map</span>(np.sort, np.array_split(perm, K)))</span>
 <span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -90229,13 +90274,13 @@ AAAALWlsc3QAAAAlqXRvbwAAAB1kYXRhAAAAAQAAAABMYXZmNTguNzYuMTAw
 <span id="cb34-22"><a href="#cb34-22" aria-hidden="true" tabindex="-1"></a>      <span class="bu">print</span>((cov_00_cond2<span class="op">-</span>cov_00_cond2.T).<span class="bu">max</span>()<span class="op">/</span>cov_00_cond2.<span class="bu">max</span>())</span>
 <span id="cb34-23"><a href="#cb34-23" aria-hidden="true" tabindex="-1"></a>      <span class="cf">raise</span></span>
 <span id="cb34-24"><a href="#cb34-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-25"><a href="#cb34-25" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> np.mean(<span class="bu">list</span>(<span class="bu">map</span>(validate, <span class="bu">range</span>(K))))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb34-25"><a href="#cb34-25" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> np.mean(<span class="bu">list</span>(<span class="bu">map</span>(validate, <span class="bu">range</span>(K))))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
-<div id="cell-34" class="cell">
+<div id="cell-35" class="cell">
 <details open="" class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> generate_cov(zs1, zs2, a, ell):</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> generate_cov(zs1, zs2, a, ell):</span>
 <span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> (a<span class="op">**</span><span class="dv">2</span>) <span class="op">*</span> np.exp(<span class="op">-</span>(zs1[:,<span class="va">None</span>] <span class="op">-</span> zs2[<span class="va">None</span>, :])<span class="op">**</span><span class="dv">2</span> <span class="op">/</span> ell<span class="op">**</span><span class="dv">2</span>)</span>
 <span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> scan_seq(zs, a_scan, ell_scan):</span>
@@ -90254,19 +90299,19 @@ AAAALWlsc3QAAAAlqXRvbwAAAB1kYXRhAAAAAQAAAABMYXZmNTguNzYuMTAw
 <span id="cb35-17"><a href="#cb35-17" aria-hidden="true" tabindex="-1"></a>      best_coords <span class="op">=</span> coords</span>
 <span id="cb35-18"><a href="#cb35-18" aria-hidden="true" tabindex="-1"></a>    grid.append(<span class="bu">list</span>(coords) <span class="op">+</span> [metric])</span>
 <span id="cb35-19"><a href="#cb35-19" aria-hidden="true" tabindex="-1"></a>  grids <span class="op">=</span> np.array(grid).T</span>
-<span id="cb35-20"><a href="#cb35-20" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> best_coords, grids</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-</div>
-<div id="cell-35" class="cell">
-<details open="" class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>grid_longT_edges <span class="op">=</span> np.arange(<span class="dv">0</span>, data.shape[<span class="dv">0</span>]<span class="op">+</span><span class="dv">1</span>)<span class="op">*</span>(<span class="dv">3</span><span class="op">*</span><span class="dv">24</span>) <span class="co"># 3 days per point</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb35-20"><a href="#cb35-20" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> best_coords, grids</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <div id="cell-36" class="cell">
 <details open="" class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> scan_position(loc, tau):</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>grid_longT_edges <span class="op">=</span> np.arange(<span class="dv">0</span>, data.shape[<span class="dv">0</span>]<span class="op">+</span><span class="dv">1</span>)<span class="op">*</span>(<span class="dv">3</span><span class="op">*</span><span class="dv">24</span>) <span class="co"># 3 days per point</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<div id="cell-37" class="cell">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> scan_position(loc, tau):</span>
 <span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>  a_scan <span class="op">=</span> np.linspace(<span class="fl">0.1</span>, <span class="fl">10.0</span>, <span class="dv">100</span>)</span>
 <span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>  ell_scan <span class="op">=</span> <span class="dv">75</span><span class="op">*</span>np.linspace(<span class="fl">0.1</span>, <span class="fl">5.0</span>, <span class="dv">100</span>)</span>
 <span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -90279,25 +90324,25 @@ AAAALWlsc3QAAAAlqXRvbwAAAB1kYXRhAAAAAQAAAABMYXZmNTguNzYuMTAw
 <span id="cb37-11"><a href="#cb37-11" aria-hidden="true" tabindex="-1"></a>    <span class="co">#print()</span></span>
 <span id="cb37-12"><a href="#cb37-12" aria-hidden="true" tabindex="-1"></a>    result, result_grids <span class="op">=</span> scan(<span class="dv">10</span>, values, np.zeros_like(values), tau, scan_seq(z_locations, val_std<span class="op">*</span>a_scan, ell_scan))</span>
 <span id="cb37-13"><a href="#cb37-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">yield</span> result, result_grids</span>
-<span id="cb37-14"><a href="#cb37-14" aria-hidden="true" tabindex="-1"></a></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-</div>
-<div id="cell-37" class="cell">
-<details open="" class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="co"># We'll calculate all four points we'll need for parts (a) and (b) here.</span></span>
-<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>p4_scan_products <span class="op">=</span> <span class="bu">list</span>(<span class="bu">map</span>(<span class="kw">lambda</span> p: <span class="bu">list</span>(scan_position(p, <span class="fl">0.001</span>)), [</span>
-<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>            [<span class="dv">1400</span><span class="op">//</span><span class="dv">3</span>, <span class="dv">400</span><span class="op">//</span><span class="dv">3</span>],</span>
-<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>            [<span class="dv">400</span><span class="op">//</span><span class="dv">3</span>, <span class="dv">600</span><span class="op">//</span><span class="dv">3</span>],</span>
-<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a>            [<span class="dv">500</span><span class="op">//</span><span class="dv">3</span>, <span class="dv">1400</span><span class="op">//</span><span class="dv">3</span>],</span>
-<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a>            [<span class="dv">1200</span><span class="op">//</span><span class="dv">3</span>, <span class="dv">1200</span><span class="op">//</span><span class="dv">3</span>]</span>
-<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a>]))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb37-14"><a href="#cb37-14" aria-hidden="true" tabindex="-1"></a></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <div id="cell-38" class="cell">
 <details open="" class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> plot_scan_results(products, level_range<span class="op">=</span>(<span class="dv">0</span>, <span class="dv">30</span>)):</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="co"># We'll calculate all four points we'll need for parts (a) and (b) here.</span></span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>p4_scan_products <span class="op">=</span> <span class="bu">list</span>(<span class="bu">map</span>(<span class="kw">lambda</span> p: <span class="bu">list</span>(scan_position(p, <span class="fl">0.001</span>)), [</span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>            [<span class="dv">1400</span><span class="op">//</span><span class="dv">3</span>, <span class="dv">400</span><span class="op">//</span><span class="dv">3</span>],</span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>            [<span class="dv">400</span><span class="op">//</span><span class="dv">3</span>, <span class="dv">600</span><span class="op">//</span><span class="dv">3</span>],</span>
+<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a>            [<span class="dv">500</span><span class="op">//</span><span class="dv">3</span>, <span class="dv">1400</span><span class="op">//</span><span class="dv">3</span>],</span>
+<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a>            [<span class="dv">1200</span><span class="op">//</span><span class="dv">3</span>, <span class="dv">1200</span><span class="op">//</span><span class="dv">3</span>]</span>
+<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a>]))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<div id="cell-39" class="cell">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb39"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> plot_scan_results(products, level_range<span class="op">=</span>(<span class="dv">0</span>, <span class="dv">30</span>)):</span>
 <span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>  best, grids <span class="op">=</span> products</span>
 <span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>  x_grid, y_grid, z_grid <span class="op">=</span> <span class="bu">map</span>(<span class="kw">lambda</span> a: a.reshape((<span class="dv">100</span>, <span class="dv">100</span>)), grids)</span>
 <span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -90305,13 +90350,13 @@ AAAALWlsc3QAAAAlqXRvbwAAAB1kYXRhAAAAAQAAAABMYXZmNTguNzYuMTAw
 <span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a>  plt.scatter(<span class="op">*</span>best, marker<span class="op">=</span><span class="st">'o'</span>)</span>
 <span id="cb39-7"><a href="#cb39-7" aria-hidden="true" tabindex="-1"></a>  plt.title(<span class="vs">r"Optimal, </span><span class="dv">$</span><span class="vs">a={:</span><span class="dv">.</span><span class="vs">3f}</span><span class="dv">$</span><span class="vs"> </span><span class="dv">$</span><span class="vs">l={:</span><span class="dv">.</span><span class="vs">3f}</span><span class="dv">$</span><span class="vs">"</span>.<span class="bu">format</span>(<span class="op">*</span>best))</span>
 <span id="cb39-8"><a href="#cb39-8" aria-hidden="true" tabindex="-1"></a>  plt.xlabel(<span class="vs">r"</span><span class="dv">$</span><span class="vs">a</span><span class="dv">$</span><span class="vs">"</span>)</span>
-<span id="cb39-9"><a href="#cb39-9" aria-hidden="true" tabindex="-1"></a>  plt.ylabel(<span class="vs">r"</span><span class="dv">$</span><span class="vs">l</span><span class="dv">$</span><span class="vs">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb39-9"><a href="#cb39-9" aria-hidden="true" tabindex="-1"></a>  plt.ylabel(<span class="vs">r"</span><span class="dv">$</span><span class="vs">l</span><span class="dv">$</span><span class="vs">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
-<div id="cell-39" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:720}}" data-outputid="1aa574ed-c5ae-42b6-90be-e6350ce8948c">
+<div id="cell-40" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:720}}" data-outputid="1aa574ed-c5ae-42b6-90be-e6350ce8948c">
 <details open="" class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>plot_scan_results(p4_scan_products[<span class="dv">0</span>][<span class="dv">0</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb40"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>plot_scan_results(p4_scan_products[<span class="dv">0</span>][<span class="dv">0</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-display">
 <div>
@@ -90321,15 +90366,15 @@ AAAALWlsc3QAAAAlqXRvbwAAAB1kYXRhAAAAAQAAAABMYXZmNTguNzYuMTAw
 </div>
 </div>
 </div>
-<div id="cell-40" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:806}}" data-outputid="fc6935c2-a508-4b29-d764-2377278cb539">
+<div id="cell-41" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:806}}" data-outputid="fc6935c2-a508-4b29-d764-2377278cb539">
 <details open="" class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, pos_results <span class="kw">in</span> <span class="bu">enumerate</span>(p4_scan_products):</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb41"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, pos_results <span class="kw">in</span> <span class="bu">enumerate</span>(p4_scan_products):</span>
 <span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> j, comp_results <span class="kw">in</span> <span class="bu">enumerate</span>(pos_results):</span>
 <span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>    plt.subplot(<span class="bu">len</span>(p4_scan_products), <span class="dv">2</span>, <span class="dv">1</span> <span class="op">+</span> <span class="dv">2</span><span class="op">*</span>i <span class="op">+</span> j)</span>
 <span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>    plot_scan_results(comp_results)</span>
 <span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-display">
 <div>
@@ -90342,10 +90387,10 @@ AAAALWlsc3QAAAAlqXRvbwAAAB1kYXRhAAAAAQAAAABMYXZmNTguNzYuMTAw
 </section>
 <section id="running-gaussian-processes-with-sklearn" class="level3">
 <h3 class="anchored" data-anchor-id="running-gaussian-processes-with-sklearn">Running Gaussian Processes with sklearn</h3>
-<div id="cell-42" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;}}" data-outputid="4c86f4e5-910a-4ea6-f258-d6df100a0e8c">
+<div id="cell-43" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;}}" data-outputid="4c86f4e5-910a-4ea6-f258-d6df100a0e8c">
 <details open="" class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> scikit_scan_position(loc, tau):</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb42"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> scikit_scan_position(loc, tau):</span>
 <span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>  a_scan <span class="op">=</span> np.linspace(<span class="fl">0.1</span>, <span class="fl">10.0</span>, <span class="dv">100</span>)</span>
 <span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>  ell_scan <span class="op">=</span> <span class="dv">75</span><span class="op">*</span>np.linspace(<span class="fl">0.1</span>, <span class="fl">5.0</span>, <span class="dv">100</span>)</span>
 <span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -90377,7 +90422,7 @@ AAAALWlsc3QAAAAlqXRvbwAAAB1kYXRhAAAAAQAAAABMYXZmNTguNzYuMTAw
 <span id="cb42-30"><a href="#cb42-30" aria-hidden="true" tabindex="-1"></a>            [<span class="dv">400</span><span class="op">//</span><span class="dv">3</span>, <span class="dv">600</span><span class="op">//</span><span class="dv">3</span>],</span>
 <span id="cb42-31"><a href="#cb42-31" aria-hidden="true" tabindex="-1"></a>            [<span class="dv">500</span><span class="op">//</span><span class="dv">3</span>, <span class="dv">1400</span><span class="op">//</span><span class="dv">3</span>],</span>
 <span id="cb42-32"><a href="#cb42-32" aria-hidden="true" tabindex="-1"></a>            [<span class="dv">1200</span><span class="op">//</span><span class="dv">3</span>, <span class="dv">1200</span><span class="op">//</span><span class="dv">3</span>]</span>
-<span id="cb42-33"><a href="#cb42-33" aria-hidden="true" tabindex="-1"></a>]))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb42-33"><a href="#cb42-33" aria-hidden="true" tabindex="-1"></a>]))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stderr">
 <pre><code>/usr/local/lib/python3.10/dist-packages/sklearn/gaussian_process/_gpr.py:629: ConvergenceWarning: lbfgs failed to converge (status=2):
@@ -90388,15 +90433,15 @@ Increase the number of iterations (max_iter) or scale the data as shown in:
   _check_optimize_result("lbfgs", opt_res)</code></pre>
 </div>
 </div>
-<div id="cell-43" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:806}}" data-outputid="3221c99e-11cd-4790-ab8c-f2fa776d7b4b">
+<div id="cell-44" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:806}}" data-outputid="3221c99e-11cd-4790-ab8c-f2fa776d7b4b">
 <details open="" class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, pos_results <span class="kw">in</span> <span class="bu">enumerate</span>(p4_d_scan_products):</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb44"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, pos_results <span class="kw">in</span> <span class="bu">enumerate</span>(p4_d_scan_products):</span>
 <span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> j, comp_results <span class="kw">in</span> <span class="bu">enumerate</span>(pos_results):</span>
 <span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>    plt.subplot(<span class="bu">len</span>(p4_d_scan_products), <span class="dv">2</span>, <span class="dv">1</span> <span class="op">+</span> <span class="dv">2</span><span class="op">*</span>i <span class="op">+</span> j)</span>
 <span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a>    plot_scan_results(comp_results, level_range<span class="op">=</span>(<span class="dv">0</span>, <span class="dv">200</span>))</span>
 <span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-display">
 <div>
@@ -90406,13 +90451,13 @@ Increase the number of iterations (max_iter) or scale the data as shown in:
 </div>
 </div>
 </div>
-<div id="cell-44" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:696}}" data-outputid="292b0273-a507-4784-c5a5-05cc36fff5f4">
+<div id="cell-45" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:696}}" data-outputid="292b0273-a507-4784-c5a5-05cc36fff5f4">
 <details open="" class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>p5_gen_cov_params <span class="op">=</span> (<span class="fl">2.5</span>, <span class="fl">280.0</span>)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb45"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>p5_gen_cov_params <span class="op">=</span> (<span class="fl">2.5</span>, <span class="fl">280.0</span>)</span>
 <span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>p5_gen_cov <span class="op">=</span> <span class="kw">lambda</span> z, w: generate_cov(z, w, <span class="op">*</span>p5_gen_cov_params)</span>
 <span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>p5_cov <span class="op">=</span> p5_gen_cov(grid_longT_edges[:<span class="op">-</span><span class="dv">1</span>], grid_longT_edges[:<span class="op">-</span><span class="dv">1</span>])</span>
-<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a>plt.imshow(p5_cov)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a>plt.imshow(p5_cov)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-display">
 <div>
@@ -90425,10 +90470,10 @@ Increase the number of iterations (max_iter) or scale the data as shown in:
 </section>
 <section id="make-predictions" class="level3">
 <h3 class="anchored" data-anchor-id="make-predictions">Make Predictions</h3>
-<div id="cell-46" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:1000}}" data-outputid="a6dd4fac-548b-4392-d115-03dea8676982">
+<div id="cell-47" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:1000}}" data-outputid="a6dd4fac-548b-4392-d115-03dea8676982">
 <details open="" class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> make_prediction(z, predicted_mean, gen_cov, obs, obs_means, obs_zs, obs_cov, tau):</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb46"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> make_prediction(z, predicted_mean, gen_cov, obs, obs_means, obs_zs, obs_cov, tau):</span>
 <span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>  z <span class="op">=</span> np.array([z])</span>
 <span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>  cov_blocks <span class="op">=</span> [</span>
 <span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a>               [ gen_cov(z, z), gen_cov(z, obs_zs) ],</span>
@@ -90463,7 +90508,7 @@ Increase the number of iterations (max_iter) or scale the data as shown in:
 <span id="cb46-33"><a href="#cb46-33" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb46-34"><a href="#cb46-34" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> p5_obs, title <span class="kw">in</span> <span class="bu">zip</span>(data[:, <span class="dv">1400</span><span class="op">//</span><span class="dv">3</span>, <span class="dv">400</span><span class="op">//</span><span class="dv">3</span>].T, [<span class="st">"x-component"</span>, <span class="st">"y-component"</span>]):</span>
 <span id="cb46-35"><a href="#cb46-35" aria-hidden="true" tabindex="-1"></a>  p5_prior_means <span class="op">=</span> p5_obs.mean()<span class="op">*</span>np.ones_like(p5_obs)</span>
-<span id="cb46-36"><a href="#cb46-36" aria-hidden="true" tabindex="-1"></a>  plot_prediction(p5_pred_times, p5_obs.mean(), p5_gen_cov, p5_obs, p5_prior_means, p5_obs_times, <span class="fl">0.001</span>, title)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb46-36"><a href="#cb46-36" aria-hidden="true" tabindex="-1"></a>  plot_prediction(p5_pred_times, p5_obs.mean(), p5_gen_cov, p5_obs, p5_prior_means, p5_obs_times, <span class="fl">0.001</span>, title)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-display">
 <div>
@@ -90483,17 +90528,17 @@ Increase the number of iterations (max_iter) or scale the data as shown in:
 </section>
 <section id="make-predictions-with-sklearn" class="level3">
 <h3 class="anchored" data-anchor-id="make-predictions-with-sklearn">Make Predictions with sklearn</h3>
-<div id="cell-48" class="cell">
+<div id="cell-49" class="cell">
 <details open="" class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>p5_obs_times <span class="op">=</span> np.arange(<span class="dv">0</span>, <span class="dv">300</span>, <span class="dv">3</span>)<span class="op">*</span><span class="fl">24.0</span> <span class="co"># hrs</span></span>
-<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>p5_pred_times <span class="op">=</span> np.array(<span class="bu">list</span>(<span class="bu">set</span>(np.arange(<span class="dv">0</span>, <span class="dv">300</span>, <span class="fl">0.5</span>))<span class="op">-</span><span class="bu">set</span>(p5_obs_times)))<span class="op">*</span>(<span class="fl">24.0</span>) <span class="co"># hrs</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb47"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>p5_obs_times <span class="op">=</span> np.arange(<span class="dv">0</span>, <span class="dv">300</span>, <span class="dv">3</span>)<span class="op">*</span><span class="fl">24.0</span> <span class="co"># hrs</span></span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>p5_pred_times <span class="op">=</span> np.array(<span class="bu">list</span>(<span class="bu">set</span>(np.arange(<span class="dv">0</span>, <span class="dv">300</span>, <span class="fl">0.5</span>))<span class="op">-</span><span class="bu">set</span>(p5_obs_times)))<span class="op">*</span>(<span class="fl">24.0</span>) <span class="co"># hrs</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
-<div id="cell-49" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:1000}}" data-outputid="407266b4-2a52-4ffd-d7a5-d4078498632c">
+<div id="cell-50" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:1000}}" data-outputid="407266b4-2a52-4ffd-d7a5-d4078498632c">
 <details open="" class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> plot_prediction(pred_zs, obs, obs_zs, tau, title):</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb48"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> plot_prediction(pred_zs, obs, obs_zs, tau, title):</span>
 <span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>  zs <span class="op">=</span> np.sort(np.concatenate([pred_zs, obs_zs]))</span>
 <span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a>  <span class="im">import</span> sklearn.gaussian_process</span>
@@ -90518,7 +90563,7 @@ Increase the number of iterations (max_iter) or scale the data as shown in:
 <span id="cb48-23"><a href="#cb48-23" aria-hidden="true" tabindex="-1"></a>  plt.show()</span>
 <span id="cb48-24"><a href="#cb48-24" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb48-25"><a href="#cb48-25" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> p5_obs, title <span class="kw">in</span> <span class="bu">zip</span>(data[:, <span class="dv">1400</span><span class="op">//</span><span class="dv">3</span>, <span class="dv">400</span><span class="op">//</span><span class="dv">3</span>].T, [<span class="st">"x-component"</span>, <span class="st">"y-component"</span>]):</span>
-<span id="cb48-26"><a href="#cb48-26" aria-hidden="true" tabindex="-1"></a>  plot_prediction(p5_pred_times, p5_obs, p5_obs_times, <span class="fl">0.001</span>, title)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb48-26"><a href="#cb48-26" aria-hidden="true" tabindex="-1"></a>  plot_prediction(p5_pred_times, p5_obs, p5_obs_times, <span class="fl">0.001</span>, title)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-display">
 <div>
@@ -90539,10 +90584,10 @@ Increase the number of iterations (max_iter) or scale the data as shown in:
 </section>
 <section id="simulation" class="level2">
 <h2 class="anchored" data-anchor-id="simulation">Simulation</h2>
-<div id="cell-51" class="cell">
+<div id="cell-52" class="cell">
 <details open="" class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> jax_generate_cov(zs1, zs2, a, ell):</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb49"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> jax_generate_cov(zs1, zs2, a, ell):</span>
 <span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> (a<span class="op">**</span><span class="dv">2</span>) <span class="op">*</span> jnp.exp(<span class="op">-</span>(zs1[:,<span class="va">None</span>] <span class="op">-</span> zs2[<span class="va">None</span>, :])<span class="op">**</span><span class="dv">2</span> <span class="op">/</span> ell<span class="op">**</span><span class="dv">2</span>)</span>
 <span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> jax_gaussian_process(x0_mean, x1_mean, x1, cov_blocks, tau):</span>
@@ -90614,13 +90659,13 @@ Increase the number of iterations (max_iter) or scale the data as shown in:
 <span id="cb49-70"><a href="#cb49-70" aria-hidden="true" tabindex="-1"></a>  gen_cov <span class="op">=</span> <span class="kw">lambda</span> z, w: jax_generate_cov(z, w, a, ell)</span>
 <span id="cb49-71"><a href="#cb49-71" aria-hidden="true" tabindex="-1"></a>  grid_cov <span class="op">=</span> gen_cov(t_grid, t_grid)</span>
 <span id="cb49-72"><a href="#cb49-72" aria-hidden="true" tabindex="-1"></a>  v_func <span class="op">=</span> get_v_func(gen_cov, t_grid, g_x_edges, g_y_edges, grid_cov, tau)</span>
-<span id="cb49-73"><a href="#cb49-73" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> jax_sim_gp(N, save_stride, t_edges, v_func, v_grid, x_0, epsilon)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb49-73"><a href="#cb49-73" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> jax_sim_gp(N, save_stride, t_edges, v_func, v_grid, x_0, epsilon)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
-<div id="cell-52" class="cell">
+<div id="cell-53" class="cell">
 <details open="" class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>T <span class="op">=</span> <span class="dv">24</span><span class="op">*</span><span class="fl">300.0</span> <span class="co">#@param {type:"number"}</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb50"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>T <span class="op">=</span> <span class="dv">24</span><span class="op">*</span><span class="fl">300.0</span> <span class="co">#@param {type:"number"}</span></span>
 <span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>N <span class="op">=</span> <span class="dv">4</span><span class="op">*</span>T <span class="co">#@param {type:"integer"}</span></span>
 <span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a>num <span class="op">=</span> <span class="dv">1000</span> <span class="co">#@param {type:"integer"}</span></span>
 <span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a>epsilon <span class="op">=</span> T<span class="op">/</span>N <span class="co"># hours</span></span>
@@ -90631,19 +90676,19 @@ Increase the number of iterations (max_iter) or scale the data as shown in:
 <span id="cb50-9"><a href="#cb50-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb50-10"><a href="#cb50-10" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> plot_overlay(ax):</span>
 <span id="cb50-11"><a href="#cb50-11" aria-hidden="true" tabindex="-1"></a>  ax.matshow(mask.T, extent<span class="op">=</span>[<span class="dv">0</span>, grid_x_edges.<span class="bu">max</span>(), <span class="dv">0</span>, grid_y_edges.<span class="bu">max</span>()])</span>
-<span id="cb50-12"><a href="#cb50-12" aria-hidden="true" tabindex="-1"></a>  ax.axis([<span class="dv">0</span>, grid_x_edges.<span class="bu">max</span>(), <span class="dv">0</span>, grid_y_edges.<span class="bu">max</span>()])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb50-12"><a href="#cb50-12" aria-hidden="true" tabindex="-1"></a>  ax.axis([<span class="dv">0</span>, grid_x_edges.<span class="bu">max</span>(), <span class="dv">0</span>, grid_y_edges.<span class="bu">max</span>()])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
-<div id="cell-53" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:1000}}" data-outputid="d5ab0484-51c8-40a7-9431-e6973c63e037">
+<div id="cell-54" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:1000}}" data-outputid="d5ab0484-51c8-40a7-9431-e6973c63e037">
 <details open="" class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> x_0_variance <span class="kw">in</span> [<span class="dv">10</span><span class="op">**</span><span class="dv">2</span>, <span class="dv">50</span><span class="op">**</span><span class="dv">2</span>]:</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb51"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> x_0_variance <span class="kw">in</span> [<span class="dv">10</span><span class="op">**</span><span class="dv">2</span>, <span class="dv">50</span><span class="op">**</span><span class="dv">2</span>]:</span>
 <span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>  x_0 <span class="op">=</span> np.random.multivariate_normal(mean<span class="op">=</span>[<span class="dv">300</span>, <span class="dv">1050</span>], cov<span class="op">=</span>[[x_0_variance, <span class="dv">0</span>], [<span class="dv">0</span>, x_0_variance]], size<span class="op">=</span>num)</span>
 <span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb51-4"><a href="#cb51-4" aria-hidden="true" tabindex="-1"></a>  p7_plane_states <span class="op">=</span> jax_gp(N, N<span class="op">//</span><span class="dv">100</span>, grid_t_edges, grid_x_edges, grid_y_edges, data, x_0, epsilon, <span class="op">*</span>p5_gen_cov_params<span class="op">+</span>(<span class="fl">0.001</span>,))</span>
 <span id="cb51-5"><a href="#cb51-5" aria-hidden="true" tabindex="-1"></a>  p7_plane_states_numpy <span class="op">=</span> <span class="bu">list</span>(<span class="bu">zip</span>(<span class="op">*</span><span class="bu">map</span>(np.array, p7_plane_states)))</span>
 <span id="cb51-6"><a href="#cb51-6" aria-hidden="true" tabindex="-1"></a>  p7_plane_animation <span class="op">=</span> animate(p7_plane_states_numpy, grid_x, grid_y, <span class="st">"</span><span class="sc">{}</span><span class="st">"</span>, overlay<span class="op">=</span>plot_overlay, grid_stride<span class="op">=</span><span class="dv">20</span>, density<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb51-7"><a href="#cb51-7" aria-hidden="true" tabindex="-1"></a>  IPython.display.display(HTML(p7_plane_animation.to_html5_video()))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb51-7"><a href="#cb51-7" aria-hidden="true" tabindex="-1"></a>  IPython.display.display(HTML(p7_plane_animation.to_html5_video()))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-display">
 <video width="800" height="800" controls="" autoplay="" loop="">
@@ -133816,10 +133861,10 @@ AAAAAAAALWlsc3QAAAAlqXRvbwAAAB1kYXRhAAAAAQAAAABMYXZmNTguNzYuMTAw
 </video>
 </div>
 </div>
-<div id="cell-54" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:822}}" data-outputid="df22bd20-43ae-4926-d844-2046f6d239a9">
+<div id="cell-55" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:822}}" data-outputid="df22bd20-43ae-4926-d844-2046f6d239a9">
 <details open="" class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>x_0 <span class="op">=</span> np.array([ np.random.rand(num)<span class="op">*</span>grid_x_edges.<span class="bu">max</span>(), np.random.rand(num)<span class="op">*</span>grid_y_edges.<span class="bu">max</span>() ]).T</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb52"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>x_0 <span class="op">=</span> np.array([ np.random.rand(num)<span class="op">*</span>grid_x_edges.<span class="bu">max</span>(), np.random.rand(num)<span class="op">*</span>grid_y_edges.<span class="bu">max</span>() ]).T</span>
 <span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>x_0 <span class="op">=</span> x_0[np.square(jax_v_position(x_0, data, grid_x_edges, grid_y_edges).T[<span class="dv">0</span>]).<span class="bu">sum</span>(axis<span class="op">=</span><span class="dv">1</span>) <span class="op">&gt;</span> <span class="dv">0</span>]</span>
 <span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb52-4"><a href="#cb52-4" aria-hidden="true" tabindex="-1"></a>midpoint <span class="op">=</span> <span class="kw">lambda</span> ar: (ar[<span class="dv">1</span>:] <span class="op">+</span> ar[:<span class="op">-</span><span class="dv">1</span>])<span class="op">/</span><span class="dv">2</span></span>
@@ -133828,7 +133873,7 @@ AAAAAAAALWlsc3QAAAAlqXRvbwAAAB1kYXRhAAAAAQAAAABMYXZmNTguNzYuMTAw
 <span id="cb52-7"><a href="#cb52-7" aria-hidden="true" tabindex="-1"></a>p5_states_numpy <span class="op">=</span> <span class="bu">list</span>(<span class="bu">zip</span>(<span class="op">*</span><span class="bu">map</span>(np.array, p5_states)))</span>
 <span id="cb52-8"><a href="#cb52-8" aria-hidden="true" tabindex="-1"></a>p5_animation <span class="op">=</span> animate(p5_states_numpy, grid_x, grid_y, <span class="st">"</span><span class="sc">{}</span><span class="st">"</span>, overlay<span class="op">=</span>plot_overlay, grid_stride<span class="op">=</span><span class="dv">20</span>, density<span class="op">=</span><span class="va">True</span>)</span>
 <span id="cb52-9"><a href="#cb52-9" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> IPython.display <span class="im">import</span> HTML</span>
-<span id="cb52-10"><a href="#cb52-10" aria-hidden="true" tabindex="-1"></a>HTML(p5_animation.to_html5_video())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb52-10"><a href="#cb52-10" aria-hidden="true" tabindex="-1"></a>HTML(p5_animation.to_html5_video())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-display" data-execution_count="65">
 <video width="800" height="800" controls="" autoplay="" loop="">
@@ -168671,13 +168716,14 @@ ZjU4Ljc2LjEwMA==
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-        const codeEl = trigger.previousElementSibling.cloneNode(true);
-        for (const childEl of codeEl.children) {
-          if (isCodeAnnotation(childEl)) {
-            childEl.remove();
-          }
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
-        return codeEl.innerText;
+      }
+      return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy
